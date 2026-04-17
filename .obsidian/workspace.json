@@ -35,8 +35,7 @@
               "title": "test-hermes"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -109,7 +108,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Knowledge/Inbox/test-hermes.md",
+                "file": "Templates/Knowledge.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -119,7 +118,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "test-hermes 的反向链接列表"
+              "title": "Knowledge 的反向链接列表"
             }
           },
           {
@@ -128,12 +127,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Knowledge/Inbox/test-hermes.md",
+                "file": "Templates/Knowledge.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "test-hermes 的出链列表"
+              "title": "Knowledge 的出链列表"
             }
           },
           {
@@ -171,13 +170,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Knowledge/Inbox/test-hermes.md",
+                "file": "Templates/Knowledge.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "test-hermes 的大纲"
+              "title": "Knowledge 的大纲"
             }
           }
         ]
@@ -199,10 +198,10 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "35361cebce1d91f2",
+  "active": "d4e5118c929235b7",
   "lastOpenFiles": [
-    "Knowledge/Inbox/Test.md",
     "Knowledge/Inbox/test-hermes.md",
+    "Knowledge/Inbox/Test.md",
     "Templates/Knowledge.md"
   ]
 }
