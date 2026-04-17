@@ -14,11 +14,13 @@
 - **自注意力**: Query、Key、Value同源（自身序列），实现内部交互
 
 ## 🔗 Relations
-- relates_to: [[Transformer]], [[Seq2Seq]], [[Self-Attention]], [[NLP]]
+- relates_to: [[Transformer]]
+- relates_to: [[Self-Attention]]
+- relates_to: [[Seq2Seq]]
 
 ## 📚 References
 - Vaswani et al. "Attention Is All You Need" (2017)
 - Bahdanau et al. "Neural Machine Translation by Jointly Learning to Align and Translate" (2014)
 
 ## 🏷 Tags
-deep-learning, transformer, nlp, neural-network, attention
+#deep-learning #transformer #nlp #neural-network #self-attention
