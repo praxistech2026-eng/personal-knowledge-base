@@ -22,8 +22,4 @@ Transformer是一种基于自注意力机制处理序列数据的深度学习架
 - Vaswani et al., "Attention Is All You Need", NeurIPS 2017
 
 ## 🏷 Tags
-- 深度学习
-- NLP
-- 注意力机制
-- 序列建模
-- 神经网络
+#深度学习 #NLP #注意力机制 #序列建模 #神经网络

@@ -14,11 +14,13 @@ Transformer是一种基于自注意力机制的深度学习架构，由Google于
 - **并行计算**：摆脱RNN时序依赖，训练效率大幅提升
 
 ## 🔗 Relations
-- relates_to: [[RNN]], [[LSTM]], [[Attention机制]], [[BERT]], [[GPT]], [[位置编码]]
+- relates_to: [[Attention机制]]
+- relates_to: [[BERT]]
+- relates_to: [[GPT]]
 
 ## 📚 References
 - Vaswani et al., "Attention Is All You Need", NeurIPS 2017
 - Google Research
 
 ## 🏷 Tags
-deep-learning, nlp, sequence-modeling, neural-networks, google
+#deep-learning #nlp #sequence-modeling #neural-networks #google
