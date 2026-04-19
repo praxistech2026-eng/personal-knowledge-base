@@ -8,31 +8,13 @@
         "type": "tabs",
         "children": [
           {
-            "id": "d4e5118c929235b7",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Knowledge/Inbox/hermes-test.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "hermes-test"
-            }
-          },
-          {
             "id": "35361cebce1d91f2",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Knowledge/Inbox/test-hermes.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "test-hermes"
+              "title": "新标签页"
             }
           }
         ]
@@ -108,7 +90,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Knowledge/Inbox/hermes-test.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +99,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "hermes-test 的反向链接列表"
+              "title": "反向链接"
             }
           },
           {
@@ -127,12 +108,11 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Knowledge/Inbox/hermes-test.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "hermes-test 的出链列表"
+              "title": "出链"
             }
           },
           {
@@ -170,13 +150,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Knowledge/Inbox/hermes-test.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "hermes-test 的大纲"
+              "title": "大纲"
             }
           }
         ]
@@ -198,8 +177,27 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "d4e5118c929235b7",
+  "active": "35361cebce1d91f2",
   "lastOpenFiles": [
+    "Knowledge/Inbox/test-hermes.md",
+    "Knowledge/Inbox/hermes-test.md",
+    "Knowledge/Misc/ubuntu-test.md",
+    "Knowledge/Misc/test-auto.md",
+    "Knowledge/Misc/hermes-test.md",
+    "Knowledge/Misc",
+    "Knowledge/AI/test-hermes.md",
+    "Knowledge/AI/note_20260418_015259.md",
+    "Knowledge/AI/note_20260418_014715.md",
+    "Knowledge/AI/note_20260418_013747.md",
+    "Knowledge/AI/note_20260418_013239.md",
+    "Knowledge/AI/note_20260418_012950.md",
+    "Knowledge/AI/note_20260418_012120.md",
+    "Knowledge/AI/attention.md",
+    "Knowledge/AI/Transformer模型.md",
+    "Knowledge/AI/Transformer.md",
+    "Knowledge/AI/Test.md",
+    "Knowledge/AI/Attention机制.md",
+    "Knowledge/AI",
     "Knowledge/Inbox/Attention机制.md",
     "Knowledge/Inbox/Transformer模型.md",
     "Knowledge/Inbox/Transformer.md",
@@ -209,14 +207,6 @@
     "Knowledge/Inbox/note_20260418_013239.md",
     "Knowledge/Inbox/note_20260418_012950.md",
     "Knowledge/Inbox/note_20260418_012120.md",
-    "Knowledge/Inbox/attention.md",
-    "Knowledge/Inbox/test-auto.md",
-    "Knowledge/Inbox/Test.md",
-    "Knowledge/Inbox/test-hermes.md",
-    "Knowledge/Inbox/ubuntu-test.md",
-    "README.md",
-    "Templates/Knowledge.md",
-    "Knowledge/Inbox/from-hermes.txt",
-    "Knowledge/Inbox/hermes-test.md"
+    "Knowledge/Inbox/from-hermes.txt"
   ]
 }
