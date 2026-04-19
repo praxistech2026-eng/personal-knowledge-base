@@ -11,10 +11,14 @@
             "id": "35361cebce1d91f2",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "Templates/Knowledge.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "新标签页"
+              "title": "Knowledge"
             }
           }
         ]
@@ -179,6 +183,16 @@
   },
   "active": "35361cebce1d91f2",
   "lastOpenFiles": [
+    "Knowledge/Business/如何设计一个商业模式.md",
+    "Knowledge/Business",
+    "Knowledge/Archive/test-hermes.md",
+    "Knowledge/Archive/test-auto.md",
+    "Knowledge/Archive/Transformer_backup_20260419_234153.md",
+    "Knowledge/Archive/Test.md",
+    "Knowledge/Archive",
+    "Knowledge/AI/位置编码 Position Encoding.md",
+    "Knowledge/AI/Transformer 编码器与解码器结构详解.md",
+    "Knowledge/AI/Layer Normalization.md",
     "Knowledge/Inbox/test-hermes.md",
     "Knowledge/Inbox/hermes-test.md",
     "Knowledge/Misc/ubuntu-test.md",
@@ -199,14 +213,6 @@
     "Knowledge/AI/Attention机制.md",
     "Knowledge/AI",
     "Knowledge/Inbox/Attention机制.md",
-    "Knowledge/Inbox/Transformer模型.md",
-    "Knowledge/Inbox/Transformer.md",
-    "Knowledge/Inbox/note_20260418_015259.md",
-    "Knowledge/Inbox/note_20260418_014715.md",
-    "Knowledge/Inbox/note_20260418_013747.md",
-    "Knowledge/Inbox/note_20260418_013239.md",
-    "Knowledge/Inbox/note_20260418_012950.md",
-    "Knowledge/Inbox/note_20260418_012120.md",
     "Knowledge/Inbox/from-hermes.txt"
   ]
 }
