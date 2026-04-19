@@ -1,0 +1,26 @@
+# Transformer 编码器与解码器结构详解
+
+## 🧠 Summary
+Transformer 采用编码器-解码器架构，通过自注意力机制和前馈神经网络实现序列到序列的转换。
+
+## 🧩 Primary Concept
+编码器将输入序列映射为连续表示，解码器基于编码器输出逐步生成目标序列。
+
+## 🔑 Key Points
+- **编码器结构**：6层堆叠，每层包含多头自注意力层和位置前馈网络，均有残差连接和层归一化
+- **解码器结构**：6层堆叠，每层包含掩码自注意力层、编码器-解码器注意力层和前馈网络
+- **多头注意力**：将注意力拆分为多个头并行计算，增强模型捕捉不同子空间信息的能力
+- **位置编码**：使用正弦余弦函数注入序列位置信息，解决自注意力无位置感知的问题
+- **掩码机制**：解码器掩码未来位置，防止信息泄露，确保逐字生成的自回归特性
+
+## 🔗 Relations
+- relates_to: [[自注意力机制]]
+- relates_to: [[序列到序列模型]]
+- relates_to: [[位置编码]]
+
+## 📚 References
+- Vaswani et al., "Attention Is All You Need", NeurIPS 2017
+- Jay Alammar, "The Illustrated Transformer"
+
+## 🏷 Tags
+#Transformer #编码器 #解码器 #残差连接 #层归一化
