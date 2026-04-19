@@ -181,8 +181,9 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "35361cebce1d91f2",
+  "active": "73334dbb14c3a3dd",
   "lastOpenFiles": [
+    "Knowledge/AI/注意力机制.md",
     "Knowledge/Business/如何设计一个商业模式.md",
     "Knowledge/Business",
     "Knowledge/Archive/test-hermes.md",
@@ -212,7 +213,6 @@
     "Knowledge/AI/Test.md",
     "Knowledge/AI/Attention机制.md",
     "Knowledge/AI",
-    "Knowledge/Inbox/Attention机制.md",
     "Knowledge/Inbox/from-hermes.txt"
   ]
 }
