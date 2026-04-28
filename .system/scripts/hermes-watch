@@ -1,0 +1,62 @@
+#!/bin/bash
+# hermes-watch - Real-time file monitoring for vault changes
+# Uses inotifywait to detect file changes and trigger sync
+
+set -euo pipefail
+
+VAULT="$HOME/HermesKnowledge"
+LOG="$VAULT/.system/watch.log"
+PIDFILE="$VAULT/.system/hermes-watch.pid"
+
+# 检查 inotifywait 是否可用
+if ! command -v inotifywait &>/dev/null; then
+    echo "[hermes-watch] ERROR: inotifywait not found"
+    echo "[hermes-watch] Install with: sudo apt install inotify-tools"
+    exit 1
+fi
+
+# 检查是否已在运行
+if [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
+    echo "[hermes-watch] Already running (PID: $(cat "$PIDFILE"))"
+    exit 0
+fi
+
+# 后台运行
+exec > >(tee -a "$LOG")
+exec 2>&1
+
+echo "[hermes-watch] Starting vault monitor on $VAULT"
+echo "[hermes-watch] PID: $$"
+
+# 保存 PID
+echo $$ > "$PIDFILE"
+
+# 监控 vault 目录下的所有文件变更
+# --exclude 排除自身和 .git
+inotifywait -m -r \
+    --exclude '/\.git/' \
+    --exclude '/\.system/' \
+    --exclude '.*\.swp' \
+    --exclude '.*\.tmp' \
+    -e modify,create,delete,move \
+    "$VAULT" \
+| while read -r DIRECTORY EVENT FILE; do
+    # 忽略 .system 目录本身的变化
+    if echo "$FILE" | grep -q "^$VAULT/\.system"; then
+        continue
+    fi
+
+    # 忽略 AgentSessions 的详细变更（只做批量同步）
+    if echo "$FILE" | grep -q "AgentSessions"; then
+        continue
+    fi
+
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $EVENT: $FILE"
+
+    # 防抖：等待 2 秒内的其他变更都结束
+    sleep 2
+
+    # 触发同步
+    "$VAULT/.system/scripts/hermes-push" "auto-sync on change" &
+
+done

@@ -1,0 +1,74 @@
+#!/bin/bash
+# hermes-release - Release workflow with SemVer
+# Usage: hermes-release [major|minor|patch]
+# Default: patch
+
+set -euo pipefail
+
+VAULT="$HOME/HermesKnowledge"
+SYSTEM_DIR="$VAULT/.system"
+cd "$VAULT"
+
+# 获取当前最新 tag
+CURRENT_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+echo "Current version: $CURRENT_TAG"
+
+# 解析 SemVer
+IFS='.' read -ra VER <<< "${CURRENT_TAG#v}"
+MAJOR=${VER[0]:-0}
+MINOR=${VER[1]:-0}
+PATCH=${VER[2]:-0}
+
+# 根据参数提升版本
+BUMP_TYPE="${1:-patch}"
+case "$BUMP_TYPE" in
+    major)
+        MAJOR=$((MAJOR + 1))
+        MINOR=0
+        PATCH=0
+        ;;
+    minor)
+        MINOR=$((MINOR + 1))
+        PATCH=0
+        ;;
+    patch)
+        PATCH=$((PATCH + 1))
+        ;;
+    *)
+        echo "Usage: hermes-release [major|minor|patch]"
+        exit 1
+        ;;
+esac
+
+NEW_TAG="v${MAJOR}.${MINOR}.${PATCH}"
+echo "New version: $NEW_TAG"
+
+# 生成 changelog 条目
+DATE=$(date '+%Y-%m-%d')
+CHANGELOG="$SYSTEM_DIR/CHANGELOG.md"
+
+# 在 CHANGELOG 顶部插入新版本
+TEMP_CHANGELOG="/tmp/changelog_new_$$.md"
+cat > "$TEMP_CHANGELOG" << EOF
+## [$NEW_TAG] - $DATE
+
+### Changes
+$(git log --oneline "$CURRENT_TAG..HEAD" 2>/dev/null | sed 's/^/- /' || echo "- Initial release")
+
+EOF
+cat "$CHANGELOG" >> "$TEMP_CHANGELOG"
+mv "$TEMP_CHANGELOG" "$CHANGELOG"
+
+# 提交 changelog 更新
+git add "$CHANGELOG"
+git commit -m "changelog: prepare $NEW_TAG"
+
+# 打 tag
+git tag -a "$NEW_TAG" -m "Release $NEW_TAG"
+
+# 推送
+git push origin main --tags
+
+echo ""
+echo "=== Released $NEW_TAG ==="
+echo "Tag pushed to origin/main"
