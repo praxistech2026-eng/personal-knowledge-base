@@ -20,7 +20,8 @@ if [[ -z "$URL" ]]; then
 fi
 
 # Create inbox entry
-FILENAME="$INBOX/${DATE}_$(echo "$URL" | md5sum | cut -c1-8).md"
+HASH=$(printf '%s' "$URL" | md5sum | cut -c1-8)
+FILENAME="$INBOX/${DATE}_${HASH}.md"
 
 cat > "$FILENAME" <<EOF
 # 链接收藏
