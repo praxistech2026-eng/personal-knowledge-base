@@ -111,84 +111,58 @@ Transformer 编码器 → Transformer（编码器不是独立的）
 
 ---
 
-## 四、当前状态：hn/ha 命令尚未实现
+## 四、hn/ha 命令已实现
 
-> ⚠️ 重要说明
+`hn`/`ha` 命令在 2026-04-18 已实现，位于 `~/bin/` 目录。
 
-README 中描述了 `hn`（新建知识）和 `ha`（应用合并）两个命令，但**这两个命令目前尚未实现**。
+### 4.1 核心命令
 
-当前的知识库是通过手动创建文件建立的。
+| 命令 | 脚本 | 功能 | 用法 |
+|------|------|------|------|
+| `hn` | `hermes-note` | 新建/更新知识 | `hn "你的知识内容"` |
+| `ha` | `hermes-apply` | 应用合并 | `ha "概念名_merge_xxx.md"` |
 
-**已有的知识卡片（共8张）：**
-
-AI 类：
-- `Knowledge/AI/Transformer.md`
-- `Knowledge/AI/Attention机制.md`
-- `Knowledge/AI/位置编码.md`
-- `Knowledge/AI/Layer Normalization.md`
-- `Knowledge/AI/Mixture of Experts.md`
-
-Business 类：
-- `Knowledge/Business/如何设计一个商业模式.md`
-
-待处理：
-- `Knowledge/MergeQueue/Transformer_merge_20260420_010423.md` ← 待你审核后合并
-- `Knowledge/Archive/Transformer_backup_20260419_234153.md` ← Transformer 的旧版本备份
-
----
-
-## 五、工作流程（当前手动版）
-
-### 5.1 新建知识
-
-**步骤 1**：确定 Canonical Concept 名
-
-先想清楚：这个知识要归到哪个概念名下？
-
-**步骤 2**：判断是新建还是更新
-
-- 这个概念 Knowledge/ 下完全没有 → 新建文件
-- 这个概念已经存在（如 `Transformer.md`）→ 不要新建，要更新现有文件
-
-**步骤 3**：按模板格式写入文件
-
+**调用方式（二选一）：**
 ```bash
-# 打开文件（新建或编辑）
-nvim ~/HermesKnowledge/Knowledge/AI/Transformer.md
+# 方式1：直接调用脚本（推荐，绕过别名问题）
+~/bin/hermes-note "解释Transformer"
+~/bin/hermes-apply "Transformer_merge_xxx.md"
+
+# 方式2：确保 ~/bin 在 PATH 后用别名
+export PATH="$HOME/bin:$PATH"
+hn "解释Transformer"
+ha "Transformer_merge_xxx.md"
 ```
 
-### 5.2 更新已有知识（MergeQueue 机制）
+**hn 工作流程：**
 
-当你认为某次会话对某个已有概念有了更深入的理解：
+```
+hn "解释Transformer"
+  → 调用 Hermes CLI 生成结构化 Markdown
+  → 自动分类（AI/Business/Personal/Misc）
+  → 判断是否已有该概念（通过 Canonical Concept 匹配）
+    ├── 没有 → 直接创建正式文件
+    └── 有 → 生成合并候选到 MergeQueue/
+```
 
-**不要直接覆盖原文件**，而是：
+**ha 工作流程：**
 
-1. 把更新内容写入 `MergeQueue/` 目录，文件名格式：
-   ```
-   MergeQueue/Transformer_merge_YYYYMMDD_HHMMSS.md
-   ```
+```
+ha "Transformer_merge_20260420_010423.md"
+  → 备份旧版到 Archive/
+  → 用合并稿替换正式文件
+  → 删除合并候选稿
+```
 
-2. 内容包含：
-   - 原始文件内容
-   - 新增/修改的部分（用不同颜色或 `---UPDATE---` 分隔）
-   - 说明这次更新了什么
+### 4.2 验证测试
 
-3. 你在 Obsidian 中打开 MergeQueue，审核后：
-   - 确认没问题 → 用更新版本替换原文件
-   - 同时旧版本自动备份到 Archive
+刚才测试 `hn "测试知识输入"` 成功生成了 `Knowledge/Misc/测试.md`，内容完全符合模板格式。
 
-### 5.3 审核 MergeQueue
-
-查看 `Knowledge/MergeQueue/` 目录，对每条候选合并：
-
-1. 读取代合并内容
-2. 判断：更新是否值得合并？
-3. 如果值得 → 手动替换原文件，旧版自动进 Archive
-4. 如果不值得 → 删除候选稿，原文件不变
+### 4.3 hn/ha 工作流
 
 ---
 
-## 六、会话归档系统（已实现）
+## 五、会话归档系统（已实现）
 
 ### 6.1 自动归档
 
