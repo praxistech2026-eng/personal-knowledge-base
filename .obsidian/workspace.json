@@ -183,6 +183,8 @@
   },
   "active": "35361cebce1d91f2",
   "lastOpenFiles": [
+    "Inbox/2026-04-28_a75b7bfa.md",
+    "Inbox",
     "Knowledge/AI/位置编码.md",
     "Templates/Knowledge.md",
     "USAGE_MANUAL.md",
@@ -208,7 +210,6 @@
     "AgentSessions/openclaw/sessions/2026-04-28/3de40f69-d863-4250-a8a4-ba5bb56110a0.md",
     "AgentSessions/openclaw/sessions/2026-04-28/3343caac-640e-4bce-a027-141a9858bba4.md",
     "AgentSessions/openclaw/sessions/2026-04-28/31c076b4-e1bd-46e9-a29c-30fdd353ab96.md",
-    "AgentSessions/openclaw/sessions/2026-04-28/30e55ecc-99e1-4568-9d76-f329d7598c39.md",
     "AgentSessions/openclaw/sessions/2026-04-28",
     "AgentSessions/hermes/sessions/2026-04-28",
     "AgentSessions/openclaw/sessions",
@@ -217,7 +218,6 @@
     "AgentSessions/hermes",
     "AgentSessions",
     "Knowledge/MergeQueue",
-    "Knowledge/Business",
-    "Knowledge/Archive"
+    "Knowledge/Business"
   ]
 }
