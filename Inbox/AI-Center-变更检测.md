@@ -5,3 +5,5 @@
 
 ---
 
+### Skill
+.hermes/skills/yuanbao
