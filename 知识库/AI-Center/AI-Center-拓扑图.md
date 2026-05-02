@@ -243,7 +243,7 @@ AI Provider (外部):
 |------|------|------|------|
 | Jina Reader | API | Skill（`jina-reader`） | 单页精准抓取，干净 Markdown |
 | DuckDuckGo | CLI (ddgs) | hermes tools + pip | 免费零成本兜底，隐私敏感时用 |
-| Tavily | 0.7.24 | hermes tools + pip | AI 语义优化，1000次/月免费额度 |
+| Tavily | 0.7.24 | hermes tools + pip | AI 语义优化，1000次/月免费额度，已配置 API Key |
 | Crawl4AI | 0.8.6 | Skill（`crawl4ai`） | 大规模批量深度抓取，异步并行 |
 | Scrapling | 0.2.99 | hermes tools + pip | 复杂反爬，多引擎自适应解析 |
 | CamoFox | 0.4.11 | hermes tools + pip | 高匿名隐身浏览器，指纹隐藏 |
@@ -319,6 +319,7 @@ AI Provider (外部):
 | 2026-04-28 | 初始创建本文档，记录 hermes-gateway、hermes-webui、SearXNG、Feishu、WeChat、模型配置 |
 | 2026-05-02 | 新增搜索工具矩阵：Jina Reader（Skill）、Crawl4AI（Skill）、Scrapling（pip）、CamoFox（pip） |
 | 2026-05-02 | 修复 SearXNG 端口（8080→7777）；安装 DuckDuckGo CLI（ddgs）、Tavily Python 包 |
+| 2026-05-02 | 配置 Tavily API Key（tvly-dev-...），验证搜索正常 |
 
 ---
 
