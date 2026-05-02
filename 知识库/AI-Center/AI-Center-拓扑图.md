@@ -235,6 +235,38 @@ AI Provider (外部):
 
 ---
 
+## 搜索工具矩阵（已配置）
+
+| 工具 | 版本 | 类型 | 用途 |
+|------|------|------|------|
+| Jina Reader | API | Skill（`jina-reader`） | 单页精准抓取，干净 Markdown |
+| Crawl4AI | 0.8.6 | Skill（`crawl4ai`） | 大规模批量深度抓取，异步并行 |
+| Scrapling | 0.2.99 | hermes tools + pip | 复杂反爬，多引擎自适应解析 |
+| CamoFox | 0.4.11 | hermes tools + pip | 高匿名隐身浏览器，指纹隐藏 |
+
+### Jina Reader
+- API Endpoint: `https://r.jina.ai/<url>`
+- 脚本: `~/scripts/jina-read`
+- 认证: Bearer Token（`jina_` 开头）
+- 定位: 单页快速抓取，内容质量高
+
+### Crawl4AI
+- Python 包: `crawl4ai` v0.8.6
+- 前置要求: `playwright install chromium`
+- 定位: 批量 URL、深层爬取、JS 渲染、LLM 过滤
+
+### Scrapling
+- Python 包: `scrapling` v0.2.99
+- 引擎: Fetcher(httpx) / StealthyFetcher(Camoufox) / PlayWrightFetcher(Playwright)
+- 定位: 复杂反爬场景，自适应解析
+
+### CamoFox
+- Python 包: `camoufox` v0.4.11
+- CLI: `~/.local/bin/camoufox`
+- 定位: 最严格反爬，完整浏览器指纹隐藏
+
+---
+
 ## 网络与安全
 
 ### 端口汇总
@@ -280,6 +312,7 @@ AI Provider (外部):
 | 日期 | 操作 |
 |------|------|
 | 2026-04-28 | 初始创建本文档，记录 hermes-gateway、hermes-webui、SearXNG、Feishu、WeChat、模型配置 |
+| 2026-05-02 | 新增搜索工具矩阵：Jina Reader（Skill）、Crawl4AI（Skill）、Scrapling（pip）、CamoFox（pip） |
 
 ---
 
