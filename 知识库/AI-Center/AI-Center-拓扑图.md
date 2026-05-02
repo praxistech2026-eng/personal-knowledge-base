@@ -363,6 +363,7 @@ AI Provider (外部):
 | 端口 | 服务 | LAN 可访问 | 建议 |
 |------|------|-----------|------|
 | 100.113.209.2 | Tailscale VPN | ✅ | Tailnet: shin，域名: shin.tail8a16d3.ts.net |
+| 100.88.119.43 | Mac Tailscale 节点 | ✅ | 当前在线节点：`wangxindemacbook-pro-1`（计划改回 `wangxindemacbook-pro`） |
 | 22 | SSH | ✅ | 使用密钥登录 |
 | 18789 | Hermes Gateway | ✅ | ⚠️ 无认证，建议内网使用 |
 | 18791 | Hermes API Server | ✅ | ⚠️ API Key: `67748299` |
@@ -371,6 +372,34 @@ AI Provider (外部):
 | 7777 | SearXNG | ✅ | 搜索服务 |
 | 8787 | SearXNG（残留旧端口） | ❌ | 旧配置，已废弃 |
 | 631 | CUPS 打印 | ✅ | 可关闭 |
+
+### Tailscale CLI 节点（Mac）
+
+| 属性 | 值 |
+|------|-----|
+| **设备** | MacBook Pro |
+| **接入方式** | Tailscale CLI-only（未安装 GUI App） |
+| **运行模式** | macOS `LaunchDaemon` + `tailscaled` root 常驻 |
+| **LaunchDaemon** | `/Library/LaunchDaemons/com.shin.tailscaled.plist` |
+| **Socket** | `/var/run/tailscaled.socket` |
+| **State** | `/Library/Tailscale/tailscaled.state` |
+| **日志** | `/Library/Tailscale/tailscaled.log` |
+| **当前 Tailscale IP** | `100.88.119.43` |
+| **当前在线节点名** | `wangxindemacbook-pro-1` |
+| **目标节点名** | `wangxindemacbook-pro` |
+| **连通性验证** | ✅ `tailscale ping shin` 成功 |
+
+> 说明：该 Mac 节点已实现开机自动启动 `tailscaled`，无需手动启动守护进程，可直接通过 CLI 使用 `tailscale status / ping / ssh`。
+
+### 节点命名整理
+
+- 旧离线节点：`wangxindemacbook-pro`（建议在 Tailscale Admin Console 删除）
+- 当前在线节点：`wangxindemacbook-pro-1`
+- 本机重命名命令：`tailscale set --hostname=wangxindemacbook-pro`
+- 如需同步 macOS 主机名：
+  - `sudo scutil --set HostName wangxindemacbook-pro`
+  - `sudo scutil --set LocalHostName wangxindemacbook-pro`
+  - `sudo scutil --set ComputerName "wangxindemacbook-pro"`
 
 ### API Server
 
@@ -407,6 +436,7 @@ AI Provider (外部):
 | 2026-05-02 | 修复 SearXNG 端口（8080→7777）；安装 DuckDuckGo CLI（ddgs）、Tavily Python 包 |
 | 2026-05-02 | 配置 Tavily API Key（tvly-dev-...），验证搜索正常 |
 | 2026-05-02 | 新增 Tailscale VPN 配置：节点 shin，IP 100.113.209.2，用于 Mac 远程访问家庭服务器 |
+| 2026-05-02 | 新增 Mac CLI-only Tailscale 节点记录：LaunchDaemon 常驻、socket/state/log 路径、节点命名整理方案 |
 | 2026-05-02 | 配置语音能力：Whisper（openai-whisper base 模型）、Edge TTS（edge-tts 7.2.8）、faster-whisper |
 | 2026-05-02 | 配置视觉能力：Fal.ai fal-client（API Key 已写入 .env），FLUX 因余额不足暂停 |
 | 2026-05-02 | 新增文档处理工具：Pandoc（万能转换）+ Marker（PDF→Markdown 高精度，独立 venv） |
