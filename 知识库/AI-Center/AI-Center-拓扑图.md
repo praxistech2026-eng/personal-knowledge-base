@@ -11,8 +11,9 @@
 远程访问 (Tailscale VPN):
   ┌─────────────────────────────────────────────────────┐
   │  Tailscale VPN — 加密直连，Tailnet: shin           │
-  │  节点: shin (本机) → Mac (远程)                    │
-  │  Tailscale IP: 100.113.209.2                      │
+  │  节点: shin (本机) ↔ wangxindemacbook-pro-1 (Mac远程) │
+  │  Linux 节点 IP: 100.113.209.2                      │
+  │  Mac 节点 IP:   100.88.119.43                       │
   │  域名: shin.tail8a16d3.ts.net                     │
   └─────────────────────────────────────────────────────┘
 
