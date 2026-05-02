@@ -318,6 +318,44 @@ AI Provider (外部):
 
 ---
 
+## 自我进化能力 Self-Evolution
+
+> 使用遗传-帕累托算法自动优化 Skills 和系统提示词。
+
+| 组件 | 版本 | 说明 |
+|---|---|---|
+| **DSPy** | 2.6.27 | 提示词编程框架 |
+| **GEPA** | 0.1.1 | Genetic-Pareto Evolution，ICLR 2026 Oral |
+| **hermes-agent-self-evolution** | 0.1.0 | 独立仓库 `~/self-evolution/` |
+
+### 环境
+
+| 路径 | 说明 |
+|---|---|
+| `~/self-evolution/` | 克隆的 NousResearch 仓库 |
+| `~/.hermes/self-evolution-venv/` | 独立 venv（dspy 2.6.27 + gepa 0.1.1） |
+| `~/.hermes/hermes-agent/` | Hermes Agent 代码库（被优化目标） |
+| `~/self-evolution/run-evolve.sh` | Wrapper 脚本 |
+
+### 使用方式
+
+```bash
+# Dry-run 验证
+~/self-evolution/run-evolve.sh github-code-review --dry-run
+
+# 合成数据模式（推荐首次，$2-10/次）
+~/self-evolution/run-evolve.sh <skill-name> 10 synthetic
+```
+
+### 约束门控
+
+- Skill ≤15KB，工具描述 ≤500 字符
+- `pytest tests/ -q` 100% 通过
+- 语义一致性验证
+- 人工 PR 评审（非直接提交）
+
+---
+
 ## 网络与安全
 
 ### 端口汇总
@@ -372,6 +410,7 @@ AI Provider (外部):
 | 2026-05-02 | 配置语音能力：Whisper（openai-whisper base 模型）、Edge TTS（edge-tts 7.2.8）、faster-whisper |
 | 2026-05-02 | 配置视觉能力：Fal.ai fal-client（API Key 已写入 .env），FLUX 因余额不足暂停 |
 | 2026-05-02 | 新增文档处理工具：Pandoc（万能转换）+ Marker（PDF→Markdown 高精度，独立 venv） |
+| 2026-05-02 | 配置 hermes-agent-self-evolution：独立 venv (dspy 2.6.27 + gepa 0.1.1)，仓库 ~/self-evolution/，wrapper ~/self-evolution/run-evolve.sh |
 
 ---
 
