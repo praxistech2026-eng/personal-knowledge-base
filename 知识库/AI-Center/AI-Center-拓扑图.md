@@ -281,6 +281,43 @@ AI Provider (外部):
 
 ---
 
+## 语音/视觉能力（已配置）
+
+### 语音能力 Audio
+
+| 工具 | 版本 | 类型 | 用途 |
+|------|------|------|------|
+| Whisper | base (72M) | openai-whisper | 99+语言语音识别，本地模型 |
+| Edge TTS | 7.2.8 | edge-tts | 免费高质量语音合成，零成本 |
+| faster-whisper | 1.2.1 | faster-whisper | CTranslate2 加速版，更快更省内存 |
+
+#### Whisper
+- Python 包: `openai-whisper`（v20250625）
+- 模型: `base`（72M 参数，约 139MB）
+- 路径: `/home/shin/.hermes/hermes-agent/venv/bin/`
+- 定位: 99+语言识别，多语言会议转录
+
+#### Edge TTS
+- CLI: `edge-tts`（v7.2.8）
+- 中文语音: `zh-CN-XiaoxiaoNeural`（女声，温暖）
+- 定位: 免费 TTS，中文效果优秀
+
+### 视觉能力 Vision
+
+| 工具 | 状态 | 说明 |
+|------|------|------|
+| Fal.ai (fal-client) | ✅ 已配置 Key | FLUX 图像生成，余额不足暂停 |
+| FLUX Skill | ⏸ 待充值 | 依赖 fal.ai，需充值后使用 |
+| ComfyUI Skill | ❌ 未安装 | 本地图像生成，需 NVIDIA GPU |
+
+#### Fal.ai
+- Python 包: `fal_client`（v0.13.2）
+- API Key: 已写入 `~/.hermes/.env` 的 `FAL_KEY`
+- 模型: `fal-ai/flux-1/schnell`
+- 状态: **余额不足**，需充值 https://fal.ai/dashboard/billing
+
+---
+
 ## 网络与安全
 
 ### 端口汇总
@@ -332,7 +369,9 @@ AI Provider (外部):
 | 2026-05-02 | 修复 SearXNG 端口（8080→7777）；安装 DuckDuckGo CLI（ddgs）、Tavily Python 包 |
 | 2026-05-02 | 配置 Tavily API Key（tvly-dev-...），验证搜索正常 |
 | 2026-05-02 | 新增 Tailscale VPN 配置：节点 shin，IP 100.113.209.2，用于 Mac 远程访问家庭服务器 |
-| 2026-05-02 | 新增文档处理工具：Pandoc（万能转换）+ Marker（PDF→Markdown 高精度） |
+| 2026-05-02 | 配置语音能力：Whisper（openai-whisper base 模型）、Edge TTS（edge-tts 7.2.8）、faster-whisper |
+| 2026-05-02 | 配置视觉能力：Fal.ai fal-client（API Key 已写入 .env），FLUX 因余额不足暂停 |
+| 2026-05-02 | 新增文档处理工具：Pandoc（万能转换）+ Marker（PDF→Markdown 高精度，独立 venv） |
 
 ---
 
