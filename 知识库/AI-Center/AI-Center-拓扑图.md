@@ -11,9 +11,9 @@
 远程访问 (Tailscale VPN):
   ┌─────────────────────────────────────────────────────┐
   │  Tailscale VPN — 加密直连，Tailnet: shin           │
-  │  节点: shin (本机) ↔ wangxindemacbook-pro-1 (Mac远程) │
+  │  节点: shin (本机) ↔ wangxindemacbook-pro (Mac远程)  │
   │  Linux 节点 IP: 100.113.209.2                      │
-  │  Mac 节点 IP:   100.88.119.43                       │
+  │  Mac 节点 IP:   100.114.100.50                      │
   │  域名: shin.tail8a16d3.ts.net                     │
   └─────────────────────────────────────────────────────┘
 
@@ -364,7 +364,7 @@ AI Provider (外部):
 | 端口 | 服务 | LAN 可访问 | 建议 |
 |------|------|-----------|------|
 | 100.113.209.2 | Tailscale VPN | ✅ | Tailnet: shin，域名: shin.tail8a16d3.ts.net |
-| 100.88.119.43 | Mac Tailscale 节点 | ✅ | 当前在线节点：`wangxindemacbook-pro-1`（计划改回 `wangxindemacbook-pro`） |
+| 100.114.100.50 | Mac Tailscale 节点 | ✅ | 当前在线节点：`wangxindemacbook-pro` |
 | 22 | SSH | ✅ | 使用密钥登录 |
 | 18789 | Hermes Gateway | ✅ | ⚠️ 无认证，建议内网使用 |
 | 18791 | Hermes API Server | ✅ | ⚠️ API Key: `67748299` |
@@ -385,8 +385,8 @@ AI Provider (外部):
 | **Socket** | `/var/run/tailscaled.socket` |
 | **State** | `/Library/Tailscale/tailscaled.state` |
 | **日志** | `/Library/Tailscale/tailscaled.log` |
-| **当前 Tailscale IP** | `100.88.119.43` |
-| **当前在线节点名** | `wangxindemacbook-pro-1` |
+| **当前 Tailscale IP** | `100.114.100.50` |
+| **当前在线节点名** | `wangxindemacbook-pro` |
 | **目标节点名** | `wangxindemacbook-pro` |
 | **连通性验证** | ✅ `tailscale ping shin` 成功 |
 
@@ -394,9 +394,9 @@ AI Provider (外部):
 
 ### 节点命名整理
 
-- 旧离线节点：`wangxindemacbook-pro`（建议在 Tailscale Admin Console 删除）
-- 当前在线节点：`wangxindemacbook-pro-1`
-- 本机重命名命令：`tailscale set --hostname=wangxindemacbook-pro`
+- 旧离线节点已删除
+- 当前在线节点：`wangxindemacbook-pro`
+- 如需再次手动设置节点名：`tailscale set --hostname=wangxindemacbook-pro`
 - 如需同步 macOS 主机名：
   - `sudo scutil --set HostName wangxindemacbook-pro`
   - `sudo scutil --set LocalHostName wangxindemacbook-pro`

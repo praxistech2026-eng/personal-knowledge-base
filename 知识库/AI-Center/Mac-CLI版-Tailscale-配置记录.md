@@ -53,9 +53,9 @@ tailscale ping shin
 ## 当前节点信息
 - Linux 服务器节点：`shin`
 - Linux 节点 IP：`100.113.209.2`
-- 当前 Mac 在线节点：`wangxindemacbook-pro-1`
-- 当前 Mac 节点 IP：`100.88.119.43`
-- 目标节点名：`wangxindemacbook-pro`
+- 当前 Mac 在线节点：`wangxindemacbook-pro`
+- 当前 Mac 节点 IP：`100.114.100.50`
+- 最终节点名：`wangxindemacbook-pro`
 
 ## 节点整理建议
 ### 删除旧节点
