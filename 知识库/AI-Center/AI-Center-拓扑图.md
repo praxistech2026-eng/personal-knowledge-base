@@ -411,6 +411,7 @@ AI Provider (外部):
 | 2026-05-02 | 配置视觉能力：Fal.ai fal-client（API Key 已写入 .env），FLUX 因余额不足暂停 |
 | 2026-05-02 | 新增文档处理工具：Pandoc（万能转换）+ Marker（PDF→Markdown 高精度，独立 venv） |
 | 2026-05-02 | 配置 hermes-agent-self-evolution：独立 venv (dspy 2.6.27 + gepa 0.1.1)，仓库 ~/self-evolution/，wrapper ~/self-evolution/run-evolve.sh |
+| 2026-05-02 | 搭建 Hermes 三层闭环自动进化：capture_failures.py（L1 捕获）→ analyze_and_suggest.py（L2 分析）→ review_and_apply.py（L3 review），cron 调度已配置 |
 
 ---
 
