@@ -285,6 +285,7 @@ AI Provider (外部):
 
 | 端口 | 服务 | LAN 可访问 | 建议 |
 |------|------|-----------|------|
+| 100.113.209.2 | Tailscale VPN | ✅ | Tailnet: shin，域名: shin.tail8a16d3.ts.net |
 | 22 | SSH | ✅ | 使用密钥登录 |
 | 18789 | Hermes Gateway | ✅ | ⚠️ 无认证，建议内网使用 |
 | 18791 | Hermes API Server | ✅ | ⚠️ API Key: `67748299` |
@@ -328,6 +329,7 @@ AI Provider (外部):
 | 2026-05-02 | 新增搜索工具矩阵：Jina Reader（Skill）、Crawl4AI（Skill）、Scrapling（pip）、CamoFox（pip） |
 | 2026-05-02 | 修复 SearXNG 端口（8080→7777）；安装 DuckDuckGo CLI（ddgs）、Tavily Python 包 |
 | 2026-05-02 | 配置 Tavily API Key（tvly-dev-...），验证搜索正常 |
+| 2026-05-02 | 新增 Tailscale VPN 配置：节点 shin，IP 100.113.209.2，用于 Mac 远程访问家庭服务器 |
 
 ---
 
