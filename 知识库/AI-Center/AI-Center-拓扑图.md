@@ -250,6 +250,8 @@ AI Provider (外部):
 | 工具 | 版本 | 类型 | 用途 |
 |------|------|------|------|
 | Jina Reader | API | Skill（`jina-reader`） | 单页精准抓取，干净 Markdown |
+| Pandoc | 3.1.3 | 系统自带 | 万能转换，40+格式互转（docx/odt/markdown/html） |
+| Marker | PDF | hermes tools + pip | 高精度 PDF→Markdown，复杂排版/表格/公式 |
 | DuckDuckGo | CLI (ddgs) | hermes tools + pip | 免费零成本兜底，隐私敏感时用 |
 | Tavily | 0.7.24 | hermes tools + pip | AI 语义优化，1000次/月免费额度，已配置 API Key |
 | Crawl4AI | 0.8.6 | Skill（`crawl4ai`） | 大规模批量深度抓取，异步并行 |
@@ -330,6 +332,7 @@ AI Provider (外部):
 | 2026-05-02 | 修复 SearXNG 端口（8080→7777）；安装 DuckDuckGo CLI（ddgs）、Tavily Python 包 |
 | 2026-05-02 | 配置 Tavily API Key（tvly-dev-...），验证搜索正常 |
 | 2026-05-02 | 新增 Tailscale VPN 配置：节点 shin，IP 100.113.209.2，用于 Mac 远程访问家庭服务器 |
+| 2026-05-02 | 新增文档处理工具：Pandoc（万能转换）+ Marker（PDF→Markdown 高精度） |
 
 ---
 
