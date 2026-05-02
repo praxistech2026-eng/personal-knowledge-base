@@ -57,12 +57,15 @@ tailscale ping shin
 - 当前 Mac 节点 IP：`100.114.100.50`
 - 最终节点名：`wangxindemacbook-pro`
 
-## 节点整理建议
-### 删除旧节点
-在 Tailscale Admin Console 删除离线旧节点：
-- `wangxindemacbook-pro`
+## 节点整理结果
+### 旧节点
+旧的 offline 节点已删除。
 
-### 将当前在线节点改名
+### 当前在线节点
+- `wangxindemacbook-pro`
+- IP：`100.114.100.50`
+
+### 如需再次设置节点名
 ```bash
 tailscale set --hostname=wangxindemacbook-pro
 ```
