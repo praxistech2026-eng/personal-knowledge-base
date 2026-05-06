@@ -1,0 +1,1081 @@
+# ============================================================
+# Clash-Fallback 全面优化版
+# 设计原则：
+#   1. AI 服务：IP 纯净优先，固定节点，不频繁切换
+#   2. 游戏平台：按发行商地域细分，Steam=美国，UBI=台湾
+#   3. 视频流媒体：按平台+最优节点选择
+#   4. 支付/账号：IP 纯净优先，固定高质量落地
+#   5. Fallback 机制：默认手动 → 手动失效自动顶替 → 手动恢复切回
+# ============================================================
+
+# -------------------- 节点订阅 --------------------
+proxy-providers:
+  Mitce:
+    url: "https://app.mitce.net/?sid=578426&token=***"
+    type: http
+    interval: 86400
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 180
+    proxy: 直连
+
+  花云:
+    url: "https://api-huacloud.net/sub?target=clash&insert=true&emoji=true&udp=true&clash.doh=true&new_name=true&filename=Flower_SS.yaml&url=https%3A%2F%2Fapi.xmancdn.net%2Ffosubscribe.php%3Ftoken2%3Dy466zv7y-ac37957c86lwx99frk%26sip002%3D1"
+    type: http
+    interval: 86400
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 180
+    proxy: 直连
+
+# -------------------- 静态代理（Webshare 固定落地） --------------------
+proxies:
+  - name: 直连
+    type: direct
+
+  - name: 拒绝
+    type: reject
+
+  # Webshare 美国 —— 250G/年，IP固定，只给最高敏感流量用
+  # 通过美国-链式前置（机场节点）出去，不直接暴露本机IP
+  - name: Webshare-美国
+    type: socks5
+    server: 208.66.74.168
+    port: 5483
+    username: jquairff
+    password: tq3707vm3u6o
+    udp: true
+    # 关键：Webshare 走机场美国节点链式出去
+    dialer-proxy: 美国-链式前置
+
+# -------------------- 基础配置 --------------------
+port: 7890
+socks-port: 7891
+redir-port: 7892
+mixed-port: 7893
+tproxy-port: 7895
+
+allow-lan: true
+mode: rule
+log-level: info
+
+external-controller: 0.0.0.0:9090
+secret: "123456"
+
+# -------------------- DNS 配置 --------------------
+dns:
+  enable: true
+  listen: 0.0.0.0:7874
+  ipv6: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.20.0.1/16
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  fallback:
+    - 8.8.8.8
+    - 1.1.1.1
+  fake-ip-filter-mode: blacklist
+  fake-ip-filter:
+    - +.lan
+    - +.local
+    - geosite:cn
+    - +.ynhtbank.com
+    - +.qeayr.cn
+    - +.saojc.xyz
+    - +.sssyun.xyz
+    - +.dler.cloud
+    - +.0tk8a3a1q4t94dler.com
+    - +.aerianas.top
+    - +.gptacg.top
+    - +.wxda.net
+
+ipv6: true
+
+# -------------------- TUN 模块 --------------------
+# 如需真正接管系统流量，请将以下改为 true
+# 注意：auto-route: true 会让所有流量进入 Clash，需配合规则使用
+tun:
+  enable: false
+  stack: gvisor
+  device: utun
+  endpoint-independent-nat: true
+  auto-route: false
+  auto-detect-interface: false
+  auto-redirect: false
+  strict-route: false
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+# ============================================================
+# 策略组架构
+#
+# 设计逻辑：
+#   顶级策略组（用户直接选择）
+#     └→ 场景策略组（按用途分流）
+#         └→ 地域 fallback 组（手动+自动，保留 Fallback 设计）
+#             └→ 手动组（include-all + filter，用户可选特定节点）
+#             └→ 自动组（url-test，按延迟排序）
+#             └→ 直接指定（如 Webshare、游戏平台专属节点）
+#
+# Fallback 核心逻辑（保留）：
+#   默认：走手动节点（用户自选或默认不选）
+#   手动节点不可用：自动切换到自动节点
+#   手动节点恢复：自动切回手动节点
+# ============================================================
+
+proxy-groups:
+
+  # ==========================================
+  # 第一层：顶级全局选择（用户日常操作入口）
+  # ==========================================
+
+  # 所有节点——手动（用于用户在顶级临时指定某个节点）
+  - name: 所有-手动
+    type: select
+    include-all: true
+    filter: "^((?!(直连|拒绝)).)*$"
+
+  # 所有节点——自动选择（延迟最优）
+  - name: 所有-自动
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "^((?!(直连|拒绝)).)*$"
+
+  # ==========================================
+  # 第二层：场景策略组（用途分流）
+  # ==========================================
+
+  # ---- AI 服务（最高敏感，固定节点）----
+  # OpenAI / Anthropic 等账号体系，IP频繁变化会触发风控
+  # 走 Webshare 固定落地，不参与自动测速切换
+  - name: AI-账号敏感
+    type: select
+    proxies:
+      - Webshare-美国       # 固定IP，隔离在机场节点之外
+      - 所有-手动
+      - 所有-自动
+
+  # Perplexity / Gemini / Copilot 等，对IP敏感度较低
+  - name: AI-开发辅助
+    type: select
+    proxies:
+      - 所有-手动
+      - 所有-自动
+      - 香港-故转
+      - 日本-故转
+
+  # ---- 支付/账号（高敏感，固定节点）----
+  - name: 支付-账号
+    type: select
+    proxies:
+      - Webshare-美国
+      - 所有-手动
+      - 所有-自动
+
+  # ---- 视频流媒体（速度+解锁优先）----
+  - name: 视频-Netflix
+    type: select
+    proxies:
+      - Netflix-最优线路
+      - 美国-故转
+      - 日本-故转
+      - 香港-故转
+      - 新加坡-故转
+
+  - name: 视频-Disney
+    type: select
+    proxies:
+      - Disney-最优线路
+      - 美国-故转
+      - 香港-故转
+
+  - name: 视频-HBO
+    type: select
+    proxies:
+      - HBO-最优线路
+      - 美国-故转
+      - 香港-故转
+
+  - name: 视频-YouTube
+    type: select
+    proxies:
+      - YouTube-最优线路
+      - 香港-故转
+      - 日本-故转
+      - 美国-故转
+
+  - name: 视频-音乐
+    type: select
+    proxies:
+      - 音乐-最优线路
+      - 香港-故转
+      - 日本-故转
+      - 所有-自动
+
+  - name: 视频-TikTok
+    type: select
+    proxies:
+      - TikTok-最优线路
+      - 日本-故转
+      - 韩国-故转
+      - 美国-故转
+      - 新加坡-故转
+
+  - name: 视频-其他
+    type: select
+    proxies:
+      - 视频-Netflix
+      - 视频-Disney
+      - 视频-HBO
+      - 视频-YouTube
+      - 视频-TikTok
+      - 香港-故转
+      - 日本-故转
+      - 所有-自动
+
+  # ---- 游戏平台（按发行商地域细分）----
+  - name: 游戏-Steam
+    type: select
+    proxies:
+      - Steam-最优线路
+      - 美国-故转      # Steam 主要美国服务器
+      - 所有-自动
+
+  - name: 游戏-UBI
+    type: select
+    proxies:
+      - UBI-最优线路
+      - 台湾-故转       # 育碧台湾服务器
+      - 美国-故转
+      - 香港-故转
+
+  - name: 游戏-Epic
+    type: select
+    proxies:
+      - Epic-最优线路
+      - 美国-故转       # Epic 主要美国节点
+      - 所有-自动
+
+  - name: 游戏-EA
+    type: select
+    proxies:
+      - EA-最优线路
+      - 美国-故转
+      - 香港-故转
+
+  - name: 游戏-Blizzard
+    type: select
+    proxies:
+      - Blizzard-最优线路
+      - 美国-故转
+      - 香港-故转
+
+  - name: 游戏-Nintendo
+    type: select
+    proxies:
+      - Nintendo-最优线路
+      - 日本-故转       # Nintendo 日服
+      - 香港-故转
+
+  - name: 游戏-PlayStation
+    type: select
+    proxies:
+      - PlayStation-最优线路
+      - 日本-故转       # PS 香港/日本服
+      - 香港-故转
+
+  - name: 游戏-其他
+    type: select
+    proxies:
+      - 游戏-Steam
+      - 游戏-UBI
+      - 游戏-Epic
+      - 游戏-Nintendo
+      - 游戏-PlayStation
+      - 香港-故转
+      - 日本-故转
+      - 所有-自动
+
+  # ---- 社交/通讯（私密+速度）----
+  - name: 社交-私密
+    type: select
+    proxies:
+      - Telegram-最优线路
+      - Discord-最优线路
+      - 香港-故转
+      - 新加坡-故转
+      - 所有-自动
+
+  - name: 社交-其他
+    type: select
+    proxies:
+      - Twitter-故转
+      - Facebook-故转
+      - 香港-故转
+      - 新加坡-故转
+      - 所有-自动
+
+  # ---- 开发协作（速度+稳定性）----
+  - name: 开发-GitHub
+    type: select
+    proxies:
+      - GitHub-最优线路
+      - 美国-故转
+      - 新加坡-故转
+      - 日本-故转
+      - 所有-自动
+
+  - name: 开发-HuggingFace
+    type: select
+    proxies:
+      - HuggingFace-最优线路
+      - 美国-故转
+      - 新加坡-故转
+      - 所有-自动
+
+  - name: 开发-其他
+    type: select
+    proxies:
+      - 开发-GitHub
+      - 开发-HuggingFace
+      - Microsoft-故转
+      - Cloudflare-故转
+      - 日本-故转
+      - 所有-自动
+
+  # ---- 虚拟货币（账号安全）----
+  - name: 交易-交易所
+    type: select
+    proxies:
+      - Webshare-美国
+      - 所有-手动
+      - 新加坡-故转
+      - 美国-故转
+      - 所有-自动
+
+  # ---- 通用海外（兜底）----
+  - name: 国外-通用
+    type: select
+    proxies:
+      - 香港-故转
+      - 日本-故转
+      - 新加坡-故转
+      - 美国-故转
+      - 所有-自动
+      - 所有-手动
+
+  # ---- 国内直连（最高优先级）----
+  - name: 国内
+    type: select
+    proxies:
+      - 直连
+
+  # ==========================================
+  # 第三层：平台最优线路（从订阅节点中自动选最优）
+  # ==========================================
+
+  # Netflix 最优线路：优先美国，其次日本/新加坡
+  - name: Netflix-最优线路
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(Netflix|NetflixUS|NF美国|🇺🇸.*Netflix)).*$"
+
+  - name: Disney-最优线路
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(Disney|DisneyPlus|Hotstar|D+，🇺🇸.*Disney|🇭🇰.*Disney)).*$"
+
+  - name: HBO-最优线路
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(HBO|Max|🇺🇸.*HBO|🇭🇰.*HBO)).*$"
+
+  - name: YouTube-最优线路
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(YouTube|油管|🇭🇰.*YouTube|🇯🇵.*YouTube|🇺🇸.*YouTube)).*$"
+
+  - name: 音乐-最优线路
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(Spotify|Spotify🇭🇰|AppleMusic|Apple.Music|音乐)).*$"
+
+  - name: TikTok-最优线路
+    type: url-test
+    include-all: true
+    tolerance: 30
+    interval: 300
+    filter: "(?=.*(TikTok|抖音|🇯🇵.*TikTok|🇰🇷.*TikTok|🇺🇸.*TikTok|🇸🇬.*TikTok)).*$"
+
+  # 游戏平台最优
+  - name: Steam-最优线路
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(Steam|蒸汽|🇺🇸.*Steam|美国.*Steam)).*$"
+
+  - name: UBI-最优线路
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(Ubisoft|UBI|育碧|🇹🇼.*UBI|台湾.*Ubisoft)).*$"
+
+  - name: Epic-最优线路
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(Epic|EpicGames|🇺🇸.*Epic|美国.*Epic)).*$"
+
+  - name: EA-最优线路
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(EA|Origin|Electronic|🇺🇸.*EA|美国.*EA)).*$"
+
+  - name: Blizzard-最优线路
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(Blizzard|暴雪|🇺🇸.*Blizzard|美国.*Blizzard|🇭🇰.*Blizzard)).*$"
+
+  - name: Nintendo-最优线路
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(Nintendo|任天|Switch|🐟.*Nintendo|🇯🇵.*Nintendo)).*$"
+
+  - name: PlayStation-最优线路
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(PlayStation|PS[45]|🇭🇰.*PS|🇯🇵.*PlayStation)).*$"
+
+  # 社交/通讯最优
+  - name: Telegram-最优线路
+    type: url-test
+    include-all: true
+    tolerance: 30
+    interval: 300
+    filter: "(?=.*(Telegram|TG|电报)).*$"
+
+  - name: Discord-最优线路
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(Discord)).*$"
+
+  # 开发平台最优
+  - name: GitHub-最优线路
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(GitHub|Github|🐙.*GitHub)).*$"
+
+  - name: HuggingFace-最优线路
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(HuggingFace|HF|🤗.*HuggingFace)).*$"
+
+  # ==========================================
+  # 第四层：地域 Fallback 组（手动+自动，保留核心设计）
+  #
+  # Fallback 机制说明：
+  #   1. 默认走"手动"子组（用户可在 OpenClash 面板自选节点）
+  #   2. 当"手动"子组里所有节点都不可用 → 自动切换到"自动"子组
+  #   3. 当"手动"节点恢复 → 自动切回"手动"
+  #   lazy: false 保证每次请求都会检查当前节点状态
+  # ==========================================
+
+  # ---- 美国 ----
+  - name: 美国-故转
+    type: fallback
+    interval: 300
+    lazy: false
+    proxies:
+      - 美国-手动
+      - 美国-自动
+
+  - name: 美国-手动
+    type: select
+    include-all: true
+    filter: "(?=.*(广美|美🇺🇸|US|美国|纽约|洛杉矶|硅谷|圣何塞|西雅图|波特兰|达拉斯|凤凰城|🇺🇸)).*$"
+
+  - name: 美国-自动
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(广美|美🇺🇸|US|美国|纽约|洛杉矶|硅谷|圣何塞|西雅图|波特兰|达拉斯|凤凰城|🇺🇸)).*$"
+
+  # 美国链式前置：Webshare 出去时经过的机场美国节点
+  - name: 美国-链式前置
+    type: select
+    include-all: true
+    filter: "(?=.*(广美|美🇺🇸|US|美国|纽约|洛杉矶|硅谷|圣何塞|西雅图|波特兰|达拉斯|🇺🇸)).*$"
+
+  # ---- 香港 ----
+  - name: 香港-故转
+    type: fallback
+    interval: 300
+    lazy: false
+    proxies:
+      - 香港-手动
+      - 香港-自动
+
+  - name: 香港-手动
+    type: select
+    include-all: true
+    filter: "(?=.*(广港|香港🇭🇰|HK|香港)).*$"
+
+  - name: 香港-自动
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(广港|香港🇭🇰|HK|香港)).*$"
+
+  # ---- 台湾 ----
+  - name: 台湾-故转
+    type: fallback
+    interval: 300
+    lazy: false
+    proxies:
+      - 台湾-手动
+      - 台湾-自动
+
+  - name: 台湾-手动
+    type: select
+    include-all: true
+    filter: "(?=.*(广台|台湾🇹🇼|TW|台湾)).*$"
+
+  - name: 台湾-自动
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(广台|台湾🇹🇼|TW|台湾)).*$"
+
+  # ---- 日本 ----
+  - name: 日本-故转
+    type: fallback
+    interval: 300
+    lazy: false
+    proxies:
+      - 日本-手动
+      - 日本-自动
+
+  - name: 日本-手动
+    type: select
+    include-all: true
+    filter: "(?=.*(广日|日本🇯🇵|JP|东京|大阪|大阪|日本)).*$"
+
+  - name: 日本-自动
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(广日|日本🇯🇵|JP|东京|大阪|北海道|日本)).*$"
+
+  # ---- 韩国 ----
+  - name: 韩国-故转
+    type: fallback
+    interval: 300
+    lazy: false
+    proxies:
+      - 韩国-手动
+      - 韩国-自动
+
+  - name: 韩国-手动
+    type: select
+    include-all: true
+    filter: "(?=.*(广韩|韩国🇰🇷|KR|首尔|韩国)).*$"
+
+  - name: 韩国-自动
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(广韩|韩国🇰🇷|KR|首尔|韩国)).*$"
+
+  # ---- 新加坡 ----
+  - name: 新加坡-故转
+    type: fallback
+    interval: 300
+    lazy: false
+    proxies:
+      - 新加坡-手动
+      - 新加坡-自动
+
+  - name: 新加坡-手动
+    type: select
+    include-all: true
+    filter: "(?=.*(广新|新加坡🇸🇬|SG|新加坡)).*$"
+
+  - name: 新加坡-自动
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(广新|新加坡🇸🇬|SG|新加坡)).*$"
+
+  # ---- 其他国家（兜底）----
+  - name: 其他-故转
+    type: fallback
+    interval: 300
+    lazy: false
+    proxies:
+      - 其他-手动
+      - 其他-自动
+
+  - name: 其他-手动
+    type: select
+    include-all: true
+    filter: "^((?!(直连|拒绝|香港|台湾|日本|韩国|新加坡|美国)).)*$"
+
+  - name: 其他-自动
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "^((?!(直连|拒绝|香港|台湾|日本|韩国|新加坡|美国)).)*$"
+
+  # ==========================================
+  # 第五层：域名规则补充组（fallback 兜底）
+  # ==========================================
+
+  - name: Twitter-故转
+    type: fallback
+    interval: 300
+    lazy: false
+    proxies:
+      - Twitter-手动
+      - Twitter-自动
+
+  - name: Twitter-手动
+    type: select
+    include-all: true
+    filter: "(?=.*(Twitter|X.com|Tweet|🇺🇸.*Twitter|🇭🇰.*Twitter)).*$"
+
+  - name: Twitter-自动
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(Twitter|X.com|Tweet)).*$"
+
+  - name: Facebook-故转
+    type: fallback
+    interval: 300
+    lazy: false
+    proxies:
+      - Facebook-手动
+      - Facebook-自动
+
+  - name: Facebook-手动
+    type: select
+    include-all: true
+    filter: "(?=.*(Facebook|FB|🇺🇸.*Facebook)).*$"
+
+  - name: Facebook-自动
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(Facebook|FB)).*$"
+
+  - name: Microsoft-故转
+    type: fallback
+    interval: 300
+    lazy: false
+    proxies:
+      - Microsoft-手动
+      - Microsoft-自动
+
+  - name: Microsoft-手动
+    type: select
+    include-all: true
+    filter: "(?=.*(Microsoft|Office|OneDrive|Outlook|Teams|🇺🇸.*Microsoft)).*$"
+
+  - name: Microsoft-自动
+    type: url-test
+    include-all: true
+    tolerance: 50
+    interval: 300
+    filter: "(?=.*(Microsoft|Office|OneDrive|Outlook|Teams)).*$"
+
+  - name: Cloudflare-故转
+    type: fallback
+    interval: 300
+    lazy: false
+    proxies:
+      - Cloudflare-手动
+      - Cloudflare-自动
+
+  - name: Cloudflare-手动
+    type: select
+    include-all: true
+    filter: "(?=.*(Cloudflare|CF|1.1.1.1)).*$"
+
+  - name: Cloudflare-自动
+    type: url-test
+    include-all: true
+    tolerance: 30
+    interval: 300
+    filter: "(?=.*(Cloudflare|CF|1.1.1.1)).*$"
+
+# ============================================================
+# 规则引擎
+# 优先级：域名规则 → IP规则 → 兜底 → DIRECT
+# ============================================================
+rules:
+
+  # ==========================================
+  # 最高优先级：身份/账号类（IP固定，不走自动测速）
+  # ==========================================
+
+  # AI 账号体系——最高敏感，固定 Webshare 落地
+  - RULE-SET,OpenAI,AI-账号敏感
+  - RULE-SET,Anthropic,AI-账号敏感
+  - RULE-SET,Claude,AI-账号敏感
+  - RULE-SET,PayPal,支付-账号
+  - RULE-SET,Stripe,支付-账号
+  - RULE-SET,Wise-Payoneer,支付-账号
+
+  # AI 开发辅助（敏感度较低，可用自动测速）
+  - RULE-SET,Perplexity,AI-开发辅助
+  - RULE-SET,Gemini,AI-开发辅助
+  - RULE-SET,Copilot,AI-开发辅助
+  - RULE-SET,Groq,AI-开发辅助
+  - RULE-SET,Grok,AI-开发辅助
+
+  # ==========================================
+  # 游戏平台——按发行商细分
+  # ==========================================
+  - RULE-SET,Steam,游戏-Steam
+  - RULE-SET,Epic,游戏-Epic
+  - RULE-SET,EA,游戏-EA
+  - RULE-SET,Blizzard,游戏-Blizzard
+  - RULE-SET,UBI,游戏-UBI
+  - RULE-SET,Nintendo,游戏-Nintendo
+  - RULE-SET,PlayStation,游戏-PlayStation
+
+  # ==========================================
+  # 视频流媒体——按平台
+  # ==========================================
+  - RULE-SET,TikTok,视频-TikTok
+  - RULE-SET,Netflix-Domain,视频-Netflix
+  - RULE-SET,Netflix-IP,视频-Netflix,no-resolve
+  - RULE-SET,Disney,视频-Disney
+  - RULE-SET,HBO,视频-HBO
+  - RULE-SET,PrimeVideo,视频-Netflix
+  - RULE-SET,Hulu,视频-HBO
+  - RULE-SET,YouTube,视频-YouTube
+  - RULE-SET,Spotify,视频-音乐
+  - RULE-SET,Apple-Music,视频-音乐
+
+  # ==========================================
+  # 社交/通讯
+  # ==========================================
+  - RULE-SET,Telegram-Domain,社交-私密
+  - RULE-SET,Telegram-IP,社交-私密,no-resolve
+  - RULE-SET,Discord,社交-私密
+  - RULE-SET,WhatsApp,社交-私密
+  - RULE-SET,Twitter,社交-其他
+  - RULE-SET,Facebook,社交-其他
+
+  # ==========================================
+  # 开发协作
+  # ==========================================
+  - RULE-SET,GitHub,开发-GitHub
+  - RULE-SET,HuggingFace,开发-HuggingFace
+  - RULE-SET,Microsoft,开发-其他
+  - RULE-SET,Cloudflare,开发-其他
+  - RULE-SET,Notion,开发-其他
+  - RULE-SET,Slack,开发-其他
+
+  # ==========================================
+  # 虚拟货币
+  # ==========================================
+  - RULE-SET,Binance,交易-交易所
+  - RULE-SET,OKX,交易-交易所
+  - RULE-SET,Bybit,交易-交易所
+
+  # ==========================================
+  # 基础设施/代理
+  # ==========================================
+  - RULE-SET,GFW,国外-通用
+  - RULE-SET,Proxy,国外-通用
+  - RULE-SET,Global,国外-通用
+
+  # ==========================================
+  # 国内直连
+  # ==========================================
+  - RULE-SET,China-Domain,国内
+  - RULE-SET,China-IP,国内,no-resolve
+  - RULE-SET,Private,国内
+  - RULE-SET,Apple-CN,国内
+  - RULE-SET,Direct,国内
+
+  # ==========================================
+  # 兜底
+  # ==========================================
+  - MATCH,国外-通用
+
+# ============================================================
+# 规则集提供者
+# 来源策略：
+#   1. MetaCubeX meta-rules-dat (meta 分支, .mrs) —— 优先
+#   2. blackmatrix7 ios_rule_script (master 分支, .list) —— 补充
+#   3. 不使用个人维护的仓库
+# 更新周期：86400秒（24小时），自动更新
+# ============================================================
+
+rule-anchor:
+  ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}
+  domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
+  domain-short: &domain-short {type: http, interval: 86400, behavior: domain, format: mrs}
+  classical: &classical {type: http, interval: 86400, behavior: classical, format: text}
+
+rule-providers:
+
+  # ---- AI 服务 ----
+  OpenAI:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/openai.mrs"
+
+  Anthropic:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/anthropic.mrs"
+
+  Claude:
+    <<: *classical
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Claude/Claude.list"
+
+  Perplexity:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/perplexity.mrs"
+
+  Copilot:
+    <<: *classical
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Copilot/Copilot.list"
+
+  Gemini:
+    <<: *classical
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Gemini/Gemini.list"
+
+  Groq:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/groq.mrs"
+
+  Grok:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/grok.mrs"
+
+  # ---- 支付/账号 ----
+  PayPal:
+    <<: *classical
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/PayPal/PayPal.list"
+
+  Stripe:
+    <<: *classical
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Stripe/Stripe.list"
+
+  # Wise/Payoneer 无独立规则库，合并到 PayPal 规则
+  Wise-Payoneer:
+    <<: *classical
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/PayPal/PayPal.list"
+
+  # ---- 视频流媒体 ----
+  TikTok:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/tiktok.mrs"
+
+  Netflix-Domain:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/netflix.mrs"
+
+  Netflix-IP:
+    <<: *ip
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geoip/netflix.mrs"
+
+  Disney:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/disney.mrs"
+
+  HBO:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/hbo.mrs"
+
+  PrimeVideo:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/primewire.mrs"
+
+  Hulu:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/hulu.mrs"
+
+  YouTube:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/youtube.mrs"
+
+  Spotify:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/spotify.mrs"
+
+  Apple-Music:
+    <<: *classical
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/AppleMusic/AppleMusic.list"
+
+  # ---- 游戏平台 ----
+  Steam:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/steam.mrs"
+
+  Epic:
+    <<: *classical
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Epic/Epic.list"
+
+  EA:
+    <<: *classical
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/EA/EA.list"
+
+  Blizzard:
+    <<: *classical
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Blizzard/Blizzard.list"
+
+  UBI:
+    <<: *classical
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/UBI/UBI.list"
+
+  Nintendo:
+    <<: *classical
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Nintendo/Nintendo.list"
+
+  PlayStation:
+    <<: *classical
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/PlayStation/PlayStation.list"
+
+  # ---- 社交/通讯 ----
+  Telegram-Domain:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/telegram.mrs"
+
+  Telegram-IP:
+    <<: *ip
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geoip/telegram.mrs"
+
+  Discord:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/discord.mrs"
+
+  WhatsApp:
+    <<: *classical
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Whatsapp/Whatsapp.list"
+
+  Twitter:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/x.mrs"
+
+  Facebook:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/facebook.mrs"
+
+  # ---- 开发协作 ----
+  GitHub:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/github.mrs"
+
+  HuggingFace:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/huggingface.mrs"
+
+  Microsoft:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/microsoft.mrs"
+
+  Cloudflare:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/cloudflare.mrs"
+
+  Notion:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/notion.mrs"
+
+  Slack:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/slack.mrs"
+
+  # ---- 虚拟货币 ----
+  Binance:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/binance.mrs"
+
+  OKX:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/okx.mrs"
+
+  Bybit:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/bybit.mrs"
+
+  # ---- 基础设施 ----
+  GFW:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/gfw.mrs"
+
+  Proxy:
+    <<: *classical
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Proxy/Proxy.list"
+
+  Global:
+    <<: *classical
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Global/Global.list"
+
+  # ---- 国内直连 ----
+  China-Domain:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/cn.mrs"
+
+  China-IP:
+    <<: *ip
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geoip/cn.mrs"
+
+  Private:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/private.mrs"
+
+  Apple-CN:
+    <<: *domain
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/metacubex/meta-rules-dat/refs/heads/meta/geo/geosite/apple-cn.mrs"
+
+  Direct:
+    <<: *classical
+    url: "https://gh-proxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Direct/Direct.list"
