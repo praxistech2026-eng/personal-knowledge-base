@@ -6,4 +6,9 @@
 ---
 
 ### Docker 容器
-hindsight|ghcr.io/vectorize-io/hindsight:latest|Up 9 hours
+hindsight|ghcr.io/vectorize-io/hindsight:latest|Up 10 hours
+
+---
+
+> ⏰ 变更检测时间: $(date)
+> ⚠️ Feishu 未配置（~/.hermes/feishu_chat.json 不存在），已记录变更待后续处理。
