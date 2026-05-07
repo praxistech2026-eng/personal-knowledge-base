@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "76ea41329a734c55",
+        "id": "cfef5f6207131c74",
         "type": "tabs",
         "children": [
           {
-            "id": "0da0a8903f10964c",
+            "id": "1267e650c21525f5",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "USAGE_MANUAL.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "USAGE_MANUAL"
+              "title": "新标签页"
             }
           }
         ]
@@ -191,8 +187,9 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "0da0a8903f10964c",
+  "active": "73334dbb14c3a3dd",
   "lastOpenFiles": [
+    "Knowledge/AI-Center/clash-fallback-dialer_场景优化版_v2.yaml",
     "README.md",
     "Templates/Knowledge.md",
     "场景.md",
@@ -223,7 +220,6 @@
     "Knowledge/AI-Center/Sessions/20260507_091545_9eb9b7.md",
     "Knowledge/AI-Center/Sessions/20260507_091530_ecb2be.md",
     "Knowledge/AI-Center/Sessions/20260506_215023_e747e9.md",
-    "Knowledge/AI-Center/Sessions/20260506_191223_ec9e53.md",
     "Knowledge/AI-Center/Sessions",
     "AgentSessions/openclaw/sessions/2026-05-07",
     "未命名.canvas",
