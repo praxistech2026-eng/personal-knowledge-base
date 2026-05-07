@@ -191,8 +191,13 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "1ea4508bfe762a20",
+  "active": "73334dbb14c3a3dd",
   "lastOpenFiles": [
+    "AgentSessions/openclaw/sessions/2026-05-07/15897c45-b6f8-48b0-ba82-92247c481c67.md",
+    "AgentSessions/hermes/sessions/2026-05-07/cron_88038b8efb11_20260507_105116.md",
+    "AgentSessions/hermes/sessions/2026-05-07/cron_727cecb58324_20260507_104808.md",
+    "AgentSessions/hermes/sessions/2026-05-07/20260507_135809_d4a956.md",
+    "AgentSessions/hermes/sessions/2026-05-07/20260507_135130_706678.md",
     "Sessions-Backup/sessions_2026-05-part1.tar.zst",
     "Sessions-Backup/sessions_2026-05-full.tar.zst",
     "Sessions-Backup/sessions_2026-05-cli.tar.zst",
@@ -219,16 +224,11 @@
     "Knowledge/AI-Center/Sessions/20260506_173935_05cfe8.md",
     "Knowledge/AI-Center/Sessions/20260506_173039_dc94ce.md",
     "Knowledge/AI-Center/Sessions/20260506_172038_2b8711.md",
-    "Knowledge/AI-Center/Sessions/20260506_171422_f4b050.md",
-    "Knowledge/AI-Center/Sessions/20260506_160453_222553.md",
-    "Knowledge/AI-Center/Sessions/20260505_221041_c600e9.md",
-    "Knowledge/AI-Center/Sessions/20260505_214257_0b3db4.md",
     "Knowledge/AI-Center/Sessions",
     "AgentSessions/openclaw/sessions/2026-05-07",
     "未命名.canvas",
     "AgentSessions/openclaw/sessions/2026-05-02",
     "AgentSessions/hermes/sessions/2026-05-01",
-    "AgentSessions/openclaw/sessions/2026-05-01",
-    "知识库/AI-Center"
+    "AgentSessions/openclaw/sessions/2026-05-01"
   ]
 }
