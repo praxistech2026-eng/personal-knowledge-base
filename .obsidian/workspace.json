@@ -4,21 +4,24 @@
     "type": "split",
     "children": [
       {
-        "id": "75730490c80fb951",
+        "id": "a8d9eb14e35186af",
         "type": "tabs",
         "children": [
           {
-            "id": "35361cebce1d91f2",
+            "id": "ef82c850782e1d58",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "canvas",
               "state": {
-                "file": "知识库/AI-Center/AI-Center-拓扑图.md",
-                "mode": "source",
-                "source": false
+                "file": "未命名.canvas",
+                "viewState": {
+                  "x": 0,
+                  "y": 0,
+                  "zoom": 0
+                }
               },
-              "icon": "lucide-file",
-              "title": "AI-Center-拓扑图"
+              "icon": "lucide-layout-dashboard",
+              "title": "未命名"
             }
           }
         ]
@@ -161,13 +164,23 @@
               "icon": "lucide-list",
               "title": "大纲"
             }
+          },
+          {
+            "id": "c1db802a31c086cb",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
           }
-        ]
+        ],
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -181,8 +194,27 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "35361cebce1d91f2",
+  "active": "ef82c850782e1d58",
   "lastOpenFiles": [
+    "未命名.canvas",
+    "AgentSessions/hermes/sessions/2026-05-06/cron_88038b8efb11_20260506_203503.md",
+    "AgentSessions/hermes/sessions/2026-05-06/cron_727cecb58324_20260506_200850.md",
+    "AgentSessions/hermes/sessions/2026-05-06/cron_88038b8efb11_20260506_193441.md",
+    "AgentSessions/hermes/sessions/2026-05-06/20260506_191223_ec9e53.md",
+    "AgentSessions/hermes/sessions/2026-05-06/20260506_190803_0aca54.md",
+    "AgentSessions/hermes/sessions/2026-05-06/cron_88038b8efb11_20260506_183409.md",
+    "AgentSessions/hermes/sessions/2026-05-06/cron_727cecb58324_20260506_190417.md",
+    "AgentSessions/hermes/sessions/2026-05-06/20260506_181203_2f76a0e2.md",
+    "AgentSessions/hermes/sessions/2026-05-06/20260506_181116_96e079.md",
+    "AgentSessions/hermes/sessions/2026-05-06/cron_88038b8efb11_20260506_173329.md",
+    "AgentSessions/hermes/sessions/2026-05-06/cron_727cecb58324_20260506_175938.md",
+    "AgentSessions/hermes/sessions/2026-05-06/20260506_180103_67a90b.md",
+    "AgentSessions/hermes/sessions/2026-05-06/20260506_174606_d63e9c.md",
+    "AgentSessions/hermes/sessions/2026-05-06/20260506_173935_05cfe8.md",
+    "AgentSessions/hermes/sessions/2026-05-06/20260506_173039_dc94ce.md",
+    "AgentSessions/hermes/sessions/2026-05-06/20260506_172038_2b8711.md",
+    "AgentSessions/hermes/sessions/2026-05-06/20260506_171422_f4b050.md",
+    "知识库/AI-Center/AI-Center-拓扑图.md",
     "Inbox/AI-Center-变更检测.md",
     "AgentSessions/openclaw/sessions/2026-05-02/93bb8785-3c98-44ad-8741-1ce37ca2f324.md",
     "AgentSessions/openclaw/sessions/2026-05-02",
@@ -193,28 +225,9 @@
     "AgentSessions/openclaw/sessions/2026-05-01/91c033ce-260f-4dcf-a249-7680d8f121c9.md",
     "AgentSessions/openclaw/sessions/2026-05-01",
     "AgentSessions/hermes/sessions/2026-04-28/20260428_201148_8793bdc8.md",
-    "Inbox/2026-04-28_a75b7bfa.md",
-    "知识库/AI-Center/AI-Center-拓扑图.md",
     "知识库/AI-Center",
     "知识库",
-    "USAGE_MANUAL.md",
     "Inbox",
-    "Knowledge/AI/位置编码.md",
-    "Templates/Knowledge.md",
-    "VERSION_CONTROL.md",
-    "AgentSessions/openclaw/sessions/2026-04-28/fa648793-50fe-4c95-9d20-50fdaa13c4f9.md",
-    "AgentSessions/openclaw/sessions/2026-04-28/ed32da15-554b-4bf0-a6d4-a1f4d5574f73.md",
-    "AgentSessions/openclaw/sessions/2026-04-28/e94e2528-e232-4ed7-a7bc-1f8b4e8d24a7.md",
-    "AgentSessions/openclaw/sessions/2026-04-28/e044f8ac-ae00-4ba3-94ad-0e8e2245d413.md",
-    "AgentSessions/openclaw/sessions/2026-04-28/dcd67ec7-9e04-4adb-a405-f9c371592fda.md",
-    "AgentSessions/openclaw/sessions/2026-04-28/d803814e-2631-48b3-840a-d28eb55a867f.md",
-    "AgentSessions/openclaw/sessions/2026-04-28/c2de8203-afc7-4a0a-ad10-8e36abb68063.md",
-    "AgentSessions/openclaw/sessions/2026-04-28/bb59d242-d8cf-43f5-9820-42fb8af3cf80.md",
-    "AgentSessions/openclaw/sessions/2026-04-28/b755221a-fbbd-40f2-8675-58a230ce6afe.md",
-    "AgentSessions/openclaw/sessions/2026-04-28/b636267b-ff9f-4373-afb0-ae7a0013b68b.md",
-    "AgentSessions/openclaw/sessions/2026-04-28/a26525ae-d405-4a2a-bec0-220d9de72cd9.md",
-    "AgentSessions/openclaw/sessions/2026-04-28/921b9659-969c-4194-9b92-93796e1486d7.md",
-    "AgentSessions/openclaw/sessions/2026-04-28/8f345bb9-0059-47cc-b109-68e3cbfd25ea.md",
     "AgentSessions/openclaw/sessions/2026-04-28",
     "AgentSessions/hermes/sessions/2026-04-28",
     "AgentSessions/openclaw/sessions",
