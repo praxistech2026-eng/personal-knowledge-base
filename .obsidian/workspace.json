@@ -4,24 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "a8d9eb14e35186af",
+        "id": "fabb3bf2cbcca923",
         "type": "tabs",
         "children": [
           {
-            "id": "ef82c850782e1d58",
+            "id": "1ea4508bfe762a20",
             "type": "leaf",
             "state": {
-              "type": "canvas",
+              "type": "markdown",
               "state": {
-                "file": "未命名.canvas",
-                "viewState": {
-                  "x": 0,
-                  "y": 0,
-                  "zoom": 0
-                }
+                "file": "Templates/Knowledge.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-layout-dashboard",
-              "title": "未命名"
+              "icon": "lucide-file",
+              "title": "Knowledge"
             }
           }
         ]
@@ -194,9 +191,10 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "ef82c850782e1d58",
+  "active": "1ea4508bfe762a20",
   "lastOpenFiles": [
     "未命名.canvas",
+    "README.md",
     "AgentSessions/hermes/sessions/2026-05-06/cron_88038b8efb11_20260506_203503.md",
     "AgentSessions/hermes/sessions/2026-05-06/cron_727cecb58324_20260506_200850.md",
     "AgentSessions/hermes/sessions/2026-05-06/cron_88038b8efb11_20260506_193441.md",
@@ -224,7 +222,6 @@
     "AgentSessions/openclaw/sessions/2026-05-01/08dff872-6d9c-4883-bf7e-8b81078e9653.md",
     "AgentSessions/openclaw/sessions/2026-05-01/91c033ce-260f-4dcf-a249-7680d8f121c9.md",
     "AgentSessions/openclaw/sessions/2026-05-01",
-    "AgentSessions/hermes/sessions/2026-04-28/20260428_201148_8793bdc8.md",
     "知识库/AI-Center",
     "知识库",
     "Inbox",
