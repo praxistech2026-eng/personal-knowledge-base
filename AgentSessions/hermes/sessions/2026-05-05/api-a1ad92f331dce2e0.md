@@ -5,7 +5,7 @@ agent: hermes
 session_id: api-a1ad92f331dce2e0
 model: MiniMax-M2.7
 platform: api_server
-archived_at: 2026-05-07T09:01:32.488187
+archived_at: 2026-05-07T09:47:13.521592
 type: agent-session
 ---
 
