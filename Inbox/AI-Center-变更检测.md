@@ -6,4 +6,4 @@
 ---
 
 ### Docker 容器
-hindsight|ghcr.io/vectorize-io/hindsight:latest|Up About an hour
+hindsight|ghcr.io/vectorize-io/hindsight:latest|Up 46 minutes
