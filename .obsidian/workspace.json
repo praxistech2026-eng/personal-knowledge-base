@@ -189,6 +189,9 @@
   },
   "active": "73334dbb14c3a3dd",
   "lastOpenFiles": [
+    "AgentSessions/hermes/sessions/2026-05-09/cron_88038b8efb11_20260508_234450.md",
+    "AgentSessions/hermes/sessions/2026-05-09/cron_727cecb58324_20260508_230632.md",
+    "AgentSessions/hermes/sessions/2026-05-09",
     "AgentSessions/hermes/sessions/2026-05-08/cron_88038b8efb11_20260508_224348.md",
     "AgentSessions/hermes/sessions/2026-05-08/cron_727cecb58324_20260508_220406.md",
     "AgentSessions/hermes/sessions/2026-05-08/20260508_223701_134072.md",
@@ -215,8 +218,6 @@
     "AgentSessions/hermes/sessions/2026-05-08/cron_88038b8efb11_20260508_123112.md",
     "AgentSessions/hermes/sessions/2026-05-08/cron_88038b8efb11_20260508_113033.md",
     "AgentSessions/hermes/sessions/2026-05-08/cron_88038b8efb11_20260508_102911.md",
-    "AgentSessions/hermes/sessions/2026-05-08/cron_88038b8efb11_20260508_092741.md",
-    "AgentSessions/hermes/sessions/2026-05-08/cron_88038b8efb11_20260508_082636.md",
     "AgentSessions/hermes/sessions/2026-05-08",
     "Knowledge/AI-Center/clash-fallback-dialer_场景优化版_v9.yaml",
     "Knowledge/AI-Center/clash-fallback-dialer_场景优化版_v12.yaml",
@@ -224,7 +225,6 @@
     "Knowledge/AI-Center/clash-fallback-dialer_场景优化版_v10.yaml",
     "Knowledge/AI-Center/clash-fallback-dialer_场景优化版_v8.yaml",
     "Knowledge/AI-Center/clash-fallback-dialer_场景优化版_v7.yaml",
-    "Knowledge/AI-Center/clash-fallback-dialer_场景优化版_v6.yaml",
     "未命名.canvas"
   ]
 }
