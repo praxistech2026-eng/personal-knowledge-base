@@ -70,15 +70,12 @@ proxies:
     type: vless
     server: hhy.wang
     port: 443
-    uuid: "81e00257-cde5-4b56-b57f-c070df37a444"
-    network: ws
+    uuid: 81e00257-cde5-4b56-b57f-c070df37a444
     tls: true
-    udp: false
     servername: hhy.wang
+    network: ws
     ws-opts:
       path: /ray
-      headers:
-        Host: hhy.wang
 
   - name: 🇺🇸 AI-SS
     type: ss
