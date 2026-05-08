@@ -73,14 +73,14 @@ proxies:
     uuid: "81e00257-cde5-4b56-b57f-c070df37a444"
     network: ws
     tls: true
-    udp: true
+    udp: false
     servername: hhy.wang
     ws-opts:
       path: /ray
       headers:
         Host: hhy.wang
 
-  - name: 🇺🇸 AWS-AI-SS
+  - name: 🇺🇸 AI-SS
     type: ss
     server: hhy.wang
     port: 8388
@@ -97,7 +97,7 @@ proxies:
     type: socks5
     server: 208.66.74.168
     port: 5483
-    username: quairff
+    username: jquairff
     password: tq3707vm3u6o
     udp: true
     dialer-proxy: 🇺🇸 美国-故转
@@ -688,8 +688,8 @@ proxy-groups:
   - name: 🇺🇸 AI-主落地
     type: fallback
     proxies:
-      - 🇺🇸 AWS-AI-VLESS
-      - 🇺🇸 AWS-AI-SS
+      - 🇺🇸 AI-VLESS
+      - 🇺🇸 AI-SS
     url: https://www.gstatic.com/generate_204
     interval: 300
     lazy: false
@@ -1056,6 +1056,13 @@ rules:
   - RULE-SET,Cloudflare,🧑‍💻 开发-通用
   - RULE-SET,Notion,🧑‍💻 开发-通用
   - RULE-SET,Slack,🧑‍💻 开发-通用
+  - DOMAIN-SUFFIX,oracle.com,🧑‍💻 开发-通用
+  - DOMAIN-SUFFIX,oraclecloud.com,🧑‍💻 开发-通用
+  - DOMAIN-SUFFIX,oci.oraclecloud.com,🧑‍💻 开发-通用
+  - DOMAIN-SUFFIX,amazonaws.com,🧑‍💻 开发-通用
+  - DOMAIN-SUFFIX,aws.amazon.com,🧑‍💻 开发-通用
+  - DOMAIN-SUFFIX,signin.aws.amazon.com,🧑‍💻 开发-通用
+  - DOMAIN-SUFFIX,console.aws.amazon.com,🧑‍💻 开发-通用
   - RULE-SET,Reddit,🌐 通用兜底
   - RULE-SET,Wikipedia,🌐 通用兜底
 
