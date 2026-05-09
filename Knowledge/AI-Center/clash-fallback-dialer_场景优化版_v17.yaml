@@ -66,16 +66,19 @@ proxies:
   # AI 主落地：同一 Amazon 出口 IP，下挂两种协议
   # 目标：协议 fallback，但出口身份不漂移
   # ========================
-  - name: 🇺🇸 AI-VLESS
+  - name: VLESS-AI
     type: vless
     server: hhy.wang
     port: 443
     uuid: 81e00257-cde5-4b56-b57f-c070df37a444
+    network: ws
     tls: true
     servername: hhy.wang
-    network: ws
+    skip-cert-verify: false
     ws-opts:
-      path: /ray
+    path: /ray
+    headers:
+      Host: hhy.wang
 
   - name: 🇺🇸 AI-SS
     type: ss
