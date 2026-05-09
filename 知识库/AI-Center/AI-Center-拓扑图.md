@@ -24,7 +24,7 @@
                          │   │  hermes-gateway   │      │  hermes-webui    │  │
                          │   │  (systemd service)│      │  (Python server) │  │
                          │   │                   │      │                  │  │
-                         │   │  ports:           │      │  port: 8080      │  │
+                         │   │  ports:           │      │  port: 8787      │  │
                          │   │  18789 (gateway)  │      │  → LAN可访问     │  │
                          │   │  18791 (api)      │      │                  │  │
                          │   │  3334 (internal)   │      │                  │  │
@@ -95,8 +95,8 @@ AI Provider (外部):
 | **类型** | Python 服务 (直接运行) |
 | **进程** | `/home/shin/.hermes/hermes-agent/.venv/bin/python /home/shin/hermes-webui/server.py` |
 | **PID** | 265851 |
-| **监听端口** | `8080` |
-| **LAN 访问** | ✅ `http://<本地IP>:8080` 可从局域网访问 |
+| **监听端口** | `8787` |
+| **LAN 访问** | ✅ `http://<本地IP>:8787` 可从局域网访问 |
 | **Web 框架** | 第三方 Web UI (非 Hermes 原生) |
 | **sessions 目录** | `~/.hermes/webui/sessions/` |
 
@@ -110,7 +110,7 @@ AI Provider (外部):
 |------|-----|
 | **类型** | Docker 元搜索聚合引擎 |
 | **Docker 容器** | `searxng`（`searxng/searxng:latest`） |
-| **监听端口** | `7777` (TCP，映射 8080→7777) |
+| **监听端口** | `7777` (TCP，映射 8787→7777) |
 | **访问地址** | `http://127.0.0.1:7777` |
 | **Base URL** | `http://127.0.0.1:7777/` |
 | **用途** | 主力搜索聚合，支持 JSON/API 返回 |
@@ -369,7 +369,7 @@ AI Provider (外部):
 | 18789 | Hermes Gateway | ✅ | ⚠️ 无认证，建议内网使用 |
 | 18791 | Hermes API Server | ✅ | ⚠️ API Key: `67748299` |
 | 3334 | Hermes Internal RPC | ❌ 本地 | - |
-| 8080 | hermes-webui | ✅ | ⚠️ 无认证，建议内网使用 |
+| 8787 | hermes-webui | ✅ | ⚠️ 无认证，建议内网使用 |
 | 7777 | SearXNG | ✅ | 搜索服务 |
 | 8787 | SearXNG（残留旧端口） | ❌ | 旧配置，已废弃 |
 | 631 | CUPS 打印 | ✅ | 可关闭 |
@@ -434,7 +434,7 @@ AI Provider (外部):
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | 2026-04-28 | 初始创建本文档，记录 hermes-gateway、hermes-webui、SearXNG、Feishu、WeChat、模型配置                                                             |
 | 2026-05-02 | 新增搜索工具矩阵：Jina Reader（Skill）、Crawl4AI（Skill）、Scrapling（pip）、CamoFox（pip）                                                       |
-| 2026-05-02 | 修复 SearXNG 端口（8080→7777）；安装 DuckDuckGo CLI（ddgs）、Tavily Python 包                                                              |
+| 2026-05-02 | 修复 SearXNG 端口（8787→7777）；安装 DuckDuckGo CLI（ddgs）、Tavily Python 包                                                              |
 | 2026-05-02 | 配置 Tavily API Key（tvly-dev-...），验证搜索正常                                                                                        |
 | 2026-05-02 | 新增 Tailscale VPN 配置：节点 shin，IP 100.113.209.2，用于 Mac 远程访问家庭服务器                                                                 |
 | 2026-05-02 | 新增 Mac CLI-only Tailscale 节点记录：LaunchDaemon 常驻、socket/state/log 路径、节点命名整理方案                                                   |
