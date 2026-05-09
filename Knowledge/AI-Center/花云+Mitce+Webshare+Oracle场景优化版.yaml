@@ -58,7 +58,6 @@ proxy-providers:
 proxies:
   - name: 直连
     type: direct
-
   - name: 拒绝
     type: reject
 
@@ -68,7 +67,7 @@ proxies:
   # ========================
   - name: 🇺🇸 AI-VLESS
     type: vless
-    server: hhy.wang
+    server: 170.9.16.186
     port: 443
     uuid: 81e00257-cde5-4b56-b57f-c070df37a444
     network: ws
@@ -76,13 +75,13 @@ proxies:
     servername: hhy.wang
     skip-cert-verify: false
     ws-opts:
-    path: /ray
-    headers:
-      Host: hhy.wang
+      path: /ray
+      headers:
+        Host: hhy.wang
 
   - name: 🇺🇸 AI-SS
     type: ss
-    server: hhy.wang
+    server: 170.9.16.186
     port: 8388
     cipher: chacha20-ietf-poly1305
     password: "Wangshin0)"
@@ -94,7 +93,6 @@ proxies:
   # 实际链路：设备 → OpenClash → 🇺🇸 美国-故转 → 住宅落地 → 目标站
   # ========================
   - name: 🏠 美国住宅
-
     type: socks5
     server: 208.66.74.168
     port: 5483
@@ -445,7 +443,6 @@ rule-providers:
 # 策略组
 # ========================
 proxy-groups:
-
   # ===== ① 日常需要你选择的业务策略组 =====
   - name: 🤖 AI-高敏固定
     type: select
@@ -531,7 +528,7 @@ proxy-groups:
     type: select
     proxies:
       - 🇯🇵 日本-故转
-      - 🇹🇼 台湾-故转🇹🇼
+      - 🇹🇼 台湾-故转
       - 🇺🇸 美国-故转
       - 🇸🇬 新加坡-故转
 
@@ -825,7 +822,7 @@ proxy-groups:
     interval: 300
     tolerance: 50
 
- -  name: ⚡ 所有-自动
+  - name: ⚡ 所有-自动
     type: url-test
     use:
       - Mitce
