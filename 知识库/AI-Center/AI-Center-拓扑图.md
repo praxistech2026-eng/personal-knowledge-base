@@ -61,7 +61,7 @@ AI Provider (外部):
 
 内存/知识 (可选扩展):
   ┌──────────┐  ┌────────┐  ┌─────────┐  ┌───────────┐
-  │ Hindsight│  │ mem0   │  │super mem│  │Hermes内置 │
+  │ Hindsight│  │ ✅已部署│  │super mem│  │Hermes内置 │
   │(未部署)  │  │(未部署)│  │(未部署) │  │ memory-core│
   └──────────┘  └────────┘  └─────────┘  └───────────┘
 ```
@@ -237,12 +237,12 @@ AI Provider (外部):
 
 | 服务          | 状态    | 说明                                                     |
 | ----------- | ----- | ------------------------------------------------------ |
-| Hindsight   | ❌ 未部署 | 三层记忆架构（World Facts/Experiences/Mental Models），需 Docker |
+| Hindsight   | ✅ 已部署 | 三层记忆架构（World Facts/Experiences/Mental Models），`http://127.0.0.1:8888`，bank_id=Hermes                                              |
 | mem0        | ❌ 未部署 | 向量+图谱混合记忆                                              |
 | SuperMemory | ❌ 未部署 | 浏览器增强记忆                                                |
 | Honcho      | ❌ 未部署 | 本地内存服务                                                 |
 
-> 💡 如需升级到外部记忆系统，参考: [[AI-Center-拓扑图]] 内 Hindsight 章节。
+> 💡 如需升级到外部记忆系统，考虑部署 Hindsight（已就绪）。
 
 ---
 
