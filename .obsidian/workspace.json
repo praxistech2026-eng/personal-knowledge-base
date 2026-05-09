@@ -182,8 +182,15 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "1267e650c21525f5",
+  "active": "73334dbb14c3a3dd",
   "lastOpenFiles": [
+    "AI-Center/花云+Mitce+Webshare+Oracle场景优化版.yaml",
+    "AI-Center/系统凭证备忘录.md",
+    "AI-Center/macOS-CLI版-Tailscale-安装说明.md",
+    "AI-Center/Mac-CLI版-Tailscale-配置记录.md",
+    "AI-Center/AI-Center-拓扑图.md",
+    "AI-Center/AI-Center-Agent-Team-Runtime-设计说明.md",
+    "AI-Center",
     "README.md",
     "未命名.canvas",
     "Knowledge/MergeQueue/Transformer_merge_20260420_010423.md",
@@ -205,12 +212,6 @@
     "AgentSessions/hermes/sessions/2026-05-10/20260510_021515_e053ac.md",
     "AgentSessions/hermes/sessions/2026-05-10/20260510_020218_4edc10.md",
     "AgentSessions/hermes/sessions/2026-05-10/20260510_015946_ea8df1.md",
-    "AgentSessions/hermes/sessions/2026-05-10/cron_88038b8efb11_20260510_010354.md",
-    "AgentSessions/hermes/sessions/2026-05-10/20260510_014215_421341.md",
-    "AgentSessions/hermes/sessions/2026-05-10/20260510_013247_8d4aa9.md",
-    "AgentSessions/hermes/sessions/2026-05-10/20260510_012329_ca043d.md",
-    "AgentSessions/hermes/sessions/2026-05-10/20260510_010638_dd9413.md",
-    "AgentSessions/hermes/sessions/2026-05-10/fda116bfb261.md",
     "AgentSessions/hermes/sessions/2026-05-10",
     "Knowledge/AI-Center/花云+Mitce+Webshare+Oracle场景优化版.yaml",
     "AgentSessions/hermes/sessions/2026-05-09",
@@ -219,7 +220,6 @@
     "AgentSessions/hermes/sessions/2026-05-08",
     "Knowledge/AI-Center/clash-fallback-dialer_场景优化版_v9.yaml",
     "Knowledge/AI-Center/clash-fallback-dialer_场景优化版_v12.yaml",
-    "Knowledge/AI-Center/clash-fallback-dialer_场景优化版_v11.yaml",
-    "Knowledge/AI-Center/clash-fallback-dialer_场景优化版_v10.yaml"
+    "Knowledge/AI-Center/clash-fallback-dialer_场景优化版_v11.yaml"
   ]
 }
