@@ -2,7 +2,7 @@
 # hermes-poll - Polling-based real-time sync (alternative to inotifywait)
 # Adds to crontab for per-minute change detection
 
-CRON_ENTRY="* * * * * $HOME/HermesKnowledge/.system/scripts/hermes-push-auto"
+CRON_ENTRY="* * * * * $HOME/PersonalKnowledge/.system/scripts/hermes-push-auto"
 
 # Check if already installed
 if crontab -l 2>/dev/null | grep -q "hermes-push-auto"; then

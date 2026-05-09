@@ -4,7 +4,7 @@
 
 set +e  # Don't exit on error
 
-VAULT="$HOME/HermesKnowledge"
+VAULT="$HOME/PersonalKnowledge"
 cd "$VAULT"
 
 # Check for changes
