@@ -15,6 +15,9 @@ Thumbs.db
 *.swp
 *~
 
+# Session archives (independent backup system)
+.hermes-archive/
+
 # Auto-generated files (can be regenerated)
 session-archive-index.json
 .system/watch.log
