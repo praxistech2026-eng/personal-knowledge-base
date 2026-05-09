@@ -235,12 +235,12 @@ AI Provider (外部):
 
 ### 可选扩展内存（未部署）
 
-| 服务 | 状态 | 说明 |
-|------|------|------|
-| Hindsight | ❌ 未部署 | 三层记忆架构（World Facts/Experiences/Mental Models），需 Docker |
-| mem0 | ❌ 未部署 | 向量+图谱混合记忆 |
-| SuperMemory | ❌ 未部署 | 浏览器增强记忆 |
-| Honcho | ❌ 未部署 | 本地内存服务 |
+| 服务          | 状态    | 说明                                                     |
+| ----------- | ----- | ------------------------------------------------------ |
+| Hindsight   | ❌ 未部署 | 三层记忆架构（World Facts/Experiences/Mental Models），需 Docker |
+| mem0        | ❌ 未部署 | 向量+图谱混合记忆                                              |
+| SuperMemory | ❌ 未部署 | 浏览器增强记忆                                                |
+| Honcho      | ❌ 未部署 | 本地内存服务                                                 |
 
 > 💡 如需升级到外部记忆系统，参考: [[AI-Center-拓扑图]] 内 Hindsight 章节。
 
@@ -331,12 +331,12 @@ AI Provider (外部):
 
 ### 环境
 
-| 路径 | 说明 |
-|---|---|
-| `~/self-evolution/` | 克隆的 NousResearch 仓库 |
+| 路径                               | 说明                                |
+| -------------------------------- | --------------------------------- |
+| `~/self-evolution/`              | 克隆的 NousResearch 仓库               |
 | `~/.hermes/self-evolution-venv/` | 独立 venv（dspy 2.6.27 + gepa 0.1.1） |
-| `~/.hermes/hermes-agent/` | Hermes Agent 代码库（被优化目标） |
-| `~/self-evolution/run-evolve.sh` | Wrapper 脚本 |
+| `~/.hermes/hermes-agent/`        | Hermes Agent 代码库（被优化目标）           |
+| `~/self-evolution/run-evolve.sh` | Wrapper 脚本                        |
 
 ### 使用方式
 
