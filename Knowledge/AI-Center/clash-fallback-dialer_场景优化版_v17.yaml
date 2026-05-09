@@ -66,7 +66,7 @@ proxies:
   # AI 主落地：同一 Amazon 出口 IP，下挂两种协议
   # 目标：协议 fallback，但出口身份不漂移
   # ========================
-  - name: VLESS-AI
+  - name: 🇺🇸 AI-VLESS
     type: vless
     server: hhy.wang
     port: 443
@@ -93,7 +93,8 @@ proxies:
   # 前置必须走美国机场节点
   # 实际链路：设备 → OpenClash → 🇺🇸 美国-故转 → 住宅落地 → 目标站
   # ========================
-  - name: 住宅-美国-落地
+  - name: 🏠 美国住宅
+
     type: socks5
     server: 208.66.74.168
     port: 5483
@@ -450,35 +451,24 @@ proxy-groups:
     type: select
     proxies:
       - 🇺🇸 AI-主落地
-      - 🏠 特殊身份-手动
-      - 🇺🇸 美国-故转
-      - 🇯🇵 日本-故转
-      - 🇸🇬 新加坡-故转
+      - 🏠 美国住宅
 
   - name: 🧠 AI-普通
     type: select
     proxies:
       - 🇺🇸 AI-主落地
       - 🇺🇸 美国-故转
-      - 🇯🇵 日本-故转
       - 🇸🇬 新加坡-故转
-      - 🇭🇰 香港-故转
-      - ⚡ 所有-自动
 
   - name: 💳 支付-固定身份
     type: select
     proxies:
-      - 🏠 特殊身份-手动
-      - 🇺🇸 AI-主落地
-      - 🇭🇰 香港-故转
-      - 🇸🇬 新加坡-故转
+      - 🏠 美国住宅
 
   - name: 🪙 交易所-稳定区
     type: select
     proxies:
       - 🇸🇬 新加坡-故转
-      - 🇭🇰 香港-故转
-      - 🇯🇵 日本-故转
       - 🇹🇼 台湾-故转
       - 🇺🇸 美国-故转
 
@@ -489,7 +479,7 @@ proxy-groups:
       - 🇸🇬 新加坡-故转
       - 🇺🇸 美国-故转
       - 🇰🇷 韩国-故转
-      - 直连
+      - 🇹🇼 台湾-故转
 
   - name: 🎬 视频-解锁
     type: select
@@ -506,7 +496,7 @@ proxy-groups:
     type: select
     proxies:
       - 🇯🇵 日本-故转
-      - 🇭🇰 香港-故转
+      - 🇹🇼 台湾-故转
       - 🇸🇬 新加坡-故转
       - 🇺🇸 美国-故转
       - ⚡ 所有-自动
@@ -523,15 +513,12 @@ proxy-groups:
     type: select
     proxies:
       - 🇹🇼 台湾-故转
-      - 🇺🇸 美国-故转
-      - 🇯🇵 日本-故转
       - 🇸🇬 新加坡-故转
 
   - name: 🎮 游戏-美区
     type: select
     proxies:
       - 🇺🇸 美国-故转
-      - 🇯🇵 日本-故转
       - 🇸🇬 新加坡-故转
 
   - name: 🎮 游戏-亚洲
@@ -547,10 +534,10 @@ proxy-groups:
     type: select
     proxies:
       - 🇯🇵 日本-故转
+      - 🇹🇼 台湾-故转
       - 🇺🇸 美国-故转
       - 🇸🇬 新加坡-故转
       - 🇭🇰 香港-故转
-      - ⚡ 所有-自动
 
   - name: 🧑‍💻 开发-通用
     type: select
@@ -559,7 +546,6 @@ proxy-groups:
       - 🇯🇵 日本-故转
       - 🇸🇬 新加坡-故转
       - 🇭🇰 香港-故转
-      - ⚡ 所有-自动
 
 
 
@@ -674,16 +660,6 @@ proxy-groups:
 
   # ===== ③ 底层组件：故转 / 自动 / 落地 / 广告，一般不用手动设置 =====
 
-  # 住宅特殊身份出口：默认优先住宅，前置走美国机场；住宅失效时才临时回退普通美国
-  - name: 🛬 美国-住宅落地
-    type: fallback
-    proxies:
-      - 住宅-美国-落地
-      - 🇺🇸 美国-故转
-    url: https://www.gstatic.com/generate_204
-    interval: 300
-    lazy: false
-
   # AI 主落地：同一台 Amazon、同一出口身份，VLESS 主、SS 备
   - name: 🇺🇸 AI-主落地
     type: fallback
@@ -694,13 +670,6 @@ proxy-groups:
     interval: 300
     lazy: false
 
-  # 给你一个清晰的“特殊身份入口”，平时不用自动切，只有你明确要切特殊身份时才选它
-  - name: 🏠 特殊身份-手动
-    type: select
-    proxies:
-      - 🛬 美国-住宅落地
-      - 🇺🇸 AI-主落地
-      - 🇺🇸 美国-故转
 
   - name: 🇺🇸 美国-故转
     type: fallback
