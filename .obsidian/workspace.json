@@ -11,14 +11,17 @@
             "id": "1267e650c21525f5",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "canvas",
               "state": {
-                "file": "Knowledge/MergeQueue/Transformer_merge_20260420_010423.md",
-                "mode": "source",
-                "source": false
+                "file": "未命名.canvas",
+                "viewState": {
+                  "x": 0,
+                  "y": 0,
+                  "zoom": 0
+                }
               },
-              "icon": "lucide-file",
-              "title": "Transformer_merge_20260420_010423"
+              "icon": "lucide-layout-dashboard",
+              "title": "未命名"
             }
           }
         ]
@@ -191,8 +194,10 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "73334dbb14c3a3dd",
+  "active": "1267e650c21525f5",
   "lastOpenFiles": [
+    "Knowledge/MergeQueue/Transformer_merge_20260420_010423.md",
+    "未命名.canvas",
     "Knowledge/AI-Center/系统凭证备忘录.md",
     "AgentSessions/hermes/sessions/2026-05-10/cron_88038b8efb11_20260510_030529.md",
     "AgentSessions/hermes/sessions/2026-05-10/cron_727cecb58324_20260510_040142.md",
@@ -218,7 +223,6 @@
     "AgentSessions/hermes/sessions/2026-05-10/20260510_010638_dd9413.md",
     "AgentSessions/hermes/sessions/2026-05-10/fda116bfb261.md",
     "AgentSessions/hermes/sessions/2026-05-10/f52cc1cd6167.md",
-    "AgentSessions/hermes/sessions/2026-05-10/cron_88038b8efb11_20260510_000244.md",
     "AgentSessions/hermes/sessions/2026-05-10",
     "Knowledge/AI-Center/花云+Mitce+Webshare+Oracle场景优化版.yaml",
     "AgentSessions/hermes/sessions/2026-05-09",
@@ -228,7 +232,6 @@
     "Knowledge/AI-Center/clash-fallback-dialer_场景优化版_v9.yaml",
     "Knowledge/AI-Center/clash-fallback-dialer_场景优化版_v12.yaml",
     "Knowledge/AI-Center/clash-fallback-dialer_场景优化版_v11.yaml",
-    "Knowledge/AI-Center/clash-fallback-dialer_场景优化版_v10.yaml",
-    "未命名.canvas"
+    "Knowledge/AI-Center/clash-fallback-dialer_场景优化版_v10.yaml"
   ]
 }
