@@ -244,6 +244,14 @@ AI Provider (外部):
 
 > 💡 如需升级到外部记忆系统，考虑部署 Hindsight（已就绪）。
 
+### 运维机制
+
+| 机制 | 状态 | 说明 |
+| --- | --- | --- |
+| config-audit-tracker | ✅ 已配置 | 每周六20:00提醒审计配置，pending未确认则每天催，直到用户回复"确认完成"后清空下次再来 |
+| agent-session-archiver | ✅ 运行中 | 每60分钟将会话归档到 Obsidian vault 和 Hindsight 记忆银行 |
+| AI Center变更巡检 | ✅ 运行中 | 每60分钟检测基础设施变更 |
+
 ---
 
 ## 搜索工具矩阵（已配置）
