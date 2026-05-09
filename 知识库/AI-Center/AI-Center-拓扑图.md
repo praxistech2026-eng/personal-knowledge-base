@@ -430,19 +430,19 @@ AI Provider (外部):
 
 ## 更新日志
 
-| 日期 | 操作 |
-|------|------|
-| 2026-04-28 | 初始创建本文档，记录 hermes-gateway、hermes-webui、SearXNG、Feishu、WeChat、模型配置 |
-| 2026-05-02 | 新增搜索工具矩阵：Jina Reader（Skill）、Crawl4AI（Skill）、Scrapling（pip）、CamoFox（pip） |
-| 2026-05-02 | 修复 SearXNG 端口（8080→7777）；安装 DuckDuckGo CLI（ddgs）、Tavily Python 包 |
-| 2026-05-02 | 配置 Tavily API Key（tvly-dev-...），验证搜索正常 |
-| 2026-05-02 | 新增 Tailscale VPN 配置：节点 shin，IP 100.113.209.2，用于 Mac 远程访问家庭服务器 |
-| 2026-05-02 | 新增 Mac CLI-only Tailscale 节点记录：LaunchDaemon 常驻、socket/state/log 路径、节点命名整理方案 |
-| 2026-05-02 | 配置语音能力：Whisper（openai-whisper base 模型）、Edge TTS（edge-tts 7.2.8）、faster-whisper |
-| 2026-05-02 | 配置视觉能力：Fal.ai fal-client（API Key 已写入 .env），FLUX 因余额不足暂停 |
-| 2026-05-02 | 新增文档处理工具：Pandoc（万能转换）+ Marker（PDF→Markdown 高精度，独立 venv） |
+| 日期         | 操作                                                                                                                            |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| 2026-04-28 | 初始创建本文档，记录 hermes-gateway、hermes-webui、SearXNG、Feishu、WeChat、模型配置                                                             |
+| 2026-05-02 | 新增搜索工具矩阵：Jina Reader（Skill）、Crawl4AI（Skill）、Scrapling（pip）、CamoFox（pip）                                                       |
+| 2026-05-02 | 修复 SearXNG 端口（8080→7777）；安装 DuckDuckGo CLI（ddgs）、Tavily Python 包                                                              |
+| 2026-05-02 | 配置 Tavily API Key（tvly-dev-...），验证搜索正常                                                                                        |
+| 2026-05-02 | 新增 Tailscale VPN 配置：节点 shin，IP 100.113.209.2，用于 Mac 远程访问家庭服务器                                                                 |
+| 2026-05-02 | 新增 Mac CLI-only Tailscale 节点记录：LaunchDaemon 常驻、socket/state/log 路径、节点命名整理方案                                                   |
+| 2026-05-02 | 配置语音能力：Whisper（openai-whisper base 模型）、Edge TTS（edge-tts 7.2.8）、faster-whisper                                                |
+| 2026-05-02 | 配置视觉能力：Fal.ai fal-client（API Key 已写入 .env），FLUX 因余额不足暂停                                                                       |
+| 2026-05-02 | 新增文档处理工具：Pandoc（万能转换）+ Marker（PDF→Markdown 高精度，独立 venv）                                                                       |
 | 2026-05-02 | 配置 hermes-agent-self-evolution：独立 venv (dspy 2.6.27 + gepa 0.1.1)，仓库 ~/self-evolution/，wrapper ~/self-evolution/run-evolve.sh |
-| 2026-05-02 | 搭建 Hermes 三层闭环自动进化：capture_failures.py（L1 捕获）→ analyze_and_suggest.py（L2 分析）→ review_and_apply.py（L3 review），cron 调度已配置 |
+| 2026-05-02 | 搭建 Hermes 三层闭环自动进化：capture_failures.py（L1 捕获）→ analyze_and_suggest.py（L2 分析）→ review_and_apply.py（L3 review），cron 调度已配置       |
 
 ---
 
