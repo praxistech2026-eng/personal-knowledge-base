@@ -5,7 +5,7 @@
 
 set -euo pipefail
 
-VAULT="$HOME/HermesKnowledge"
+VAULT="$HOME/PersonalKnowledge"
 SYSTEM_DIR="$VAULT/.system"
 cd "$VAULT"
 

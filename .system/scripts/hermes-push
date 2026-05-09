@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-VAULT="$HOME/HermesKnowledge"
+VAULT="$HOME/PersonalKnowledge"
 MSG="${1:-$(date '+%Y-%m-%d %H:%M:%S')}"
 
 cd "$VAULT"

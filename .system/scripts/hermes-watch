@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-VAULT="$HOME/HermesKnowledge"
+VAULT="$HOME/PersonalKnowledge"
 LOG="$VAULT/.system/watch.log"
 PIDFILE="$VAULT/.system/hermes-watch.pid"
 
