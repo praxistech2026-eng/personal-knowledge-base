@@ -6,4 +6,8 @@
 ---
 
 ### Docker 容器
-hindsight|ghcr.io/vectorize-io/hindsight:latest|Up 29 hours
+hindsight|ghcr.io/vectorize-io/hindsight:latest|Up 30 hours
+### 新开放端口
+```
+127.0.0.1:9119
+```
