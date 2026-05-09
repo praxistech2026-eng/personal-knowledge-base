@@ -487,10 +487,9 @@ proxy-groups:
       - 🇺🇸 美国-故转
       - 🇯🇵 日本-故转
       - 🇸🇬 新加坡-故转
-      - 🇭🇰 香港-故转
+      - 🇹🇼 台湾-故转
       - 🇬🇧 英国-故转
       - 🇪🇺 欧洲-故转
-      - 🌍 其他-故转
 
   - name: 📺 视频-通用
     type: select
@@ -499,7 +498,6 @@ proxy-groups:
       - 🇹🇼 台湾-故转
       - 🇸🇬 新加坡-故转
       - 🇺🇸 美国-故转
-      - ⚡ 所有-自动
 
   - name: 🎮 游戏-Steam
     type: select
@@ -527,7 +525,6 @@ proxy-groups:
       - 🇯🇵 日本-故转
       - 🇸🇬 新加坡-故转
       - 🇹🇼 台湾-故转
-      - 🇭🇰 香港-故转
       - 🇰🇷 韩国-故转
 
   - name: 💬 社交-通用
@@ -537,7 +534,6 @@ proxy-groups:
       - 🇹🇼 台湾-故转🇹🇼
       - 🇺🇸 美国-故转
       - 🇸🇬 新加坡-故转
-      - 🇭🇰 香港-故转
 
   - name: 🧑‍💻 开发-通用
     type: select
@@ -546,8 +542,6 @@ proxy-groups:
       - 🇯🇵 日本-故转
       - 🇸🇬 新加坡-故转
       - 🇹🇼 台湾-故转
-
-
 
   - name: 🌐 通用兜底
     type: select
@@ -644,18 +638,6 @@ proxy-groups:
       - 🇯🇵 日本-手动
       - 🇸🇬 新加坡-手动
       - 🇭🇰 香港-手动
-
-  - name: ⚡ 所有-自动
-    type: url-test
-    use:
-      - Mitce
-      - 花云
-    # 全池自动只是备用池；过滤掉订阅说明、套餐、官网、过期等伪节点，避免不可用条目进入测速。
-    filter: "(?i)^(?!.*(Traffic|Expire|流量|到期|剩余|套餐|官网|更新|订阅|Subscription|剩餘|過期|有效期|网址|官网|客服|剩余流量|重置|倍率|公告)).*$"
-    url: https://www.gstatic.com/generate_204
-    interval: 300
-    tolerance: 50
-
 
   # ===== ③ 底层组件：故转 / 自动 / 落地 / 广告，一般不用手动设置 =====
 
@@ -843,6 +825,16 @@ proxy-groups:
     interval: 300
     tolerance: 50
 
+ -  name: ⚡ 所有-自动
+    type: url-test
+    use:
+      - Mitce
+      - 花云
+    # 全池自动只是备用池；过滤掉订阅说明、套餐、官网、过期等伪节点，避免不可用条目进入测速。
+    filter: "(?i)^(?!.*(Traffic|Expire|流量|到期|剩余|套餐|官网|更新|订阅|Subscription|剩餘|過期|有效期|网址|官网|客服|剩余流量|重置|倍率|公告)).*$"
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
 
 
   - name: 🛑 广告拦截
