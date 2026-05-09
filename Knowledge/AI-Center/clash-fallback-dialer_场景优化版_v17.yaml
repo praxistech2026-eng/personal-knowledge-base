@@ -507,7 +507,7 @@ proxy-groups:
       - 🇺🇸 美国-故转
       - 🇯🇵 日本-故转
       - 🇸🇬 新加坡-故转
-      - 🇭🇰 香港-故转
+      - 🇹🇼 台湾-故转
 
   - name: 🎮 游戏-UBI
     type: select
@@ -534,7 +534,7 @@ proxy-groups:
     type: select
     proxies:
       - 🇯🇵 日本-故转
-      - 🇹🇼 台湾-故转
+      - 🇹🇼 台湾-故转🇹🇼
       - 🇺🇸 美国-故转
       - 🇸🇬 新加坡-故转
       - 🇭🇰 香港-故转
@@ -545,7 +545,7 @@ proxy-groups:
       - 🇺🇸 美国-故转
       - 🇯🇵 日本-故转
       - 🇸🇬 新加坡-故转
-      - 🇭🇰 香港-故转
+      - 🇹🇼 台湾-故转
 
 
 
@@ -556,13 +556,13 @@ proxy-groups:
       - 🌐 所有-手动
       - 🇯🇵 日本-故转
       - 🇭🇰 香港-故转
+      - 🇹🇼 台湾-故转
       - 🇸🇬 新加坡-故转
       - 🇺🇸 美国-故转
       - 🇬🇧 英国-故转
       - 🇪🇺 欧洲-故转
       - 🌍 其他-故转
       - ⚡ 所有-自动
-      - 直连
 
   # ===== ② 需要你偶尔指定具体节点的地区手动组；自动组不用选 =====
   - name: 🇺🇸 美国-手动
@@ -577,7 +577,7 @@ proxy-groups:
     use:
       - Mitce
       - 花云
-    filter: "(?i)^(?!.*(Traffic|Expire|流量|到期|剩余|套餐|官网|更新|订阅|Subscription|剩餘|過期|有效期)).*(🇯🇵|日本|日|日区|JP|JPN|Japan|Tokyo|东京|東京|Osaka|大阪|Saitama|埼玉|Nagoya|名古屋|福冈|福岡|Fukuoka)"
+    filter: "(?i)^(?!.*(Traffic|Expire|流量|到期|剩余|套餐|官网|更新|订阅|Subscription|剩餘|過期|有效期|尼日)).*(🇯🇵|日本|日|日区|JP|JPN|Japan|Tokyo|东京|東京|Osaka|大阪|Saitama|埼玉|Nagoya|名古屋|福冈|福岡|Fukuoka)"
 
   - name: 🇹🇼 台湾-手动
     type: select
@@ -644,7 +644,6 @@ proxy-groups:
       - 🇯🇵 日本-手动
       - 🇸🇬 新加坡-手动
       - 🇭🇰 香港-手动
-      - ⚡ 所有-自动
 
   - name: ⚡ 所有-自动
     type: url-test
@@ -769,7 +768,7 @@ proxy-groups:
     use:
       - Mitce
       - 花云
-    filter: "(?i)^(?!.*(Traffic|Expire|流量|到期|剩余|套餐|官网|更新|订阅|Subscription|剩餘|過期|有效期)).*(🇯🇵|日本|日|日区|JP|JPN|Japan|Tokyo|东京|東京|Osaka|大阪|Saitama|埼玉|Nagoya|名古屋|福冈|福岡|Fukuoka)"
+    filter: "(?i)^(?!.*(Traffic|Expire|流量|到期|剩余|套餐|官网|更新|订阅|Subscription|剩餘|過期|有效期|尼日)).*(🇯🇵|日本|日|日区|JP|JPN|Japan|Tokyo|东京|東京|Osaka|大阪|Saitama|埼玉|Nagoya|名古屋|福冈|福岡|Fukuoka)"
     url: https://www.gstatic.com/generate_204
     interval: 300
     tolerance: 50
