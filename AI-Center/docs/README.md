@@ -37,23 +37,24 @@ AI Provider: MiniMax-M2.7 (主) / DeepSeek-V3.2 (备)
 
 | 服务 | 功能 | 端口 |
 |------|------|------|
-| [hermes](./hermes/README.md) | 主 Agent 框架 | 18789/18791/3334 |
-| [openclaw](./openclaw/README.md) | Agent 执行层（与 Hermes 共进程） | 18789 |
-| [hindsight](./hindsight/README.md) | 长期记忆与向量检索 | 8888 |
-| [hermes-webui](./hermes/README.md#hermes-webui) | Web 管理界面 | 8787 |
-| [searxng](./searxng/README.md) | 隐私搜索聚合引擎 | 7777 |
-| [feishu](./feishu/README.md) | 飞书消息集成 | — |
-| [wechat](./wechat/README.md) | 微信消息集成 | — |
-| [minimax](./minimax/README.md) | 主模型提供商 | — |
-| [volcengine](./volcengine/README.md) | 备选模型（DeepSeek/Doubao） | — |
-| [whisper](./whisper/README.md) | 本地语音识别 | — |
-| [edge-tts](./edge-tts/README.md) | 本地语音合成 | — |
-| [fal-ai](./fal-ai/README.md) | AI 图像生成 | — |
-| [search-tools](./search-tools/README.md) | 搜索工具矩阵 | — |
-| [self-evolution](./self-evolution/README.md) | 自我进化优化 | — |
-| [oracle-cloud](./oracle-cloud/README.md) | Oracle Cloud VPS | — |
-| [tailscale](./tailscale/README.md) | VPN 远程访问 | — |
-| [skills-system](./skills-system/README.md) | 技能系统 | — |
+| [hermes](../services/hermes/README.md) | 主 Agent 框架 | 18789/18791/3334 |
+| [openclaw](../platforms/openclaw/README.md) | Agent 执行层（与 Hermes 共进程） | 18789 |
+| [hindsight](../services/hindsight/README.md) | 长期记忆与向量检索 | 8888 |
+| [hermes-webui](../services/hermes/README.md#hermes-webui) | Web 管理界面 | 8787 |
+| [searxng](../services/searxng/README.md) | 隐私搜索聚合引擎 | 7777 |
+| [feishu](../platforms/feishu/README.md) | 飞书消息集成 | — |
+| [wechat](../platforms/wechat/README.md) | 微信消息集成 | — |
+| [minimax](../platforms/minimax/README.md) | 主模型提供商 | — |
+| [volcengine](../platforms/volcengine/README.md) | 备选模型（DeepSeek/Doubao） | — |
+| [whisper](../tools/whisper/README.md) | 本地语音识别 | — |
+| [edge-tts](../tools/edge-tts/README.md) | 本地语音合成 | — |
+| [sessions-backup](../services/sessions-backup/README.md) | 会话存档备份（热备/冷备/Hindsight） | — |
+| [fal-ai](../tools/fal-ai/README.md) | AI 图像生成 | — |
+| [search-tools](../tools/search-tools/README.md) | 搜索工具矩阵 | — |
+| [self-evolution](../services/self-evolution/README.md) | 自我进化优化 | — |
+| [oracle-cloud](../infrastructure/oracle-cloud/README.md) | Oracle Cloud VPS | — |
+| [tailscale](../infrastructure/tailscale/README.md) | VPN 远程访问 | — |
+| [skills-system](../skills-system/README.md) | 技能系统 | — |
 
 ---
 

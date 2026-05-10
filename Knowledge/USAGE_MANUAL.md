@@ -1,7 +1,7 @@
 # PersonalKnowledge OS 使用手册
 
 > 更新时间：2026-05-10
-> 系统版本：v1.0
+> 系统版本：v1.1
 
 ---
 
@@ -72,26 +72,43 @@ PersonalKnowledge/
 
 ---
 
-## 五、会话存档体系（独立）
+## 五、会话存档体系
+
+### 三层架构
 
 ```
-~/.hermes-archive/           ← 热备（不在 Git）
-├── hermes/sessions/         ← 有意义 session 原始文件
-├── hermes/cron-logs/        ← cron 结构化日志（jsonl）
-└── openclaw/sessions/       ← openclaw sessions
+原始会话目录
+├── ~/.hermes/sessions/          ← Hermes live sessions（9个）
+└── ~/.openclaw/.../sessions/    ← OpenClaw live sessions（43个）
 
-Hindsight PostgreSQL           ← 向量检索，Agent 实时查询
-
-GitHub: sessions-backup      ← 冷备仓库
+    ↓ 每小时 session-backup.py
+热备: /home/shin/sessions/         ← hermes/ + openclaw/，按日期分组
+    ↓ 每小时 sessions-git-backup.sh
+GitHub: praxistech2026-eng/sessions-backup ← 增量 tar.zst 包
+    ↓ 每日 sessions-to-hindsight.py
+Hindsight PostgreSQL              ← 向量库，Agent 实时检索
 ```
 
 ### 过滤策略
 
 | 类型 | 处理 |
 |------|------|
-| "你好" 类寒暄 | 跳过，不存档 |
-| cron 任务 | 转结构化 .jsonl log |
-| 有实质工具调用 | 正常存档到 Hindsight + 热备 |
+| 自动化心跳（platform: cron） | 写入 `heartbeat.log`，不进 Hindsight |
+| 全量存档 | 都进热备 + Git 冷备 |
+| 有价值会话 | 进入 Hindsight 向量库 |
+
+### 索引文件
+
+- `manifest.json` — 热备文件索引（Git 追踪）
+- `hindsight_imported.json` — Hindsight 导入记录（增量去重）
+
+### 备份脚本
+
+| 脚本 | 功能 | 触发 |
+|------|------|------|
+| `/home/shin/bin/session-backup.py` | 增量备份到热备目录 | 每小时 |
+| `/home/shin/bin/sessions-git-backup.sh` | 打包推送 GitHub | 每小时 |
+| `/home/shin/bin/sessions-to-hindsight.py` | 导入 Hindsight 向量库 | 每日 |
 
 ---
 
