@@ -62,8 +62,20 @@ AI Provider (外部):
 内存/知识:
   ┌──────────┐  ┌────────┐  ┌─────────┐  ┌───────────┐
   │ Hindsight│  │ ✅已部署│  │super mem│  │Hermes内置 │
-  │(未部署)  │  │(未部署)│  │(未部署) │  │ memory-core│
+  │(PostgreSQL)│ │ ✅已部署│  │(未部署) │  │ memory-core│
   └──────────┘  └────────┘  └─────────┘  └───────────┘
+  → Bank: Hermes，向量检索，61 条 session 记录
+
+WIKI 目录结构:
+  AI-Center/
+  ├── services/        # 常驻进程：hermes, hindsight, searxng, self-evolution, sessions-backup
+  ├── tools/          # 按需调用：whisper, edge-tts, fal-ai, search-tools
+  ├── platforms/      # 外部集成：feishu, wechat, minimax, volcengine, openclaw
+  ├── infrastructure/ # 基础设施：tailscale, oracle-cloud
+  ├── docs/           # 系统文档：拓扑图、设计说明、README、WIKI-索引
+  ├── credentials/    # 敏感凭证
+  └── config/         # 配置文件
+  → 索引入口: docs/WIKI-索引.md
 
 会话存档备份（三层架构）:
   ┌──────────────────────────────────────────────────────────────┐
@@ -468,7 +480,8 @@ AI Provider (外部):
 | 2026-05-02 | 配置视觉能力：Fal.ai fal-client（API Key 已写入 .env），FLUX 因余额不足暂停                                                                       |
 | 2026-05-02 | 新增文档处理工具：Pandoc（万能转换）+ Marker（PDF→Markdown 高精度，独立 venv）                                                                       |
 | 2026-05-02 | 配置 hermes-agent-self-evolution：独立 venv (dspy 2.6.27 + gepa 0.1.1)，仓库 ~/self-evolution/，wrapper ~/self-evolution/run-evolve.sh |
-| 2026-05-10 | 新增 sessions-backup 三层备份系统：热备(/home/shin/sessions/) + Git冷备(GitHub) + Hindsight向量库，cron已配置 |
+|| 2026-05-10 | 新增 sessions-backup 三层备份系统：热备(/home/shin/sessions/) + Git冷备(GitHub) + Hindsight向量库，cron已配置 |
+|| 2026-05-10 | 重构 AI-Center 目录结构：按 services/tools/platforms/infrastructure/docs/credentials/config 分类，新增 WIKI-索引.md |
 
 ---
 

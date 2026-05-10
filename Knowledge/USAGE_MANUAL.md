@@ -1,7 +1,7 @@
 # PersonalKnowledge OS 使用手册
 
 > 更新时间：2026-05-10
-> 系统版本：v1.1
+> 系统版本：v1.2
 
 ---
 
@@ -29,16 +29,44 @@ PersonalKnowledge/
 │   ├── Archive/          ← 历史备份（只增不减）
 │   └── Review/           ← 待回顾
 │
-├── AI-Center/            ← AI Center WIKI（并级）
-│   ├── README.md         ← 总览 + 拓扑图
-│   ├── hermes/
-│   ├── hindsight/
-│   ├── searxng/
-│   └── ...（每个服务一个文件夹）
-│
-├── Templates/            ← Obsidian 模板（可删除）
-└── .obsidian/           ← Obsidian 配置
+└── AI-Center/              ← AI Center WIKI（与 Knowledge 并级）
+    ├── docs/
+    │   ├── README.md            ← 总览 + 入口
+    │   ├── AI-Center-拓扑图.md  ← 系统拓扑
+    │   ├── AI-Center-Agent-Team-Runtime-设计说明.md
+    │   └── WIKI-索引.md        ← 📍 快速索引（点击跳转）
+    ├── services/                ← 常驻进程
+    │   ├── hermes/             ← 主 Agent 框架
+    │   ├── hindsight/          ← 长期记忆（PostgreSQL）
+    │   ├── searxng/           ← 搜索聚合引擎
+    │   ├── self-evolution/    ← 自我进化
+    │   └── sessions-backup/   ← 会话存档备份
+    ├── tools/                  ← 按需调用
+    │   ├── whisper/            ← 语音识别
+    │   ├── edge-tts/          ← 语音合成
+    │   ├── fal-ai/            ← 图像生成
+    │   └── search-tools/      ← 搜索工具矩阵
+    ├── platforms/              ← 外部集成
+    │   ├── feishu/            ← 飞书
+    │   ├── wechat/           ← 微信
+    │   ├── minimax/          ← 主模型
+    │   ├── volcengine/       ← 备选模型
+    │   └── openclaw/         ← 执行层 Agent
+    ├── infrastructure/        ← 基础设施
+    │   ├── tailscale/        ← VPN
+    │   └── oracle-cloud/     ← Oracle VPS
+    ├── credentials/           ← 敏感凭证
+    │   └── 系统凭证备忘录.md
+    ├── config/               ← 配置文件
+    │   └── 花云+Mitce+Webshare+Oracle场景优化版.yaml
+    └── skills-system/        ← 技能系统（76 个已安装）
 ```
+
+### WIKI 快速索引
+
+入口：`AI-Center/docs/WIKI-索引.md`
+
+点击目录名跳转，按 services / tools / platforms / infrastructure / docs / credentials / config 七层分类，覆盖所有服务。详见 [WIKI-索引](./AI-Center/docs/WIKI-索引.md)。
 
 ---
 
@@ -62,6 +90,27 @@ PersonalKnowledge/
 ---
 
 ## 四、AI-Center WIKI
+
+### 目录结构
+
+AI-Center 按**是否独立运行**分为 7 类：
+
+| 分类 | 说明 |
+|------|------|
+| `services/` | 常驻进程服务（hermes, hindsight, searxng, self-evolution, sessions-backup） |
+| `tools/` | 按需调用工具（whisper, edge-tts, fal-ai, search-tools） |
+| `platforms/` | 外部集成平台（feishu, wechat, minimax, volcengine, openclaw） |
+| `infrastructure/` | 基础设施（tailscale, oracle-cloud） |
+| `docs/` | 系统文档（拓扑图、设计说明、README） |
+| `credentials/` | 敏感凭证 |
+| `config/` | 配置文件 |
+
+### 快速索引
+
+📍 **WIKI-索引.md** — 按分类组织，点击目录名可跳转。
+入口：`AI-Center/docs/WIKI-索引.md`
+
+### 服务文件夹规范
 
 每个服务文件夹包含：
 
