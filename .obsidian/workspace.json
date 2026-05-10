@@ -11,14 +11,10 @@
             "id": "1267e650c21525f5",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "USAGE_MANUAL.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "USAGE_MANUAL"
+              "title": "新标签页"
             }
           }
         ]
@@ -154,13 +150,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "USAGE_MANUAL.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "USAGE_MANUAL 的大纲"
+              "title": "大纲"
             }
           }
         ],
@@ -182,9 +177,14 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "1267e650c21525f5",
+  "active": "73334dbb14c3a3dd",
   "lastOpenFiles": [
     "Templates/Knowledge.md",
+    "Templates",
+    "Knowledge/USAGE_MANUAL.md",
+    "Knowledge/Inbox/AI-Center-变更检测.md",
+    "Knowledge/Inbox/2026-04-28_a75b7bfa.md",
+    "USAGE_MANUAL.md",
     "Inbox/2026-04-28_a75b7bfa.md",
     "AI-Center/系统凭证备忘录.md",
     "AI-Center/whisper/README.md",
@@ -196,7 +196,6 @@
     "AI-Center/search-tools/README.md",
     "AI-Center/feishu/README.md",
     "AI-Center/edge-tts/README.md",
-    "USAGE_MANUAL.md",
     "AI-Center/whisper",
     "AI-Center/wechat",
     "AI-Center/volcengine",
@@ -211,15 +210,10 @@
     "AI-Center/openclaw/README.md",
     "AI-Center/openclaw",
     "AI-Center/minimax/README.md",
-    "AI-Center/minimax",
     "AI-Center/fal-ai/README.md",
     "AI-Center/searxng/README.md",
     "AI-Center/hindsight/README.md",
     "AI-Center/hermes/README.md",
-    "AI-Center/README.md",
-    "AI-Center/macOS-CLI版-Tailscale-安装说明.md",
-    "AI-Center/Mac-CLI版-Tailscale-配置记录.md",
-    "AI-Center/AI-Center-拓扑图.md",
     "未命名.canvas"
   ]
 }
