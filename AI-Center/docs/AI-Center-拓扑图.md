@@ -91,6 +91,23 @@ WIKI 目录结构:
   │    → 每日增量: sessions-to-hindsight.py                  │
   │    → 心跳会话 → heartbeat.log（不进向量库）               │
   └──────────────────────────────────────────────────────────────┘
+
+个人知识沉淀系统（全自动）:
+  ┌──────────────────────────────────────────────────────────────┐
+  │  Mac vault → Git push → 服务器每分钟 pull → _inbox/         │
+  │    Mac post-commit hook → git push origin main              │
+  │                                                           │
+  │  inotifywait 实时监听 → process-inbox.py                   │
+  │    → 音频/视频/文档/图片/链接/代码/电子书/邮件/字体         │
+  │    → SensNova deepseek-v4-flash AI 增强（免费）            │
+  │    → 写 _processed/ JSONL                                 │
+  │                                                           │
+  │  每日 10:00（HTTPS cron → Hermes Agent skill）              │
+  │    → 读 _processed/*.jsonl（未确认）                       │
+  │    → 微信简报（o9cq8022Q3Wf68yW46_e6GOiklWA@im.wechat）  │
+  │    → 你回复「确认入库」→ daily-briefing.py confirm        │
+  │    → 写 Obsidian → Knowledge/{category}/                  │
+  └──────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -480,8 +497,9 @@ WIKI 目录结构:
 | 2026-05-02 | 配置视觉能力：Fal.ai fal-client（API Key 已写入 .env），FLUX 因余额不足暂停                                                                       |
 | 2026-05-02 | 新增文档处理工具：Pandoc（万能转换）+ Marker（PDF→Markdown 高精度，独立 venv）                                                                       |
 | 2026-05-02 | 配置 hermes-agent-self-evolution：独立 venv (dspy 2.6.27 + gepa 0.1.1)，仓库 ~/self-evolution/，wrapper ~/self-evolution/run-evolve.sh |
-|| 2026-05-10 | 新增 sessions-backup 三层备份系统：热备(/home/shin/sessions/) + Git冷备(GitHub) + Hindsight向量库，cron已配置 |
-|| 2026-05-10 | 重构 AI-Center 目录结构：按 services/tools/platforms/infrastructure/docs/credentials/config 分类，新增 WIKI-索引.md |
+| 2026-05-10 | 新增 sessions-backup 三层备份系统：热备(/home/shin/sessions/) + Git冷备(GitHub) + Hindsight向量库，cron已配置 |
+| 2026-05-10 | 重构 AI-Center 目录结构：按 services/tools/platforms/infrastructure/docs/credentials/config 分类，新增 WIKI-索引.md |
+| 2026-05-10 | 上线个人知识沉淀系统：inbox-watcher + process-inbox.py + daily-briefing.py + SensNova AI增强 + Hermes cron简报 |
 
 ---
 

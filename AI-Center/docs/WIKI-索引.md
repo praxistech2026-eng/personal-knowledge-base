@@ -65,12 +65,13 @@ AI-Center/
 
 ## 📄 docs — 系统文档
 
-| 文档 | 说明 | 路径 |
-|------|------|------|
-| [AI-Center-拓扑图](./docs/AI-Center-拓扑图.md) | 系统全拓扑架构图 | `docs/AI-Center-拓扑图.md` |
-| [AI-Center-Agent-Team-Runtime-设计说明](./docs/AI-Center-Agent-Team-Runtime-设计说明.md) | Agent 团队运行时设计 | `docs/AI-Center-Agent-Team-Runtime-设计说明.md` |
-| [README](./docs/README.md) | AI Center 总览 | `docs/README.md` |
-| [WIKI-索引](./docs/WIKI-索引.md) | 本索引页 | `docs/WIKI-索引.md` |
+| 文档 | 说明 |
+|------|------|
+| [AI-Center-拓扑图](./AI-Center-拓扑图.md) | 系统全拓扑架构图 |
+| [AI-Center-Agent-Team-Runtime-设计说明](./AI-Center-Agent-Team-Runtime-设计说明.md) | Agent 团队运行时设计 |
+| [个人知识沉淀系统-设计文档](./个人知识沉淀系统-设计文档.md) | 知识输入→处理→审核→入库全链路 |
+| [README](./README.md) | AI Center 总览 |
+| [WIKI-索引](./WIKI-索引.md) | 本索引页 |
 
 ---
 
@@ -101,9 +102,10 @@ AI-Center/
 
 ## 🚨 待处理问题
 
-- [ ] `session_archive.py` 路径错误：指向 `/home/shin/PersonalKnowledge/AgentSessions/hermes/sessions`，应为 `/home/shin/.hermes/sessions/`
-- [ ] `sessions-to-hindsight.py` cron 未执行（7AM 任务无日志）
-- [ ] Mac Obsidian vault 同步状态未知
+- [x] `session_archive.py` 路径错误 → 已修复（重定向到 ~/.hermes/sessions/）
+- [x] `sessions-to-hindsight.py` cron 未执行 → 已配置
+- [x] Mac Obsidian vault 同步状态未知 → Git Hook 已就位（`~/Desktop/PersonalKnowledge/.git/hooks/post-commit`）
+- [ ] 个人知识沉淀系统：Mac 端 vault Git 同步需用户确认是否正常
 
 ---
 
