@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Knowledge/USAGE_MANUAL.md",
+                "file": "AI-Center/docs/WIKI-索引.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "USAGE_MANUAL"
+              "title": "WIKI-索引"
             }
           }
         ]
@@ -154,13 +154,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Knowledge/USAGE_MANUAL.md",
+                "file": "AI-Center/docs/WIKI-索引.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "USAGE_MANUAL 的大纲"
+              "title": "WIKI-索引 的大纲"
             }
           }
         ],
@@ -184,8 +184,12 @@
   },
   "active": "1267e650c21525f5",
   "lastOpenFiles": [
-    "AI-Center/docs/WIKI-索引.md",
+    "AI-Center/docs/AI-Center-拓扑图.md",
+    "AI-Center/credentials/系统凭证备忘录.md",
+    "AI-Center/skills-system/README.md",
     "Knowledge/USAGE_MANUAL.md",
+    "AI-Center/docs/AI-Center-Agent-Team-Runtime-设计说明.md",
+    "AI-Center/docs/WIKI-索引.md",
     "AI-Center/tools/whisper/README.md",
     "AI-Center/tools/search-tools/README.md",
     "AI-Center/tools/fal-ai/README.md",
@@ -215,11 +219,7 @@
     "AI-Center/infrastructure/tailscale/Mac-CLI版-Tailscale-配置记录.md",
     "AI-Center/infrastructure/oracle-cloud/README.md",
     "AI-Center/docs/README.md",
-    "AI-Center/docs/AI-Center-拓扑图.md",
-    "AI-Center/docs/AI-Center-Agent-Team-Runtime-设计说明.md",
-    "AI-Center/credentials/系统凭证备忘录.md",
     "AI-Center/edge-tts/README.md",
-    "Templates/Knowledge.md",
     "未命名.canvas"
   ]
 }
