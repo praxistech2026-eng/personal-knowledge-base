@@ -224,13 +224,13 @@ WIKI 目录结构:
 
 ### 7. Volcengine ARK（备选模型提供商）
 
-| 属性 | 值 |
-|------|-----|
-| **类型** | OpenClaw 插件 (`volcengine`) |
-| **API Endpoint** | `https://ark.cn-beijing.volces.com/api/coding/v3` |
-| **API Mode** | `openai-completions` |
-| **内置模型** | ark-code-latest（自动路由）、DeepSeek-V3.2、Doubao-seed-2.0-code/pro |
-| **成本** | 免费（火山引擎编程计划） |
+| 属性               | 值                                                            |
+| ---------------- | ------------------------------------------------------------ |
+| **类型**           | OpenClaw 插件 (`volcengine`)                                   |
+| **API Endpoint** | `https://ark.cn-beijing.volces.com/api/coding/v3`            |
+| **API Mode**     | `openai-completions`                                         |
+| **内置模型**         | ark-code-latest（自动路由）、DeepSeek-V3.2、Doubao-seed-2.0-code/pro |
+| **成本**           | 免费（火山引擎编程计划）                                                 |
 
 > 🔑 **凭证信息**（请勿外泄）:
 > - API Key: 完整值在 `~/.hermes/.env` 的 `ARK_API_KEY`

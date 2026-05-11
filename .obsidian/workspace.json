@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Knowledge/Inbox/强的可怕！AI生图新王Image2的20种超强用法！.md",
+                "file": "AI-Center/docs/AI-Center-拓扑图.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "强的可怕！AI生图新王Image2的20种超强用法！"
+              "title": "AI-Center-拓扑图"
             }
           }
         ]
@@ -154,13 +154,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Knowledge/Inbox/强的可怕！AI生图新王Image2的20种超强用法！.md",
+                "file": "AI-Center/docs/AI-Center-拓扑图.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "强的可怕！AI生图新王Image2的20种超强用法！ 的大纲"
+              "title": "AI-Center-拓扑图 的大纲"
             }
           }
         ],
@@ -184,14 +184,15 @@
   },
   "active": "1267e650c21525f5",
   "lastOpenFiles": [
-    "Knowledge/Inbox/2026-04-28_a75b7bfa.md",
+    "AI-Center/services/hermes/README.md",
+    "AI-Center/docs/WIKI-索引.md",
+    "Knowledge/USAGE_MANUAL.md",
     "Knowledge/Inbox/强的可怕！AI生图新王Image2的20种超强用法！.md",
+    "Knowledge/Inbox/2026-04-28_a75b7bfa.md",
     "未命名.canvas",
     "AI-Center/credentials/系统凭证备忘录.md",
-    "Knowledge/USAGE_MANUAL.md",
     "Knowledge/Inbox/AI-Center-变更检测.md",
     "AI-Center/docs/个人知识沉淀系统-设计文档.md",
-    "AI-Center/docs/WIKI-索引.md",
     "AI-Center/docs/AI-Center-拓扑图.md",
     "AI-Center/skills-system/README.md",
     "AI-Center/docs/AI-Center-Agent-Team-Runtime-设计说明.md",
@@ -208,7 +209,6 @@
     "AI-Center/services/searxng/README.md",
     "AI-Center/services/self-evolution/README.md",
     "AI-Center/services/hindsight/README.md",
-    "AI-Center/services/hermes/README.md",
     "AI-Center/services/sessions-backup",
     "AI-Center/services/self-evolution",
     "AI-Center/services/searxng",
