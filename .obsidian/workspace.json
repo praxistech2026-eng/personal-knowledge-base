@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "AI-Center/docs/个人知识沉淀系统-设计文档.md",
+                "file": "Knowledge/Inbox/强的可怕！AI生图新王Image2的20种超强用法！.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "个人知识沉淀系统-设计文档"
+              "title": "强的可怕！AI生图新王Image2的20种超强用法！"
             }
           }
         ]
@@ -154,13 +154,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "AI-Center/docs/个人知识沉淀系统-设计文档.md",
+                "file": "Knowledge/Inbox/强的可怕！AI生图新王Image2的20种超强用法！.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "个人知识沉淀系统-设计文档 的大纲"
+              "title": "强的可怕！AI生图新王Image2的20种超强用法！ 的大纲"
             }
           }
         ],
@@ -184,12 +184,16 @@
   },
   "active": "1267e650c21525f5",
   "lastOpenFiles": [
-    "AI-Center/docs/WIKI-索引.md",
-    "AI-Center/docs/个人知识沉淀系统-设计文档.md",
-    "AI-Center/docs/AI-Center-拓扑图.md",
+    "Knowledge/Inbox/2026-04-28_a75b7bfa.md",
+    "Knowledge/Inbox/强的可怕！AI生图新王Image2的20种超强用法！.md",
+    "未命名.canvas",
     "AI-Center/credentials/系统凭证备忘录.md",
-    "AI-Center/skills-system/README.md",
     "Knowledge/USAGE_MANUAL.md",
+    "Knowledge/Inbox/AI-Center-变更检测.md",
+    "AI-Center/docs/个人知识沉淀系统-设计文档.md",
+    "AI-Center/docs/WIKI-索引.md",
+    "AI-Center/docs/AI-Center-拓扑图.md",
+    "AI-Center/skills-system/README.md",
     "AI-Center/docs/AI-Center-Agent-Team-Runtime-设计说明.md",
     "AI-Center/tools/whisper/README.md",
     "AI-Center/tools/search-tools/README.md",
@@ -216,10 +220,6 @@
     "AI-Center/platforms/minimax/README.md",
     "AI-Center/platforms/feishu/README.md",
     "AI-Center/infrastructure/tailscale/macOS-CLI版-Tailscale-安装说明.md",
-    "AI-Center/infrastructure/tailscale/README.md",
-    "AI-Center/infrastructure/tailscale/Mac-CLI版-Tailscale-配置记录.md",
-    "AI-Center/infrastructure/oracle-cloud/README.md",
-    "AI-Center/docs/README.md",
-    "未命名.canvas"
+    "AI-Center/infrastructure/tailscale/README.md"
   ]
 }
