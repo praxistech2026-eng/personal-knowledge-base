@@ -18,37 +18,31 @@
   └─────────────────────────────────────────────────────┘
 
                          ┌─────────────────────────────────────────────────────┐
-                         │              AI Center (localhost)                  │
+                         │              AI Center (192.168.2.249)              │
                          │                                                      │
                          │   ┌──────────────────┐      ┌──────────────────┐  │
-                         │   │  hermes-gateway   │      │  hermes-webui    │  │
-                         │   │  (systemd service)│      │  (Python server) │  │
-                         │   │                   │      │                  │  │
-                         │   │  ports:           │      │  port: 8787      │  │
-                         │   │  18789 (gateway)  │      │  → LAN可访问     │  │
-                         │   │  18791 (api)      │      │                  │  │
-                         │   │  3334 (internal)   │      │                  │  │
+                         │   │  OpenClaw Gateway│      │  hermes-webui    │  │
+                         │   │  port: 18789/18791│     │  port: 8787      │  │
                          │   └────────┬─────────┘      └──────────────────┘  │
                          │            │                                       │
-                         │            │ 共享 openclaw-gateway (同一进程)        │
-                         │            │                                       │
                          │   ┌────────▼─────────┐                              │
-                         │   │  openclaw-gateway │                             │
-                         │   │  port: 18789 (共用) │                            │
-                         │   └────────┬─────────┘                              │
-                         │            │                                        │
-                         └────────────┼────────────────────────────────────────┘
-                                      │
-                         ┌────────────▼────────────┐
-                         │     外部平台              │
-                         │                          │
-                         │  ┌─────────┐  ┌────────┐ │
-                         │  │ 飞书    │  │ 微信   │ │
-                         │  │ Feishu │  │ WeChat │ │
-                         │  └─────────┘  └────────┘ │
-                         └─────────────────────────┘
+                         │   │  Hermes Gateway  │                              │
+                         │   │  port: 8642      │                              │
+                         │   └──────────────────┘                              │
+                         │                                                      │
+                         │   ┌──────────────────┐  ┌──────────────────────┐    │
+                         │   │  n8n             │  │  Hindsight (8888)   │    │
+                         │   │  port: 5678      │  │  PostgreSQL (5432)   │    │
+                         │   └──────────────────┘  └──────────────────────┘    │
+                         │                                                      │
+                         │   ┌──────────────────┐                              │
+                         │   │  SearXNG (7777)  │                              │
+                         │   └──────────────────┘                              │
+                         └─────────────────────────────────────────────────────┘
 
-AI Provider (外部):
+外部平台: 飞书 / 微信
+
+AI Provider: MiniMax-M2.7 (主) / DeepSeek-V3.2 (备)
   ┌─────────────┐     ┌──────────────────┐
   │ MiniMax-CN  │ ←── │ MiniMax-M2.7    │  主模型 (primary)
   │ (api.minimaxi.com/anthropic) │
@@ -164,7 +158,24 @@ WIKI 目录结构:
 
 ---
 
-### 4. Feishu（飞书）集成
+### 4. n8n（工作流自动化）
+
+| 属性 | 值 |
+|------|-----|
+| **类型** | npm 全局安装（node 进程） |
+| **安装路径** | `/home/shin/.local/share/npm/bin/n8n` |
+| **进程 PID** | 221542 |
+| **监听端口** | `5678` |
+| **运行机器** | 192.168.2.249 |
+| **访问地址** | `http://192.168.2.249:5678` |
+| **安装日期** | 2026-05-11 |
+| **运行状态** | 运行中 |
+
+> n8n 是独立服务，不依赖 Docker，与 Hermes/OpenClaw 同机部署。
+
+---
+
+### 5. Feishu（飞书）集成
 
 | 属性 | 值 |
 |------|-----|
@@ -182,7 +193,7 @@ WIKI 目录结构:
 
 ---
 
-### 5. WeChat（微信）集成
+### 6. WeChat（微信）集成
 
 | 属性 | 值 |
 |------|-----|
@@ -200,7 +211,7 @@ WIKI 目录结构:
 
 ---
 
-### 6. MiniMax-CN（主模型提供商）
+### 7. MiniMax-CN（主模型提供商）
 
 | 属性 | 值 |
 |------|-----|
@@ -222,7 +233,7 @@ WIKI 目录结构:
 
 ---
 
-### 7. Volcengine ARK（备选模型提供商）
+### 8. Volcengine ARK（备选模型提供商）
 
 | 属性               | 值                                                            |
 | ---------------- | ------------------------------------------------------------ |
@@ -421,13 +432,15 @@ WIKI 目录结构:
 | 100.113.209.2 | Tailscale VPN | ✅ | Tailnet: shin，域名: shin.tail8a16d3.ts.net |
 | 100.114.100.50 | Mac Tailscale 节点 | ✅ | 当前在线节点：`wangxindemacbook-pro` |
 | 22 | SSH | ✅ | 使用密钥登录 |
-| 18789 | Hermes Gateway | ✅ | ⚠️ 无认证，建议内网使用 |
-| 18791 | Hermes API Server | ✅ | ⚠️ API Key: `67748299` |
+| 18789 | OpenClaw Gateway | ✅ | 无认证，建议内网使用 |
+| 18791 | OpenClaw API Server | ✅ | API Key: `67748299` |
 | 3334 | Hermes Internal RPC | ❌ 本地 | - |
+| 8642 | Hermes Gateway | ✅ | 无认证，建议内网使用 |
 | 8787 | hermes-webui | ✅ | ⚠️ 无认证，建议内网使用 |
 | 7777 | SearXNG | ✅ | 搜索服务 |
 | 8787 | SearXNG（残留旧端口） | ❌ | 旧配置，已废弃 |
 | 631 | CUPS 打印 | ✅ | 可关闭 |
+| 5678 | n8n | ✅ | 工作流自动化 |
 
 ### Tailscale CLI 节点（Mac）
 
@@ -498,6 +511,7 @@ WIKI 目录结构:
 | 2026-05-02 | 新增文档处理工具：Pandoc（万能转换）+ Marker（PDF→Markdown 高精度，独立 venv）                                                                       |
 | 2026-05-02 | 配置 hermes-agent-self-evolution：独立 venv (dspy 2.6.27 + gepa 0.1.1)，仓库 ~/self-evolution/，wrapper ~/self-evolution/run-evolve.sh |
 | 2026-05-10 | 新增 sessions-backup 三层备份系统：热备(/home/shin/sessions/) + Git冷备(GitHub) + Hindsight向量库，cron已配置 |
+| 2026-05-11 | 新增 n8n 服务（192.168.2.249:5678，npm全局安装）；修正拓扑图：OpenClaw与Hermes端口区分（18789/18791 vs 8642）；sessions-backup 架构升级：Hindsight入库从每日批量改为 session-backup.py 内嵌每小时增量处理，停用 sessions-to-hindsight.py cron |
 | 2026-05-10 | 重构 AI-Center 目录结构：按 services/tools/platforms/infrastructure/docs/credentials/config 分类，新增 WIKI-索引.md |
 | 2026-05-10 | 上线个人知识沉淀系统：inbox-watcher + process-inbox.py + daily-briefing.py + SensNova AI增强 + Hermes cron简报 |
 

@@ -15,13 +15,15 @@
 ┌─────────────────────────────────────────────────────────────┐
 │                     AI Center (localhost)                    │
 │                                                             │
-│  hermes-gateway ──→ openclaw-gateway (同一进程)            │
-│       │                     │                               │
-│       └──────┬──────────────┘                               │
-│              ↓                                              │
+│  OpenClaw Gateway ──→ Hermes Gateway (独立进程)            │
+│       │                    │                               │
+│       │ 18789/18791         │ 8642                         │
+│       ↓                    ↓                                │
 │  hermes-webui (8787) ← 浏览器访问                          │
-│              ↓                                              │
+│                                                             │
 │  Hindsight PostgreSQL (8888/5432) ← 向量记忆               │
+│              ↓                                              │
+│  n8n (5678) ← 工作流自动化                                 │
 │              ↓                                              │
 │  SearXNG Docker (7777) ← 搜索聚合                          │
 └─────────────────────────────────────────────────────────────┘
@@ -49,6 +51,7 @@ AI Provider: MiniMax-M2.7 (主) / DeepSeek-V3.2 (备)
 | [whisper](../tools/whisper/README.md) | 本地语音识别 | — |
 | [edge-tts](../tools/edge-tts/README.md) | 本地语音合成 | — |
 | [sessions-backup](../services/sessions-backup/README.md) | 会话存档备份（热备/冷备/Hindsight） | — |
+| [n8n](../services/n8n/README.md) | 工作流自动化 | 5678 |
 | [fal-ai](../tools/fal-ai/README.md) | AI 图像生成 | — |
 | [search-tools](../tools/search-tools/README.md) | 搜索工具矩阵 | — |
 | [self-evolution](../services/self-evolution/README.md) | 自我进化优化 | — |

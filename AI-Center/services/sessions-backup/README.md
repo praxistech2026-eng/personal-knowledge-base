@@ -29,18 +29,13 @@
 ├── manifest.json                 ← 索引（哪些文件已备份）
 └── hindsight_imported.json     ← 导入记录（增量去重）
 
-        ↓ 每小时 [sessions-git-backup.sh]
-
-GitHub: praxistech2026-eng/sessions-backup
-├── manifest.json
-├── sessions_20260510_init.tar.zst   ← 全量初始包
-└── sessions_YYYYMMDD_HHMMSS.tar.zst  ← 增量包
-
-        ↓ 每日 [sessions-to-hindsight.py]
+        ↓ 每小时 [session-backup.py]（含 Hindsight 入库）
 
 Hindsight 向量库 (PostgreSQL)
 └── Bank: Hermes
     └── memory_units（向量检索）
+
+        ↓ 每小时 [sessions-git-backup.sh]
 ```
 
 ---
@@ -76,9 +71,8 @@ Hindsight 向量库 (PostgreSQL)
 
 | 脚本 | 功能 | 触发 |
 |------|------|------|
-| `session-backup.py` | 增量备份到热备目录 | 每小时 |
+| `session-backup.py` | 增量备份 + Hindsight 入库 | 每小时 |
 | `sessions-git-backup.sh` | 打包推送 GitHub | 每小时 |
-| `sessions-to-hindsight.py` | 导入 Hindsight 向量库 | 每日 |
 
 ---
 
@@ -112,21 +106,17 @@ if len(content) < 1000 and 'terminal' not in content:
 
 | 文件 | 路径 |
 |------|------|
-| 热备脚本 | `/home/shin/bin/session-backup.py` |
+| 热备脚本（含 Hindsight 入库） | `/home/shin/bin/session-backup.py` |
 | Git 冷备脚本 | `/home/shin/bin/sessions-git-backup.sh` |
-| Hindsight 导入 | `/home/shin/bin/sessions-to-hindsight.py` |
 
 ### Cron 任务
 
 ```cron
-# 热备 - 每小时
+# 热备 + Hindsight 入库 - 每小时
 0 * * * * python3 /home/shin/bin/session-backup.py >> /home/shin/logs/session-backup.log 2>&1
 
 # Git 冷备 - 每小时
 30 * * * * bash /home/shin/bin/sessions-git-backup.sh >> /home/shin/logs/sessions-git-backup.log 2>&1
-
-# Hindsight 导入 - 每日
-0 7 * * * python3 /home/shin/bin/sessions-to-hindsight.py >> /home/shin/logs/sessions-to-hindsight.log 2>&1
 ```
 
 ---
@@ -136,6 +126,7 @@ if len(content) < 1000 and 'terminal' not in content:
 | 版本 | 日期 | 更新内容 |
 |------|------|----------|
 | v1.0 | 2026-05-10 | 初始文档 |
+| v1.1 | 2026-05-11 | Hindsight 入库从每日批量改为嵌入 session-backup.py，每小时增量处理 |
 
 ---
 

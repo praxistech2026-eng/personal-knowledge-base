@@ -28,6 +28,7 @@ AI-Center/
 | [SearXNG](./services/searxng/README.md) | 隐私搜索聚合引擎（Docker） | `services/searxng/` |
 | [Self-Evolution](./services/self-evolution/README.md) | 自我进化优化（DSPy+GEPA） | `services/self-evolution/` |
 | [Sessions-Backup](./services/sessions-backup/README.md) | 会话存档备份（热备/冷备/Hindsight） | `services/sessions-backup/` |
+| [n8n](./services/n8n/README.md) | 工作流自动化 | `services/n8n/` |
 
 ---
 
@@ -113,3 +114,4 @@ AI-Center/
 
 - **2026-05-10** — WIKI 目录重构完成，按 services/tools/platforms/infrastructure/docs/credentials/config 分类
 - **2026-05-10** — sessions-backup 三层备份系统上线（热备/Git冷备/Hindsight）
+- **2026-05-11** — 新增 n8n 服务（工作流自动化，端口 5678）

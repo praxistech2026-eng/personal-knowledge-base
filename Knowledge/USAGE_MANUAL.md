@@ -1,6 +1,6 @@
 # PersonalKnowledge OS 使用手册
 
-> 更新时间：2026-05-10
+> 更新时间：2026-05-11
 > 系统版本：v1.2
 
 ---
@@ -97,7 +97,7 @@ AI-Center 按**是否独立运行**分为 7 类：
 
 | 分类 | 说明 |
 |------|------|
-| `services/` | 常驻进程服务（hermes, hindsight, searxng, self-evolution, sessions-backup） |
+| `services/` | 常驻进程服务（hermes, hindsight, searxng, self-evolution, sessions-backup, n8n） |
 | `tools/` | 按需调用工具（whisper, edge-tts, fal-ai, search-tools） |
 | `platforms/` | 外部集成平台（feishu, wechat, minimax, volcengine, openclaw） |
 | `infrastructure/` | 基础设施（tailscale, oracle-cloud） |
@@ -130,12 +130,11 @@ AI-Center 按**是否独立运行**分为 7 类：
 ├── ~/.hermes/sessions/          ← Hermes live sessions（9个）
 └── ~/.openclaw/.../sessions/    ← OpenClaw live sessions（43个）
 
-    ↓ 每小时 session-backup.py
+    ↓ 每小时 session-backup.py（含 Hindsight 入库）
 热备: /home/shin/sessions/         ← hermes/ + openclaw/，按日期分组
+Hindsight PostgreSQL              ← 向量库，Agent 实时检索（session-backup.py 内嵌写入）
     ↓ 每小时 sessions-git-backup.sh
 GitHub: praxistech2026-eng/sessions-backup ← 增量 tar.zst 包
-    ↓ 每日 sessions-to-hindsight.py
-Hindsight PostgreSQL              ← 向量库，Agent 实时检索
 ```
 
 ### 过滤策略
@@ -155,9 +154,8 @@ Hindsight PostgreSQL              ← 向量库，Agent 实时检索
 
 | 脚本 | 功能 | 触发 |
 |------|------|------|
-| `/home/shin/bin/session-backup.py` | 增量备份到热备目录 | 每小时 |
+| `/home/shin/bin/session-backup.py` | 增量备份 + Hindsight 入库 | 每小时 |
 | `/home/shin/bin/sessions-git-backup.sh` | 打包推送 GitHub | 每小时 |
-| `/home/shin/bin/sessions-to-hindsight.py` | 导入 Hindsight 向量库 | 每日 |
 
 ---
 
