@@ -1,6 +1,7 @@
 # AI Center
 
 > 部署在家庭服务器上的 AI 智能体系统，包含 Agent、记忆、搜索、语音等全套能力。
+> 2026-05-13 9C：记忆控制面已收口，Hindsight 使用 DeepSeek official API lite，默认 recall 走 workspace-tag，健康检查 `PASS=67 WARN=2 FAIL=0`。
 
 ---
 

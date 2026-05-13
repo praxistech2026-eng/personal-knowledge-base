@@ -115,3 +115,4 @@ AI-Center/
 - **2026-05-10** — WIKI 目录重构完成，按 services/tools/platforms/infrastructure/docs/credentials/config 分类
 - **2026-05-10** — sessions-backup 三层备份系统上线（热备/Git冷备/Hindsight）
 - **2026-05-11** — 新增 n8n 服务（工作流自动化，端口 5678）
+- **2026-05-13** — 记忆控制面 9C 收口，拓扑图 / 运行时 / 个人知识设计已同步

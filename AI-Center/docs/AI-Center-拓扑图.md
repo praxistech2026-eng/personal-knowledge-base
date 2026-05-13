@@ -518,3 +518,24 @@ WIKI 目录结构:
 ---
 
 *本文档由 Hermes Agent 自动生成维护*
+
+## 记忆控制面当前状态（2026-05-13 9C）
+
+| 项目 | 当前事实 |
+|------|----------|
+| Hindsight 健康 | `/health` healthy，database connected |
+| Hindsight bank | `Hermes` |
+| Hindsight runtime | `auto_recall=false`，`auto_retain=true`，`retain_async=true` |
+| 召回默认 | workspace-tag 过滤 |
+| 抽取模型 | DeepSeek official API `deepseek-chat`（lite） |
+| worker | `max_slots=1` |
+| 代码修复 | `hindsight_retain` 同步透传 `retain_async` 已修复并通过回归测试 |
+| 当前基线 | `PASS=67 WARN=2 FAIL=0` |
+| 慢路径 | `/stats` 仅作为 WARN，不作为收口阻塞 |
+
+### 当前使用方式
+
+- 新会话先读 `docs/README.md` 和 `state/current-status.md`。
+- 任何写入前先备份，再列计划，再执行。
+- 召回默认按 workspace-tag 过滤；无 tag recall 仅保留调试。
+- 变更后先跑健康检查，再看 tracker 和 docs 是否同步。

@@ -1,7 +1,7 @@
 ---
 title: AI Center Agent Team Runtime 设计说明
 created: 2026-05-05
-status: Draft
+status: Active
 version: v0.1
 owner: Shin
 system: AI Center
@@ -1279,3 +1279,17 @@ status: Draft
 version: v0.1
 next_step: "由 Shin 审阅；如认可，再进入 Stage 0 文档拆分与 Stage 1 MVP 施工。"
 ```
+
+---
+
+## 9C 当前落地状态（2026-05-13）
+
+- 控制面：Hermes。
+- 执行面：OpenClaw。
+- 记忆面：Hindsight 处于健康状态，数据库连接正常。
+- 记忆配置：`auto_recall=false`，`auto_retain=true`，`retain_async=true`。
+- 召回默认：workspace-tag 过滤。
+- 抽取模型：DeepSeek official API `deepseek-chat`（lite）。
+- 当前基线：`PASS=67 WARN=2 FAIL=0`。
+- 9C 已完成最终审计，内部阻塞项已收口。
+- `/stats` 仅作 WARN 慢路径，不作为施工阻塞。
