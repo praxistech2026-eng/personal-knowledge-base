@@ -525,7 +525,7 @@ WIKI 目录结构:
 |------|----------|
 | Hindsight 健康 | `/health` healthy，database connected |
 | Hindsight bank | `Hermes` |
-| Hindsight runtime | `auto_recall=false`，`auto_retain=true`，`retain_async=true` |
+| Hindsight runtime | `auto_recall=false`，`auto_retain=false`，`retain_async=true`，`retain_every_n_turns=10` |
 | 召回默认 | workspace-tag 过滤 |
 | 抽取模型 | DeepSeek official API `deepseek-chat`（lite） |
 | worker | `max_slots=1` |

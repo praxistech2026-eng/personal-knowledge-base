@@ -1287,7 +1287,8 @@ next_step: "由 Shin 审阅；如认可，再进入 Stage 0 文档拆分与 Stag
 - 控制面：Hermes。
 - 执行面：OpenClaw。
 - 记忆面：Hindsight 处于健康状态，数据库连接正常。
-- 记忆配置：`auto_recall=false`，`auto_retain=true`，`retain_async=true`。
+- 记忆配置：`auto_recall=false`，`auto_retain=false`，`retain_async=true`，`retain_every_n_turns=10`。
+- 记忆止血：turn 级自动 retain 默认关闭；高价值写入改走显式 retain / 备份管线；watchdog 负责 token stop-loss。
 - 召回默认：workspace-tag 过滤。
 - 抽取模型：DeepSeek official API `deepseek-chat`（lite）。
 - 当前基线：`PASS=67 WARN=2 FAIL=0`。

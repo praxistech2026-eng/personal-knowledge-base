@@ -35,6 +35,15 @@
 | Bank ID | `Hermes` |
 | 进程 | `hindsight-api`（systemd 托管） |
 
+## 当前运行策略（2026-05-15）
+
+- `auto_recall=false`：召回只在需要时触发，不做 turn 级自动召回。
+- `auto_retain=false`：默认关闭 turn 级自动 retain，避免会话推进时持续烧 token。
+- `retain_async=true`：显式 retain 仍走异步。
+- `retain_every_n_turns=10`：作为安全兜底阈值，不再是 1 turn 一抽。
+- 高价值写入优先走显式 `retain()` / 备份管线；自动化会话由 `session-backup.py` 的直接入库链路承接，不走 LLM 抽取。
+- token stop-loss 由 `~/.hermes/scripts/hindsight_token_watchdog.py` 负责，命中时优先查 `retain_extract_facts` 重试、stale `batch_retain`、以及模型路由。
+
 ## 核心 API 端点
 
 ```
