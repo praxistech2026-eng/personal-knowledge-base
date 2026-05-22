@@ -72,6 +72,7 @@ AI-Center/
 | [AI-Center-Agent-Team-Runtime-设计说明](./AI-Center-Agent-Team-Runtime-设计说明.md) | Agent 团队运行时设计 |
 | [个人知识沉淀系统-设计文档](./个人知识沉淀系统-设计文档.md) | 知识输入→处理→审核→入库全链路 |
 | [模型调用策略-设计文档](./模型调用策略-设计文档.md) | Q/C/P 三维评价体系、任务分类、复杂度/价值判断、LiteLLM 路由架构 |
+| [模型调用策略-使用说明书](./模型调用策略-使用说明书.md) | 用户视角快速上手、日常场景示例、手动干预方法、故障处理 |
 | [README](./README.md) | AI Center 总览 |
 | [WIKI-索引](./WIKI-索引.md) | 本索引页 |
 
