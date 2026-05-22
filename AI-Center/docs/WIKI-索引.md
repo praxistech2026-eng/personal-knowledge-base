@@ -71,6 +71,7 @@ AI-Center/
 | [AI-Center-拓扑图](./AI-Center-拓扑图.md) | 系统全拓扑架构图 |
 | [AI-Center-Agent-Team-Runtime-设计说明](./AI-Center-Agent-Team-Runtime-设计说明.md) | Agent 团队运行时设计 |
 | [个人知识沉淀系统-设计文档](./个人知识沉淀系统-设计文档.md) | 知识输入→处理→审核→入库全链路 |
+| [模型调用策略-设计文档](./模型调用策略-设计文档.md) | Q/C/P 三维评价体系、任务分类、复杂度/价值判断、LiteLLM 路由架构 |
 | [README](./README.md) | AI Center 总览 |
 | [WIKI-索引](./WIKI-索引.md) | 本索引页 |
 
@@ -81,6 +82,9 @@ AI-Center/
 | 文件 | 说明 | 路径 |
 |------|------|------|
 | [系统凭证备忘录](./credentials/系统凭证备忘录.md) | 各平台 API 密钥与凭证 | `credentials/系统凭证备忘录.md` |
+| [LLM 厂商配置基线](./credentials/LLM-厂商配置基线.md) | 各厂商套餐 / 模型 / 端点基线 | `credentials/LLM-厂商配置基线.md` |
+| [LiteLLM 模型配置方法](./credentials/LiteLLM-模型配置方法.md) | LiteLLM 统一模型网关配置 / health-check 速查 | `credentials/LiteLLM-模型配置方法.md` |
+| [LLM 模型可用性快照](./credentials/LLM-模型可用性快照-2026-05-20.md) | 当前模型可用性实测快照 | `credentials/LLM-模型可用性快照-2026-05-20.md` |
 
 ---
 
