@@ -2,6 +2,8 @@
 
 > Oracle Cloud 俄罗斯圣彼得堡节点，用于境外服务和网络加速。
 
+> 默认登录页：`https://www.oracle.com/cn/cloud/sign-in.html`
+
 ## 接入信息
 
 | 属性 | 值 |

@@ -331,3 +331,37 @@ LiteLLM 的模型配置核心就三句话：
 1. 先确定模型来源是静态 YAML 还是 DB/UI
 2. 再按厂商基线把官方模型 ID 变成 `厂商前缀-官方模型ID`
 3. 最后做 `/v1/models`、`/model/info`、UI 三重验证
+
+---
+
+## 13. ChatGPT 健康检查注意事项
+
+### 13.1 现象
+
+- ChatGPT 四模型（`ChatGPT-gpt-5.5` / `ChatGPT-gpt-5.4` / `ChatGPT-gpt-5.4-mini` / `ChatGPT-gpt-5.3-codex`）已经挂在 `/v1/models`。
+- 业务调用可通，但健康页可能先前显示 `unhealthy`，误导成“模型挂了”。
+
+### 13.2 根因
+
+- LiteLLM 对 ChatGPT provider 的 health probe 走的是 `responses` 路径。
+- 默认 probe 曾把 `input` 传成字符串 `"test"`。
+- ChatGPT `responses` 端点要求 `input` 是 list，字符串会直接触发 `BadRequestError: Input must be a list`。
+- 所以这不是模型配置问题，而是**健康探测 payload 形状不匹配**。
+
+### 13.3 本环境修复
+
+- 在 `/home/shin/workspace/litellm/patches/sitecustomize.py` 里加了启动时补丁。
+- 只对 `custom_llm_provider == "chatgpt"` 的 health probe 修正 `input` 形状。
+- `docker-compose.yml` 通过挂载 `/app/patches` 并设置 `PYTHONPATH=/app/patches` 让补丁在启动时生效。
+- **没有修改 `config.yaml` 的模型定义**。
+
+### 13.4 验证口径
+
+- `GET /v1/models` 看模型是否被注册暴露。
+- `GET /health?model_id=<internal_id>` 看真实健康探测结果。
+- `chat/completions` 继续作为业务可用性验证。
+
+### 13.5 结论
+
+- ChatGPT 的 health status 现在应该被视为**真实探测结果**，不是写死的恒绿。
+- 如果后续 ChatGPT 真坏了，健康页仍然会变红；修复的是误报，不是掩盖故障。

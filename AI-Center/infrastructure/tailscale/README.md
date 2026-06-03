@@ -20,7 +20,7 @@
 
 ## 在本生态中的角色
 
-**远程访问基础设施**。通过 Tailscale VPN，从外网安全连接到家庭服务器，访问 Hermes Gateway、hermes-webui、SearXNG 等所有服务。
+**远程访问基础设施**。通过 Tailscale VPN，从外网安全连接到家庭服务器，访问 OpenClaw Gateway、Hermes API Server、hermes-webui、SearXNG 等所有服务。
 
 ## 常用命令
 

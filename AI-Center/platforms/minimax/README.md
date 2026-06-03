@@ -1,14 +1,14 @@
 # MiniMax
 
-> MiniMax 是本系统的主模型提供商，提供 M2.7 高性能大模型 API。
+> MiniMax 是本系统的主模型提供商，使用国内 Token Plan（Starter 29元/月）提供 M2.7 高性能大模型 API。
 
 ## 官方资源
 
 | 资源 | 链接 |
 |------|------|
-| 官网 | https://platform.minimax.io/ |
-| API 文档 | https://platform.minimax.io/docs/api-reference/api-overview |
-| 模型介绍 | https://platform.minimax.io/docs/guides/models-intro |
+| 官网 | https://platform.minimaxi.com/ |
+| API 文档 | https://platform.minimaxi.com/docs/api-reference/api-overview |
+| 模型介绍 | https://platform.minimaxi.com/docs/guides/models-intro |
 | GitHub | https://github.com/MiniMax-AI/MiniMax-M2.7 |
 
 ## 在本生态中的角色
@@ -18,12 +18,13 @@
 ## 接入配置
 
 ```
-API Endpoint: https://api.minimax.com/anthropic
+API Endpoint: https://api.minimaxi.com/anthropic
 模型: MiniMax-M2.7
 认证: Bearer API Key
 ```
 
 > 凭证保存在 `~/.hermes/.env` 的 `MINIMAX_CN_API_KEY`
+> 套餐口径：国内 Starter 29元/月；不要再用国际站链接混写。
 
 ## 模型规格
 

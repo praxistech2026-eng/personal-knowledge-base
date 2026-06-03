@@ -21,13 +21,13 @@
                          │              AI Center (192.168.2.249)              │
                          │                                                      │
                          │   ┌──────────────────┐      ┌──────────────────┐  │
-                         │   │  OpenClaw Gateway│      │  hermes-webui    │  │
-                         │   │  port: 18789/18791│     │  port: 8787      │  │
+                         │   │  OpenClaw Gateway│      │ Hermes API Server│  │
+                         │   │  port: 18789    │      │  port: 8642 (未启用) │  │
                          │   └────────┬─────────┘      └──────────────────┘  │
                          │            │                                       │
                          │   ┌────────▼─────────┐                              │
-                         │   │  Hermes Gateway  │                              │
-                         │   │  port: 8642      │                              │
+                         │   │  hermes-webui    │                              │
+                         │   │  port: 8787      │                              │
                          │   └──────────────────┘                              │
                          │                                                      │
                          │   ┌──────────────────┐  ┌──────────────────────┐    │
@@ -42,7 +42,11 @@
 
 外部平台: 飞书 / 微信
 
-AI Provider: MiniMax-M2.7 (主) / DeepSeek-V3.2 (备)
+AI Provider: MiniMax-M2.7 (主) / DeepSeek-V3.2 (备) / LiteLLM Proxy (4000，ChatGPT 订阅网关)
+  ┌─────────────┐     ┌──────────────────────────────┐
+  │ LiteLLM     │ ←── │ ChatGPT / MiniMax / 百炼 /   │
+  │ Proxy 4000  │     │ SenseNova / 统一模型路由     │
+  └─────────────┘     └──────────────────────────────┘
   ┌─────────────┐     ┌──────────────────┐
   │ MiniMax-CN  │ ←── │ MiniMax-M2.7    │  主模型 (primary)
   │ (api.minimaxi.com/anthropic) │
@@ -67,7 +71,7 @@ WIKI 目录结构:
   ├── platforms/      # 外部集成：feishu, wechat, minimax, volcengine, openclaw
   ├── infrastructure/ # 基础设施：tailscale, oracle-cloud
   ├── docs/           # 系统文档：拓扑图、设计说明、README、WIKI-索引
-  ├── credentials/    # 敏感凭证
+  ├── credentials/    # 敏感凭证 + 厂商模型基线 + LiteLLM 配置速查 / 可用性快照
   └── config/         # 配置文件
   → 索引入口: docs/WIKI-索引.md
 
@@ -108,21 +112,31 @@ WIKI 目录结构:
 
 ## 服务详情
 
-### 1. hermes-gateway（主网关）
+### 1. openclaw-gateway（OpenClaw 主网关）
 
 | 属性 | 值 |
 |------|-----|
 | **类型** | systemd --user 服务 |
 | **服务名** | `hermes-gateway.service` |
-| **进程** | `openclaw-gateway` (与 OpenClaw 共用进程) |
+| **进程** | `openclaw-gateway` (OpenClaw Gateway) |
 | **PID** | 486095 |
-| **监听端口** | `18789` (gateway), `18791` (API server), `3334` (internal RPC) |
+| **监听端口** | `18789` (gateway) |
 | **LAN 访问** | ✅ `http://<本地IP>:18789` 可从局域网访问 |
 | **启动方式** | `systemctl --user start hermes-gateway.service` |
 | **日志** | `~/.hermes/logs/gateway.log` |
 | **配置文件** | `~/.hermes/config.yaml` |
 
-> ⚠️ **注意**: `openclaw-gateway` 和 `hermes-gateway` 实为同一进程，由 OpenClaw 框架启动。两个名字混用是正常现象。
+> ⚠️ **注意**: `18789` 归 **OpenClaw Gateway**，不要再把它写成 Hermes。
+
+### Hermes API Server（对外接口）
+
+| 属性 | 值 |
+|------|-----|
+| **类型** | Hermes 官方 OpenAI 兼容 API |
+| **官方默认端口** | `8642` |
+| **当前状态** | ⚠️ 当前主机未监听（`nc` 连接被拒绝） |
+| **用途** | Open WebUI / 外部客户端调用 Hermes |
+| **备注** | 与 OpenClaw Gateway 的 `18789` 是不同入口 |
 
 ---
 
@@ -138,7 +152,7 @@ WIKI 目录结构:
 | **Web 框架** | 第三方 Web UI (非 Hermes 原生) |
 | **sessions 目录** | `~/.hermes/webui/sessions/` |
 
-> 💡 **备注**: hermes-webui 是第三方增强界面，连接本地 Hermes Gateway。
+> 💡 **备注**: hermes-webui 是第三方增强界面，连接本地 OpenClaw Gateway（18789），不是 Hermes API Server（8642）。
 
 ---
 
@@ -435,10 +449,9 @@ WIKI 目录结构:
 | 18789 | OpenClaw Gateway | ✅ | 无认证，建议内网使用 |
 | 18791 | OpenClaw API Server | ✅ | API Key: `67748299` |
 | 3334 | Hermes Internal RPC | ❌ 本地 | - |
-| 8642 | Hermes Gateway | ✅ | 无认证，建议内网使用 |
+| 8642 | Hermes API Server | ⚠️ 当前未监听 | 官方默认端口 |
 | 8787 | hermes-webui | ✅ | ⚠️ 无认证，建议内网使用 |
 | 7777 | SearXNG | ✅ | 搜索服务 |
-| 8787 | SearXNG（残留旧端口） | ❌ | 旧配置，已废弃 |
 | 631 | CUPS 打印 | ✅ | 可关闭 |
 | 5678 | n8n | ✅ | 工作流自动化 |
 
@@ -470,7 +483,7 @@ WIKI 目录结构:
   - `sudo scutil --set LocalHostName wangxindemacbook-pro`
   - `sudo scutil --set ComputerName "wangxindemacbook-pro"`
 
-### API Server
+### OpenClaw API Server
 
 | 属性 | 值 |
 |------|-----|
@@ -511,7 +524,8 @@ WIKI 目录结构:
 | 2026-05-02 | 新增文档处理工具：Pandoc（万能转换）+ Marker（PDF→Markdown 高精度，独立 venv）                                                                       |
 | 2026-05-02 | 配置 hermes-agent-self-evolution：独立 venv (dspy 2.6.27 + gepa 0.1.1)，仓库 ~/self-evolution/，wrapper ~/self-evolution/run-evolve.sh |
 | 2026-05-10 | 新增 sessions-backup 三层备份系统：热备(/home/shin/sessions/) + Git冷备(GitHub) + Hindsight向量库，cron已配置 |
-| 2026-05-11 | 新增 n8n 服务（192.168.2.249:5678，npm全局安装）；修正拓扑图：OpenClaw与Hermes端口区分（18789/18791 vs 8642）；sessions-backup 架构升级：Hindsight入库从每日批量改为 session-backup.py 内嵌每小时增量处理，停用 sessions-to-hindsight.py cron |
+| 2026-05-11 | 新增 n8n 服务（192.168.2.249:5678，npm全局安装）；修正拓扑图：OpenClaw 与 Hermes 端口区分（OpenClaw: 18789/18791；Hermes API: 8642）；sessions-backup 架构升级：Hindsight入库从每日批量改为 session-backup.py 内嵌每小时增量处理，停用 sessions-to-hindsight.py cron |
+| 2026-05-22 | 新增 LiteLLM 统一模型网关记录；ChatGPT health probe 通过 runtime patch 纠正为真实 responses 探测，模型配置未改 |
 | 2026-05-10 | 重构 AI-Center 目录结构：按 services/tools/platforms/infrastructure/docs/credentials/config 分类，新增 WIKI-索引.md |
 | 2026-05-10 | 上线个人知识沉淀系统：inbox-watcher + process-inbox.py + daily-briefing.py + SensNova AI增强 + Hermes cron简报 |
 

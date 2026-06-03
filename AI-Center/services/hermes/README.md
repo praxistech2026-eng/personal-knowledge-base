@@ -29,7 +29,9 @@
 - 管理长期记忆（Hindsight）
 - 驱动自我进化流程
 
-与 OpenClaw 共用 `openclaw-gateway` 进程，但独立配置和会话管理。
+Hermes 的**官方 API Server 默认端口是 `8642`**；`hermes-webui` 是 `8787`。`18789` 不是 Hermes 的端口名，别再把它混成 Hermes。
+
+与 OpenClaw 在本地运行时会共享底层 gateway 生态，但角色和对外入口必须分开写。
 
 ## 配置
 

@@ -10,12 +10,9 @@
 
 - **厂商简称**：MiniMax
 - **凭证类型**：Token Plan Key / API Key
-- **OpenAI Base URL**：
-  - 国际：`https://api.minimax.io/v1`
-  - 中国：`https://api.minimaxi.com/v1`
-- **Anthropic Base URL**：
-  - 国际：`https://api.minimax.io/anthropic`
-  - 中国：`https://api.minimaxi.com/anthropic`
+- **OpenAI Base URL（默认中国区）**：`https://api.minimaxi.com/v1`
+- **Anthropic Base URL（默认中国区）**：`https://api.minimaxi.com/anthropic`
+- **国际版备用**：`https://api.minimax.io/v1` / `https://api.minimax.io/anthropic`（仅在明确切换海外区域时使用）
 - **官方模型 ID（文本，已用于 AI Coding 工具/Token Plan）**：
   - `MiniMax-M2.7`
   - `MiniMax-M2.5`
@@ -31,11 +28,11 @@
   - 官方支持的工具页包含 Claude Code、Cursor、Trae、OpenCode、Kilo Code、Cline、Grok CLI、Codex CLI、Droid
   - 典型配置：设置 `ANTHROPIC_BASE_URL`，并把 `ANTHROPIC_MODEL` 指向 `MiniMax-M2.7`
 - **官方来源**：
-  - `https://platform.minimax.io/docs/guides/models-intro`
-  - `https://platform.minimax.io/docs/guides/text-ai-coding-tools`
-  - `https://platform.minimax.io/docs/token-plan/intro`
-  - `https://platform.minimax.io/docs/guides/pricing-token-plan`
-  - `https://platform.minimax.io/docs/token-plan/faq`
+  - `https://platform.minimaxi.com/docs/guides/models-intro`
+  - `https://platform.minimaxi.com/docs/guides/text-ai-coding-tools`
+  - `https://platform.minimaxi.com/docs/token-plan/intro`
+  - `https://platform.minimaxi.com/docs/guides/pricing-token-plan`
+  - `https://platform.minimaxi.com/docs/token-plan/faq`
 
 ---
 

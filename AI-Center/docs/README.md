@@ -1,7 +1,7 @@
 # AI Center
 
 > 部署在家庭服务器上的 AI 智能体系统，包含 Agent、记忆、搜索、语音等全套能力。
-> 2026-05-13 9C：记忆控制面已收口，Hindsight 使用 DeepSeek official API lite，默认 recall 走 workspace-tag，健康检查 `PASS=67 WARN=2 FAIL=0`。
+> 2026-05-13 9C：记忆控制面已收口，Hindsight 使用 DeepSeek official API lite，默认 recall 走 workspace-tag，健康检查 `PASS=67 WARN=2 FAIL=0`。套餐口径：ChatGPT / Gemini 记海外个人套餐，其余模型按国内套餐管理；MiniMax Starter 29元/月、百炼 Pro 200元/月、火山方舟 Lite 40元/月、GLM Max 469元/月、SenseNova Free 0元/月、DeepSeek API 接入。
 
 ---
 
@@ -16,9 +16,9 @@
 ┌─────────────────────────────────────────────────────────────┐
 │                     AI Center (localhost)                    │
 │                                                             │
-│  OpenClaw Gateway ──→ Hermes Gateway (独立进程)            │
+│  OpenClaw Gateway (18789)   Hermes API Server (8642, 未启用) │
 │       │                    │                               │
-│       │ 18789/18791         │ 8642                         │
+│       │ 18789              │ 8642                         │
 │       ↓                    ↓                                │
 │  hermes-webui (8787) ← 浏览器访问                          │
 │                                                             │
@@ -40,8 +40,8 @@ AI Provider: MiniMax-M2.7 (主) / DeepSeek-V3.2 (备)
 
 | 服务 | 功能 | 端口 |
 |------|------|------|
-| [hermes](../services/hermes/README.md) | 主 Agent 框架 | 18789/18791/3334 |
-| [openclaw](../platforms/openclaw/README.md) | Agent 执行层（与 Hermes 共进程） | 18789 |
+| [hermes](../services/hermes/README.md) | 主 Agent 框架 / API Server | 8642（官方默认；当前主机未监听） |
+| [openclaw](../platforms/openclaw/README.md) | Agent 执行层 / Gateway | 18789 |
 | [hindsight](../services/hindsight/README.md) | 长期记忆与向量检索 | 8888 |
 | [hermes-webui](../services/hermes/README.md#hermes-webui) | Web 管理界面 | 8787 |
 | [searxng](../services/searxng/README.md) | 隐私搜索聚合引擎 | 7777 |
@@ -53,12 +53,15 @@ AI Provider: MiniMax-M2.7 (主) / DeepSeek-V3.2 (备)
 | [edge-tts](../tools/edge-tts/README.md) | 本地语音合成 | — |
 | [sessions-backup](../services/sessions-backup/README.md) | 会话存档备份（热备/冷备/Hindsight） | — |
 | [n8n](../services/n8n/README.md) | 工作流自动化 | 5678 |
+| [LiteLLM](../credentials/LiteLLM-模型配置方法.md) | 统一模型网关（ChatGPT / Gemini / MiniMax / 百炼 / SenseNova / DeepSeek） | 4000 |
 | [fal-ai](../tools/fal-ai/README.md) | AI 图像生成 | — |
 | [search-tools](../tools/search-tools/README.md) | 搜索工具矩阵 | — |
 | [self-evolution](../services/self-evolution/README.md) | 自我进化优化 | — |
 | [oracle-cloud](../infrastructure/oracle-cloud/README.md) | Oracle Cloud VPS | — |
 | [tailscale](../infrastructure/tailscale/README.md) | VPN 远程访问 | — |
 | [skills-system](../skills-system/README.md) | 技能系统 | — |
+
+> 纠错：**18789 归 OpenClaw Gateway，不要再标成 Hermes。** Hermes 官方 API Server 默认是 **8642**，但当前主机未监听，首页/档案库只能把它写成“官方默认、未启用”，不能写成 live 服务。
 
 ---
 
@@ -67,7 +70,7 @@ AI Provider: MiniMax-M2.7 (主) / DeepSeek-V3.2 (备)
 ### 常用命令
 
 ```bash
-# 查看 Hermes Gateway 状态
+# 查看 OpenClaw Gateway 状态
 systemctl --user status hermes-gateway
 
 # 查看 Hindsight 状态
@@ -90,7 +93,7 @@ python3 ~/bin/session_archive.py
 
 | 服务 | 日志路径 |
 |------|---------|
-| Hermes Gateway | `~/.hermes/logs/gateway.log` |
+| OpenClaw Gateway | `~/.hermes/logs/gateway.log` |
 | Session 归档 | `~/logs/session_archive.log` |
 | Evolution | `~/.hermes/evolution/logs/` |
 | Hindsight API | systemd journal |
@@ -101,6 +104,6 @@ python3 ~/bin/session_archive.py
 
 ```
 PersonalKnowledge (GitHub: praxistech2026-eng/personal-knowledge-base)
-~/.hermes-archive/ (GitHub: praxistech2026-eng/sessions-backup)
+~/AgentArchives/ (GitHub: praxistech2026-eng/sessions-backup)
 Hindsight PostgreSQL (实时向量检索)
 ```

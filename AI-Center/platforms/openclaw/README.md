@@ -21,6 +21,8 @@
 
 **执行层**。OpenClaw 与 Hermes 共用 `openclaw-gateway` 进程，是 Hermes 的底层执行引擎。微信接入层也依赖 OpenClaw 插件。
 
+OpenClaw 的**网关端口是 `18789`**；这不是 Hermes 的端口。档案库里以后要把 `18789` 明确标成 OpenClaw Gateway。
+
 ## 配置
 
 ```
