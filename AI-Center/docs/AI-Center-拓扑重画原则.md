@@ -19,7 +19,7 @@
    - 只展示导航与状态，不承载服务逻辑
 
 3. **服务层**
-   - Hermes、Hindsight、n8n、SearXNG、AList、LiteLLM 等
+   - Hermes、Hindsight、n8n、SearXNG、OpenList、LiteLLM 等
 
 4. **LLM 网关层**
    - LiteLLM、MiniMax、Bailian、SenseNova、Volcengine、ChatGPT、Gemini
@@ -121,7 +121,7 @@
 - Hindsight
 - n8n
 - SearXNG
-- AList
+- OpenList
 - LiteLLM
 
 ### 5.4 LLM 网关层
