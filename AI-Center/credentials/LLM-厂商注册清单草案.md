@@ -92,28 +92,36 @@
 
 ## N) Agnes AI（Hub：apihub.agnes-ai.com）
 
-- **LiteLLM alias 规则**：`Agnes-<官方模型ID>`（待用户确认 model ID）
+- **LiteLLM alias 规则**：`Agnes-<官方模型ID>`
 - **套餐**：官网注册（具体套餐未提供）
 - **2026-06-20 注册**：用户提供
-- **API Key**：`sk-ywTxfQifM12QQanVaZKq2vl3pgOzbVGRYTajKFdV7QxvL5ZP`（明码，按用户偏好）
+- **API Key**：`sk-ywT...L5ZP`（明码，按用户偏好）
 - **base_url**：`https://apihub.agnes-ai.com/v1`
 - **协议**：OpenAI 兼容（`/v1/chat/completions`）
 
-### 2026-06-20 已知异常：DNS 路由失效
+### 2026-06-20 验证情况
 
-| 探测 | 结果 |
-|------|------|
-| `apihub.agnes-ai.com` DNS 解析 | `198.20.0.53`（Spectrum ISP 内网 IP，不是公网） |
-| TCP 443 | ✅ 通（fake-IP 段，本机可见） |
-| TLS 握手 | ❌ `SSL_ERROR_SYSCALL` |
-| HTTPS `/v1/models` | ❌ 超时空响应 |
-| NS 服务器 | `lady.ns.cloudflare.com` / `felicity.ns.cloudflare.com`（Cloudflare 托管） |
+- 域名 DNS 解析到 Spectrum ISP 段（198.20.0.x），**依赖后端 Spectrum 客户 IP 路由**——不同时刻可能漂移到不同 IP（198.20.0.53 失败过，198.20.0.70 当前可用）。已通过 `curl --resolve` 强制走 198.20.0.70 验证通过，返回 model 列表。
+- 用户手机 4G 网络能访问（手机走运营商 DNS 可能解析到不同/可用的 IP）
 
-**初步判断**：Agnes AI 使用 Cloudflare Spectrum/Magic Transit 把请求路由到后端 Spectrum 客户的内网服务器；当前路由可能已下线（用户确认之前能浏览器访问，目前不能）。Cloudflare 边缘没动，是 Agnes AI 后端服务异常。
+### 注册 model 列表（全部 5 个，含多模态）
 
-### 待办（用户验证后执行）
+| LiteLLM alias | 原始 model_id | 类型 |
+|---|---|---|
+| `Agnes-1.5-flash` | `agnes-1.5-flash` | chat (text) |
+| `Agnes-2.0-flash` | `agnes-2.0-flash` | chat (text) |
+| `Agnes-video-v2.0` | `agnes-video-v2.0` | video (text+image) |
+| `Agnes-image-2.0-flash` | `agnes-image-2.0-flash` | image (text+image) |
+| `Agnes-image-2.1-flash` | `agnes-image-2.1-flash` | image (text+image) |
 
-1. ⏸️ 用户在浏览器打开 https://apihub.agnes-ai.com/v1/models 验证
-2. ⏸️ 如果浏览器能通但本机不通 —— 需要排查 fake-IP / 路由
-3. ⏸️ 如果浏览器也不能通 —— Agnes AI 当前服务异常，等恢复后再注册
-4. ⏸️ 用户提供具体 model ID 后再正式写入 LiteLLM config
+### 已注册位置
+
+- **LiteLLM**：`~/workspace/litellm/config.yaml`（5 个 model_name 块，env 变量 `AGNES_CODING_API_KEY`）
+- **LiteLLM .env**：`~/workspace/litellm/.env`（`AGNES_CODING_API_KEY=sk-ywTx...L5ZP`）
+- **Hermes**：`~/.hermes/config.yaml` providers 段（`agnes` provider）+ quick_commands.models 5 个 alias + `~/.hermes/.env`（`AGNES_CODING_API_KEY`）
+- **OpenClaw**：`~/.openclaw/agents/main/agent/plugins/agnes/catalog.json`（plugin 形式，5 个 model + apiKey 内嵌）
+
+### 使用注意
+
+- 域名 `apihub.agnes-ai.com` DNS 不稳定，IP 在 198.20.0.x 段漂移。**每次大调用前先 `dig +short apihub.agnes-ai.com` 验证当前 IP 可达**。
+- 已知异常：第一次探测解析到 198.20.0.53 时 TLS 失败（IP 已下线/被回收）；现在 198.20.0.70 工作。
