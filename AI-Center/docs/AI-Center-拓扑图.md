@@ -124,6 +124,20 @@ LLM 网关层
 | 通知层 | 微信 / 飞书 / watchdog | 故障与摘要通道 | 只做最后一跳 |
 | 外部平台层 | Oracle / Tailscale 网络 / 外部 API | 外部依赖 | 不能当作本机服务 |
 
+### 家庭网络设备盘点（2026-06-20）
+
+| 设备 | 角色 | 当前态 |
+|---|---|---|
+| 254 | PVE 宿主 | 已核实 |
+| 253 | 爱快主路由 VM | 已核实（SSH 受限） |
+| 252 | iStoreOS 旁路由 VM | 已核实 |
+| 251 | 无线路由器 / AP | 已核实（SSH 未开） |
+| 250 | mesh 路由器 | 待盘点 / 暂未启用 |
+| 249 | Ubuntu AI 主机 | 已核实 |
+
+- 详细盘点见 `[infrastructure/home-network/README.md](../infrastructure/home-network/README.md)`
+- 当前口径：249 的现态服务名是 **OpenList**，不是 AList
+
 ### 当前运行状态说明
 
 - **运行中但需要登录/外部依赖**：

@@ -28,6 +28,16 @@ flowchart TB
 - **Tailscale**：`shin.tail8a16d3.ts.net`
 - **门户**：Homepage
 
+### 家庭网络设备
+
+- 总索引：`[infrastructure/home-network/README.md](../infrastructure/home-network/README.md)`
+- 254：PVE 宿主，承载 100 / 101 / 102 三台 VM
+- 253：爱快主路由 VM，Web 管理可达，SSH 当前凭据失败
+- 252：iStoreOS 旁路由 VM，OpenClash / Samba / NFS / Docker 已装
+- 251：无线 AP / 路由器，至少有 LuCI Web 管理口
+- 250：mesh 路由器，暂按待盘点
+- 249：AI 主机，现态为 Hermes / OpenClaw / LiteLLM / OpenList / Hindsight / SearXNG
+
 ### 当前核心服务
 
 - Hermes API Server：`8642`
@@ -93,13 +103,15 @@ flowchart TB
 | [n8n](../services/n8n/README.md) | 工作流自动化 | 5678 |
 | [openlist](../services/openlist/README.md) | 网盘聚合器（AList 社区 fork，v4.2.2） | 5244 |
 | [LiteLLM](../credentials/LiteLLM-模型配置方法.md) | 统一模型网关（ChatGPT / Gemini / MiniMax / 百炼 / SenseNova） | 4000 |
+| [AI-Center-巡检总控](./AI-Center-巡检总控.md) | 统一巡检总控（资源 / 服务 / 门户 / 数据 / 档案库 / 审计） | — |
 | [operations](../operations/README.md) | 巡检总入口 / 告警分级 / 恢复规则 | — |
 | [homepage](../homepage/README.md) | Homepage 门户配置 / services.yaml / bookmarks.yaml | — |
 | [fal-ai](../tools/fal-ai/README.md) | AI 图像生成 | — |
 | [search-tools](../tools/search-tools/README.md) | 搜索工具矩阵 | — |
 | [self-evolution](../services/self-evolution/README.md) | 自我进化优化 | — |
-| [tailscale](../infrastructure/tailscale/README.md) | VPN 远程访问 | — |
-| [skills-system](../skills-system/README.md) | 技能系统 | — |
+|| [home-network](../infrastructure/home-network/README.md) | 家庭网络总索引（HTPC / PVE / 路由 / 旁路由 / AP / mesh / AI 主机） | — |
+|| [tailscale](../infrastructure/tailscale/README.md) | VPN 远程访问 | — |
+|| [skills-system](../skills-system/README.md) | 技能系统 | — |
 
 > 纠错：**18789 归 OpenClaw Gateway，不要再标成 Hermes。** Hermes 官方 API Server 默认是 **8642**，当前本机已监听 `127.0.0.1:8642`，只能写成“本机可用、未对 LAN 开放”，不能再写成“未启用”。
 
