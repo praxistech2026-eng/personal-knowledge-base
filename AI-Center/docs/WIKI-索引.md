@@ -107,8 +107,8 @@ AI-Center/
 
 | 文件 | 说明 | 路径 |
 |------|------|------|
-| [花云_Mitce_Webshare_NovixLink场景优化版](../config/花云_Mitce_Webshare_NovixLink场景优化版.yaml) | OpenClash 主路由配置（AI 主落地 NovixLink，住宅链式 Webshare，2026-06-20 基于实际生效配置重建） | `config/花云_Mitce_Webshare_NovixLink场景优化版.yaml` |
-| [花云_Mitce_Webshare_NovixLink场景优化版_链式](../config/花云_Mitce_Webshare_NovixLink场景优化版_链式.yaml) | 同上 + AI-VLESS/AI-SS 加 `dialer-proxy: 🇺🇸 美国-故转`，用于对比测试链式 vs 直连 | `config/花云_Mitce_Webshare_NovixLink场景优化版_链式.yaml` |
+| [花云_Mitce_Webshare_NovixLink场景优化版](../config/花云_Mitce_Webshare_NovixLink场景优化版.yaml) | OpenClash 主路由配置（链式版：AI 主落地 dialer-proxy: 🇺🇸 美国-故转，2026-06-20 主用） | `config/花云_Mitce_Webshare_NovixLink场景优化版.yaml` |
+| [花云_Mitce_Webshare_NovixLink场景优化版_直连](../config/花云_Mitce_Webshare_NovixLink场景优化版_直连.yaml) | 直连版（AI 主落地无 dialer-proxy，用于对比测试直连 vs 链式） | `config/花云_Mitce_Webshare_NovixLink场景优化版_直连.yaml` |
 
 ---
 
