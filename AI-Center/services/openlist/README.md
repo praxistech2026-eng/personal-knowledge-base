@@ -63,48 +63,46 @@ AI Center (192.168.2.249)
 
 ---
 
-## 常用命令
+## USAGE_MANUAL
 
-```bash
-# 查看状态
-docker ps | grep openlist
+### 健康检查
 
-# 查看初始密码（首次启动后，从日志抓）
-docker logs openlist 2>&1 | grep "initial password"
+| 字段 | 值 | 说明 |
+|---|---|---|
+| 检查对象 | `openlist` 容器 / `5244` 端口 / Web UI | 以 live 服务为准 |
+| 检查命令 | `docker ps | grep openlist`；`curl -fsS http://127.0.0.1:5244` | 任一可达即算基本在线 |
+| 判据 | 容器在跑且 HTTP 可返回 | 不能只看镜像在不在 |
+| 频率 | 变更后 / 每次巡检 |  |
+| 失败动作 | 先查容器日志，再查挂载数据目录，再发告警 | 不要先猜密码或接口坏了 |
 
-# 重置密码（v3.25+ / v4.x 密码 hash 化，忘了只能重置）
-docker exec -it openlist ./openlist admin random
-# 或手动设置
-docker exec -it openlist ./openlist admin set NEW_PASSWORD
+### 备份
 
-# 查看日志
-docker logs -f openlist --tail 100
+| 字段 | 值 | 说明 |
+|---|---|---|
+| 备份对象 | `/home/shin/workspace/services/openlist/data` | 主要是 `config.json`、`data.db` 和挂载状态 |
+| 备份方式 | `tar -czf` 或现有备份流水线 | 先备份再升级 |
+| 频率 | 每次大变更前 / 定期巡检时 |  |
+| 保留策略 | 跟随 AI Center 备份策略 |  |
+| 恢复命令 | 还原 data 目录后重新启动容器 | 以原 docker run 参数为准 |
 
-# 升级（先看 release notes 是否有 Breaking Changes）
-docker pull openlistteam/openlist:latest
-docker stop openlist && docker rm openlist
-# 重新运行（参数见下方 docker run）
+### 告警
 
-# 数据备份
-tar -czf openlist-data-$(date +%Y%m%d).tar.gz \
-  /home/shin/workspace/services/openlist/data
-```
+| 字段 | 值 | 说明 |
+|---|---|---|
+| 告警条件 | 容器退出、`5244` 不通、登录异常、数据目录异常 | 任何一个都值得报警 |
+| 通知渠道 | 微信 / 运维日志 |  |
+| 兜底动作 | 先看日志和数据目录，再决定重启或回滚 | 不要直接重建 |
+| 升级路径 | 先自动巡检，失败后人工 |  |
 
-### 完整 docker run 命令
+### 恢复 / 回滚
 
-```bash
-docker run -d \
-  --name openlist \
-  --restart unless-stopped \
-  --user 0:0 \
-  -v /home/shin/workspace/services/openlist/data:/opt/openlist/data \
-  -p 5244:5244 \
-  -e UMASK=022 \
-  -e TZ=Asia/Shanghai \
-  openlistteam/openlist:latest
-```
+- 恢复前置条件：备份存在，知道最近一次可用配置
+- 回滚步骤：停止容器 → 恢复 `data` 目录 → 按原参数重启容器
+- 恢复后验证：`curl -fsS http://127.0.0.1:5244`、确认挂载列表和管理员登录
+- 恢复失败的下一步：查日志、查权限、查数据目录完整性
 
 ---
+
 
 ## 部署过程记录（2026-06-18）
 

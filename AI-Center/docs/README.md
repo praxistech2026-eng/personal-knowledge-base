@@ -3,6 +3,7 @@
 > 部署在家庭服务器上的 AI 智能体系统，包含 Agent、记忆、搜索、语音等全套能力。
 > 当前 AI Center 以国内套餐与本机服务为主，LLM 通过 LiteLLM 统一接入 MiniMax、Bailian、SenseNova、Volcengine、ChatGPT、Gemini；实时状态以 Homepage / watchdog 为准。
 > 归档范围不只限于本机：**AI Center 还包含 HTPC、家庭网络设备，以及这些设备上运行的全部服务与入口**。
+> 后续目标会继续扩展到账号、域名、证书、密钥、配置、迁移痕迹和调研过程，档案库要尽量做到可交接、可复原、可追溯。
 
 ---
 
@@ -35,7 +36,7 @@ flowchart TB
 - Hindsight：`8888`
 - n8n：`5678`
 - SearXNG：`7777`
-- AList：`5244`
+- OpenList：`5244`
 - LiteLLM：`4000`
 
 ### 组织关系说明
@@ -105,6 +106,8 @@ flowchart TB
 ## 档案库管理规则（16 条）
 
 > 目标：把“新增/升级/下线一个服务”收敛成同一套最小动作。能自动化就自动化，不能核实就保留原样，不靠记忆乱改。
+> 最高约束：`[AI-Center-档案库总则](./AI-Center-档案库总则.md)`；本节是执行摘要，不高于总则。
+> 当前执行版本：`[AI-Center-档案库V1](./AI-Center-档案库V1.md)`。
 
 ### A. 文档链路（1-6）
 
@@ -138,6 +141,7 @@ flowchart TB
 
 - 统一入口：`docs/USAGE_MANUAL-标准.md`
 - 每个服务 README 必须包含：健康检查 / 备份 / 告警 / 恢复
+- 模板总入口：`[docs/模板索引.md](./模板索引.md)`
 
 ---
 
