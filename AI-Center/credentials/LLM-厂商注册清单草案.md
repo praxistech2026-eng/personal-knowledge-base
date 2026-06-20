@@ -1,8 +1,15 @@
 # LLM 厂商注册清单草案
 
 > 来源：`LLM-厂商配置基线.md`
-> 目的：把“厂商前缀 + 官方模型ID”映射成 LiteLLM 可注册清单。
+> 目的：把"厂商前缀 + 官方模型ID"映射成 LiteLLM 可注册清单。
 > 说明：本草案先保留官方模型 ID 的原始写法；正式写入 LiteLLM 前再做一次终审。
+
+> **2026-06-15 状态**：本草案已**被实际 LiteLLM config 替代**。当前实挂在 LiteLLM 上的 24 个 model 详见：
+> - `docs/LiteLLM-健康快照-2026-06-15.md`（健康状态 + API base）
+> - `credentials/LLM-厂商配置基线.md`（每厂商当前挂载清单）
+> - `/home/shin/workspace/litellm/config.yaml`（机器实跑）
+>
+> 下文保留作为"已审过的厂商 ID 候选池"，**不再作为 LiteLLM 注册依据**。
 
 ---
 
@@ -54,18 +61,6 @@
 
 ---
 
-## 4) ZAI
-
-- **LiteLLM alias 规则**：`ZAI-<官方模型ID>`
-- **套餐**：GLM Max 469元/月
-- **建议注册**：
-  - `ZAI-glm-5.1`
-  - `ZAI-glm-5-Turbo`
-  - `ZAI-glm-4.7`
-  - `ZAI-glm-4.5-Air`
-
----
-
 ## 5) SenseNova
 
 - **LiteLLM alias 规则**：`SenseNova-<官方模型ID>`
@@ -74,16 +69,6 @@
   - `SenseNova-sensenova-6.7-flash-lite`
   - `SenseNova-sensenova-u1-fast`
   - `SenseNova-deepseek-v4-flash`
-
----
-
-## 6) DeepSeek
-
-- **LiteLLM alias 规则**：`DeepSeek-<官方模型ID>`
-- **套餐**：无套餐 API 接入（先占位）
-- **建议注册**：
-  - `DeepSeek-deepseek-v4-flash`
-  - `DeepSeek-deepseek-v4-pro`
 
 ---
 

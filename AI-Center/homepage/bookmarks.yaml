@@ -1,0 +1,181 @@
+---
+- 平台与文档:
+    - OpenClaw:
+        - abbr: OC
+          href: https://docs.openclaw.ai/
+          description: 多渠道 AI 网关 / 执行层 / 官方文档
+          status: external
+          probe: external
+    - Feishu:
+        - abbr: FS
+          href: https://open.feishu.cn/
+          description: 飞书开放平台 / 国内
+          status: external
+          probe: external
+    - WeChat:
+        - abbr: WX
+          href: https://developers.weixin.qq.com/doc/oplatform/Third-party_Platforms/Third_party_platform_app_serve.html
+          description: 微信公众号第三方平台文档 / 国内
+          status: external
+          probe: external
+    - MiniMax:
+        - abbr: MM
+          href: https://platform.minimaxi.com/
+          description: 主模型提供商 / Starter 29元/月 / 国内
+          status: external
+          probe: external
+    - Bailian:
+        - abbr: BL
+          href: https://bailian.console.alibabacloud.com/
+          description: 阿里云百炼 / Pro 200元/月 / 国内
+          status: external
+          probe: external
+    - Volcengine ARK:
+        - abbr: AR
+          href: https://www.volcengine.com/product/ark
+          description: 备选模型提供商 / Lite 40元/月 / 国内
+          status: external
+          probe: external
+    - ZAI / GLM:
+        - abbr: ZA
+          href: https://open.bigmodel.cn/
+          description: 智谱 GLM / Max 469元/月 / 国内
+          status: external
+          probe: external
+    - SenseNova:
+        - abbr: SN
+          href: https://platform.sensenova.cn/
+          description: 商汤日日新 / Free 0元/月 / 国内
+          status: external
+          probe: external
+    - DeepSeek:
+        - abbr: DS
+          href: https://platform.deepseek.com/
+          description: 官方开放平台 / API 接入 / 国内
+          status: external
+          probe: external
+    - ChatGPT:
+        - abbr: CG
+          href: https://chatgpt.com/
+          description: 海外个人套餐 / ChatGPT Plus / Pro
+          status: external
+          probe: external
+    - Gemini:
+        - abbr: GM
+          href: https://gemini.google.com/
+          description: 海外个人套餐 / Google Gemini
+          status: external
+          probe: external
+- 知识与仓库:
+    - PersonalKnowledge:
+        - abbr: PK
+          href: https://github.com/praxistech2026-eng/personal-knowledge-base
+          description: 知识沉淀仓库
+          status: external
+          probe: external
+    - Sessions Backup:
+        - abbr: SB
+          href: https://github.com/praxistech2026-eng/sessions-backup
+          description: 会话热备 / 冷备
+          status: external
+          probe: external
+    - Self-Evolution:
+        - abbr: GE
+          href: https://github.com/stanfordnlp/dspy
+          description: GEPA / DSPy 进化底座
+          status: external
+          probe: external
+- 工具:
+    - Whisper:
+        - abbr: WS
+          href: https://github.com/openai/whisper
+          description: 本地语音识别
+          status: external
+          probe: external
+    - Edge TTS:
+        - abbr: TT
+          href: https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech
+          description: 本地语音合成
+          status: external
+          probe: external
+    - Fal.ai:
+        - abbr: FA
+          href: https://fal.ai/
+          description: 图像生成 / FLUX
+          status: external
+          probe: external
+    - Search Tools:
+        - abbr: ST
+          href: https://jina.ai/reader/
+          description: Jina / Crawl4AI / Scrapling / CamoFox / DDGS / Tavily
+          status: external
+          probe: external
+- 主机与虚拟化:
+    - PVE:
+        - abbr: PV
+          href: https://192.168.2.254:8006
+          description: PVE 宿主机管理
+          status: running
+          probe: lan
+- Tailscale 远程入口:
+    - Tailscale:
+        - abbr: TS
+          href: https://tailscale.com/
+          description: VPN 远程访问 / tailnet shin
+          status: external
+          probe: external
+    - AI 主机 SSH:
+        - abbr: SH
+          href: ssh://shin@shin.tail8a16d3.ts.net
+          description: Ubuntu 24.04 主机 / 远程 Shell
+          status: running
+          probe: tailnet
+    - OpenClaw Gateway:
+        - abbr: OC
+          href: http://shin.tail8a16d3.ts.net:18789
+          description: 远程访问 / 执行层
+          status: running
+          probe: tailnet
+    - Hermes WebUI:
+        - abbr: HW
+          href: http://shin.tail8a16d3.ts.net:8787
+          description: 远程访问 / 浏览器管理界面
+          status: running
+          probe: tailnet
+    - Hindsight Dashboard:
+        - abbr: HD
+          href: http://shin.tail8a16d3.ts.net:9999/dashboard
+          description: 远程访问 / Next.js 控制台 (9999)
+          status: running
+          probe: tailnet
+    - Hindsight API:
+        - abbr: HA
+          href: http://shin.tail8a16d3.ts.net:8888/health
+          description: 远程访问 / 长期记忆 API 健康检查
+          status: running
+          probe: tailnet
+    - LiteLLM:
+        - abbr: LL
+          href: http://shin.tail8a16d3.ts.net:4000
+          description: 远程访问 / 统一模型网关
+          status: running
+          probe: tailnet
+    - OpenList:
+        - abbr: OL
+          href: http://shin.tail8a16d3.ts.net:5244
+          description: 远程访问 / 网盘聚合器 v4.2.2
+          status: running
+          probe: tailnet
+    - SearXNG:
+        - abbr: SX
+          href: http://shin.tail8a16d3.ts.net:7777
+          description: 远程访问 / 搜索聚合
+          status: running
+          probe: tailnet
+    - n8n:
+        - abbr: N8
+          href: http://shin.tail8a16d3.ts.net:5678
+          description: 远程访问 / 工作流自动化（当前未运行）
+          status: installed-not-running
+          probe: tailnet
+- 待恢复（Tailscale）: []

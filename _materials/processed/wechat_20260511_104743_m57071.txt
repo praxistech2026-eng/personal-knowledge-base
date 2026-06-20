@@ -1,0 +1,9 @@
+source_platform: weixin
+message_id: 57071
+session_id: 20260511_104707_dad98114
+session_title: GPT Image 2生成可编辑PPT可行性分析
+captured_at: 2026-06-04T00:16:47
+urls:
+- https://v.douyin.com/vytde7A2T1E/
+---
+7.46 【抖音精选】点击链接or复制打开app，看看【不写代码的盖朵的作品】GPT Image 2直接生成可编辑PPT，1分钟... https://v.douyin.com/vytde7A2T1E/ :0pm Q@x.sR QKj:/ 05/13 

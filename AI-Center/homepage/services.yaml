@@ -1,0 +1,79 @@
+- 核心服务:
+    - Hermes API Server:
+        href: http://127.0.0.1:8642/health
+        description: 本机 API 健康检查
+        status: running
+        probe: localhost
+    - Hermes WebUI:
+        href: http://192.168.2.249:8787
+        description: 浏览器管理界面
+        status: running
+        probe: lan
+    - OpenClaw Gateway:
+        href: http://192.168.2.249:18789
+        description: 执行层 / 共享网关
+        status: running
+        probe: lan
+    - Hindsight Health:
+        href: http://192.168.2.249:8888/health
+        description: 长期记忆健康检查
+        status: running
+        probe: lan
+    - LiteLLM:
+        href: http://192.168.2.249:4000
+        description: 统一模型网关
+        status: running
+        probe: lan
+    - OpenList:
+        href: http://192.168.2.249:5244
+        description: 网盘聚合器（v4.2.2）
+        status: running
+        probe: lan
+    - SearXNG:
+        href: http://192.168.2.249:7777
+        description: 隐私搜索聚合
+        status: running
+        probe: lan
+- 待恢复:
+    - n8n:
+        href: http://192.168.2.249:5678
+        description: 工作流自动化 / 当前未运行
+        status: installed-not-running
+        probe: lan
+- 主机与虚拟化:
+    - AI 主机（Ubuntu SSH）:
+        href: ssh://shin@192.168.2.249
+        description: Ubuntu 24.04 主机 / SSH 登录
+        status: running
+        probe: lan
+    - PVE 管理台:
+        href: https://192.168.2.254:8006
+        description: PVE 宿主机管理
+        status: running
+        probe: lan
+    - 爱快（主路由）:
+        href: http://192.168.2.253/login#/
+        description: 主路由 / DHCP / WAN 入口
+        status: running
+        probe: lan
+    - OpenWrt（iStoreOS）:
+        href: http://192.168.2.252/cgi-bin/luci/
+        description: 旁路由 / OpenClash 宿主
+        status: running
+        probe: lan
+    - OpenClash:
+        href: http://192.168.2.252/cgi-bin/luci/admin/services/openclash
+        description: 代理分流管理
+        status: running
+        probe: lan
+    - Zashboard / Mihomo:
+        href: http://192.168.2.252:9090/ui/zashboard/#/overview
+        description: OpenClash 面板 / Mihomo API
+        status: running
+        probe: lan
+    - 锐捷路由:
+        href: http://192.168.2.251/cgi-bin/luci/
+        description: 路由管理页面
+        status: running
+        probe: lan
+- 待恢复: []

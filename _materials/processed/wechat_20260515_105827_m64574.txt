@@ -1,0 +1,9 @@
+source_platform: weixin
+message_id: 64574
+session_id: 20260515_105758_ba8fd5de
+session_title: 多Agent团队搭建解析
+captured_at: 2026-06-04T00:16:47
+urls:
+- https://v.douyin.com/EGywCMxFW1E/
+---
+8.20 【抖音精选】点击链接or复制打开app，看看【沐晨AI笔记的作品】Hermes真正难是怎么组织一支多Agent团队 ... https://v.douyin.com/EGywCMxFW1E/ SyG:/ 01/09 a@a.AT :7pm 

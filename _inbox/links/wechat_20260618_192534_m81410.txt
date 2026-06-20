@@ -1,0 +1,9 @@
+source_platform: weixin
+message_id: 81410
+session_id: 20260618_192529_73ac3cc0
+session_title: 
+captured_at: 2026-06-18T19:25:36
+urls:
+- https://v.douyin.com/ijUh1_3KEPQ/
+---
+8.74 【抖音精选】点击链接or复制打开app，看看【木子不写代码的作品】AI做PPT零基础终极教程！ 这是目前最完整的 A... https://v.douyin.com/ijUh1_3KEPQ/ tRk:/ :5pm z@G.VL 04/01 

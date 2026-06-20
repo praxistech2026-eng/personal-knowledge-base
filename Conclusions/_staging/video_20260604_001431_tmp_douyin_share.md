@@ -1,0 +1,38 @@
+---
+title: 视频待补抓 - AI做PPT保姆级解析！【附提示词】
+created: 2026-06-04
+type: video
+status: pending
+source: /home/shin/workspace/tmp_douyin_share.txt
+source_url: https://v.douyin.com/rL0bahMXyi4/
+platform: douyin
+canonical_url: https://www.douyin.com/video/7646615653985570091
+expanded_url: https://www.douyin.com/video/7646615653985570091?previous_page=app_code_link
+video_id: 7646615653985570091
+author_fragment: PPT教练小木
+fail_reason: ERROR: [Douyin] 7646615653985570091: Fresh cookies (not necessarily logged in) are needed
+---
+# AI做PPT保姆级解析！【附提示词】
+
+**平台**: douyin
+**作者片段**: PPT教练小木
+**原始短链**: https://v.douyin.com/rL0bahMXyi4/
+**展开后链接**: https://www.douyin.com/video/7646615653985570091?previous_page=app_code_link
+**Canonical 链接**: https://www.douyin.com/video/7646615653985570091
+**Video ID**: 7646615653985570091
+**抓取状态**: 失败，已进入待补抓
+
+## 原始分享文本
+
+4.38 【抖音精选】点击链接or复制打开app，看看【PPT教练小木的作品】AI做PPT保姆级解析！【附提示词】 # PPT ... https://v.douyin.com/rL0bahMXyi4/ 03/18 :4pm c@N.Ji ULj:/
+写入知识库
+
+## 失败原因
+
+ERROR: [Douyin] 7646615653985570091: Fresh cookies (not necessarily logged in) are needed
+
+## 下一步建议
+
+- retry-expand
+- manual-open
+- ask-user-full-text

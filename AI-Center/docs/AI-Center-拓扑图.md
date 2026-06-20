@@ -6,107 +6,168 @@
 ---
 
 ## 整体架构
+
+### 分层总览
+
+```mermaid
+flowchart TB
+    subgraph Entry[入口层]
+        Tailscale[Tailscale / tailnet]
+        LAN[LAN 192.168.2.249]
+        Localhost[localhost]
+    end
+
+    subgraph Portal[门户层]
+        Homepage[Homepage]
+    end
+
+    subgraph Services[服务层]
+        HermesAPI[Hermes API Server 8642]
+        HermesUI[hermes-webui 8787]
+        OpenClaw[OpenClaw Gateway 18789]
+        Hindsight[Hindsight 8888 / PostgreSQL 5432]
+        n8n[n8n 5678]
+        SearXNG[SearXNG 7777]
+        OpenList[OpenList 5244]
+        LiteLLM[LiteLLM 4000]
+    end
+
+    subgraph Gateway[LLM网关层]
+        MiniMax[MiniMax Token Plan]
+        Bailian[Bailian Token Plan]
+        SenseNova[SenseNova]
+        Volcengine[Volcengine]
+        ChatGPT[ChatGPT]
+        Gemini[Gemini]
+    end
+
+    subgraph Data[数据层]
+        Sessions[/sessions backup/]
+        Vault[PersonalKnowledge / Obsidian]
+        PG[(PostgreSQL)]
+    end
+
+    subgraph Backup[备份层]
+        SessionBackup[session-backup.py]
+        GitBackup[sessions-git-backup.sh]
+        HindsightImport[sessions-to-hindsight.py]
+    end
+
+    subgraph Notify[通知层]
+        WeChat[微信]
+        Feishu[飞书]
+        Watchdogs[watchdog / cron]
+    end
+
+    subgraph External[外部平台层]
+        FeishuExt[Feishu API]
+        WeChatExt[WeChat API]
+        Oracle[Oracle Cloud]
+        Tailnet[Tailscale 网络]
+    end
+
+    Entry --> Portal
+    Portal --> Services
+    Services --> Gateway
+    Services --> Data
+    Data --> Backup
+    Backup --> Notify
+    Notify --> External
 ```
 
-远程访问 (Tailscale VPN):
-  ┌─────────────────────────────────────────────────────┐
-  │  Tailscale VPN — 加密直连，Tailnet: shin           │
-  │  节点: shin (本机) ↔ wangxindemacbook-pro (Mac远程)  │
-  │  Linux 节点 IP: 100.113.209.2                      │
-  │  Mac 节点 IP:   100.114.100.50                      │
-  │  域名: shin.tail8a16d3.ts.net                     │
-  └─────────────────────────────────────────────────────┘
+### ASCII 快图
 
-                         ┌─────────────────────────────────────────────────────┐
-                         │              AI Center (192.168.2.249)              │
-                         │                                                      │
-                         │   ┌──────────────────┐      ┌──────────────────┐  │
-                         │   │  OpenClaw Gateway│      │ Hermes API Server│  │
-                         │   │  port: 18789    │      │  port: 8642 (未启用) │  │
-                         │   └────────┬─────────┘      └──────────────────┘  │
-                         │            │                                       │
-                         │   ┌────────▼─────────┐                              │
-                         │   │  hermes-webui    │                              │
-                         │   │  port: 8787      │                              │
-                         │   └──────────────────┘                              │
-                         │                                                      │
-                         │   ┌──────────────────┐  ┌──────────────────────┐    │
-                         │   │  n8n             │  │  Hindsight (8888)   │    │
-                         │   │  port: 5678      │  │  PostgreSQL (5432)   │    │
-                         │   └──────────────────┘  └──────────────────────┘    │
-                         │                                                      │
-                         │   ┌──────────────────┐                              │
-                         │   │  SearXNG (7777)  │                              │
-                         │   └──────────────────┘                              │
-                         └─────────────────────────────────────────────────────┘
-
-外部平台: 飞书 / 微信
-
-AI Provider: MiniMax-M2.7 (主) / DeepSeek-V3.2 (备) / LiteLLM Proxy (4000，ChatGPT 订阅网关)
-  ┌─────────────┐     ┌──────────────────────────────┐
-  │ LiteLLM     │ ←── │ ChatGPT / MiniMax / 百炼 /   │
-  │ Proxy 4000  │     │ SenseNova / 统一模型路由     │
-  └─────────────┘     └──────────────────────────────┘
-  ┌─────────────┐     ┌──────────────────┐
-  │ MiniMax-CN  │ ←── │ MiniMax-M2.7    │  主模型 (primary)
-  │ (api.minimaxi.com/anthropic) │
-  └─────────────┘     └──────────────────┘
-  ┌─────────────┐     ┌──────────────────┐
-  │ Volcengine  │ ←── │ DeepSeek-V3.2    │  备选
-  │ ARK         │     │ Doubao-seed-2.0  │
-  │ (ark.cn-beijing.volces.com) │        │  备选
-  └─────────────┘     └──────────────────┘
-
-内存/知识:
-  ┌──────────┐  ┌────────┐  ┌─────────┐  ┌───────────┐
-  │ Hindsight│  │ ✅已部署│  │super mem│  │Hermes内置 │
-  │(PostgreSQL)│ │ ✅已部署│  │(未部署) │  │ memory-core│
-  └──────────┘  └────────┘  └─────────┘  └───────────┘
-  → Bank: Hermes，向量检索，61 条 session 记录
-
-WIKI 目录结构:
-  AI-Center/
-  ├── services/        # 常驻进程：hermes, hindsight, searxng, self-evolution, sessions-backup
-  ├── tools/          # 按需调用：whisper, edge-tts, fal-ai, search-tools
-  ├── platforms/      # 外部集成：feishu, wechat, minimax, volcengine, openclaw
-  ├── infrastructure/ # 基础设施：tailscale, oracle-cloud
-  ├── docs/           # 系统文档：拓扑图、设计说明、README、WIKI-索引
-  ├── credentials/    # 敏感凭证 + 厂商模型基线 + LiteLLM 配置速查 / 可用性快照
-  └── config/         # 配置文件
-  → 索引入口: docs/WIKI-索引.md
-
-会话存档备份（三层架构）:
-  ┌──────────────────────────────────────────────────────────────┐
-  │  热备: /home/shin/sessions/ (hermes + openclaw)            │
-  │    → 每小时增量: session-backup.py                         │
-  │    → manifest.json 索引                                   │
-  │                                                           │
-  │  冷备: GitHub sessions-backup                             │
-  │    → 每小时检测: sessions-git-backup.sh                   │
-  │    → sessions_YYYYMMDD_HHMMSS.tar.zst                    │
-  │                                                           │
-  │  向量库: Hindsight PostgreSQL                             │
-  │    → 每日增量: sessions-to-hindsight.py                  │
-  │    → 心跳会话 → heartbeat.log（不进向量库）               │
-  └──────────────────────────────────────────────────────────────┘
-
-个人知识沉淀系统（全自动）:
-  ┌──────────────────────────────────────────────────────────────┐
-  │  Mac vault → Git push → 服务器每分钟 pull → _inbox/         │
-  │    Mac post-commit hook → git push origin main              │
-  │                                                           │
-  │  inotifywait 实时监听 → process-inbox.py                   │
-  │    → 音频/视频/文档/图片/链接/代码/电子书/邮件/字体         │
-  │    → SensNova deepseek-v4-flash AI 增强（免费）            │
-  │    → 写 _processed/ JSONL                                 │
-  │                                                           │
-  │  每日 10:00（HTTPS cron → Hermes Agent skill）              │
-  │    → 读 _processed/*.jsonl（未确认）                       │
-  │    → 微信简报（o9cq8022Q3Wf68yW46_e6GOiklWA@im.wechat）  │
-  │    → 你回复「确认入库」→ daily-briefing.py confirm        │
-  │    → 写 Obsidian → Knowledge/{category}/                  │
-  └──────────────────────────────────────────────────────────────┘
+```text
+入口层
+  ├─ Tailscale / LAN / localhost
+  ↓
+门户层
+  └─ Homepage
+     ↓
+服务层
+  ├─ Hermes API / hermes-webui / OpenClaw
+  ├─ Hindsight / PostgreSQL
+  ├─ n8n / SearXNG / OpenList
+  └─ LiteLLM
+        ↓
+LLM 网关层
+  ├─ MiniMax Token Plan
+  ├─ Bailian Token Plan
+  ├─ SenseNova / Volcengine / ChatGPT / Gemini
+  ↓
+数据层
+  ├─ sessions backup
+  ├─ PersonalKnowledge / Obsidian
+  └─ PostgreSQL
+  ↓
+备份层
+  ├─ session-backup.py
+  ├─ sessions-git-backup.sh
+  └─ sessions-to-hindsight.py
+  ↓
+通知层
+  ├─ 微信
+  ├─ 飞书
+  └─ watchdog / cron
 ```
+
+### 关系说明
+
+| 层级 | 代表节点 | 作用 | 备注 |
+|---|---|---|---|
+| 入口层 | Tailscale / LAN / localhost | 人和脚本如何进入系统 | 只管入口，不管业务 |
+| 门户层 | Homepage | 导航 + 状态总览 | 既看入口，也看健康 |
+| 服务层 | Hermes / Hindsight / n8n / SearXNG / OpenList / LiteLLM | 具体功能服务 | 长期维护主体 |
+| LLM网关层 | MiniMax / Bailian / SenseNova / Volcengine / ChatGPT / Gemini | 模型路由与供应商接入 | 供应商状态独立维护 |
+| 数据层 | PostgreSQL / sessions / vault | 持久化存储 | 状态敏感，重点保护 |
+| 备份层 | session-backup / Git backup / hindsight import | 恢复能力 | 失败必须告警 |
+| 通知层 | 微信 / 飞书 / watchdog | 故障与摘要通道 | 只做最后一跳 |
+| 外部平台层 | Oracle / Tailscale 网络 / 外部 API | 外部依赖 | 不能当作本机服务 |
+
+### 当前运行状态说明
+
+- **运行中但需要登录/外部依赖**：
+  - SearXNG
+  - n8n
+  - OpenList
+  - LiteLLM
+- **本机核心服务**：
+  - Hermes API Server
+  - hermes-webui
+  - OpenClaw Gateway
+  - Hindsight
+- **实时状态与长期事实分离**：
+  - PID、瞬时健康、临时限流不再写进拓扑正文
+  - 长期事实留在下半部分服务详情、凭证总册和历史快照中
+
+### 现有目录结构（简版）
+
+```text
+AI-Center/
+├── services/
+├── tools/
+├── platforms/
+├── infrastructure/
+├── docs/
+├── credentials/
+├── operations/
+├── homepage/
+├── config/
+└── skills-system/
+```
+
+### 索引入口
+
+- `docs/WIKI-索引.md`
+
+### 会话存档与知识沉淀
+
+- 会话热备：`/home/shin/sessions/`
+- 冷备：`sessions-backup` GitHub 仓库
+- 向量检索：Hindsight PostgreSQL
+- 知识沉淀：PersonalKnowledge / Obsidian
+
+> 下方服务详情继续保留，用于逐服务维护与历史记录。
 
 ---
 
@@ -134,8 +195,8 @@ WIKI 目录结构:
 |------|-----|
 | **类型** | Hermes 官方 OpenAI 兼容 API |
 | **官方默认端口** | `8642` |
-| **当前状态** | ⚠️ 当前主机未监听（`nc` 连接被拒绝） |
-| **用途** | Open WebUI / 外部客户端调用 Hermes |
+| **当前状态** | ✅ 本机监听 `127.0.0.1:8642`（`/health` 返回 ok） |
+| **用途** | Open WebUI / 本机客户端调用 Hermes |
 | **备注** | 与 OpenClaw Gateway 的 `18789` 是不同入口 |
 
 ---
@@ -196,14 +257,14 @@ WIKI 目录结构:
 | **类型** | OpenClaw 平台插件 (`channels.feishu`) |
 | **插件配置路径** | `~/.openclaw/feishu/` |
 | **App ID** | `cli_a951cc68c0789cee` |
-| **App Secret** | `gUC1mThDY8JklxkPV3czGcbSq4GLslAb` |
+| **App Secret** | 见 `~/.openclaw/feishu/` 配置 |
 | **启用状态** | ✅ 已启用 |
 | **订阅事件** | `im.message.receive_v1` |
 | **用户 ID 类型** | `open_id`（格式：`ou_xxx`） |
 
 > 🔑 **凭证信息**（请勿外泄）:
 > - App ID: `cli_a951cc68c0789cee`
-> - App Secret: `gUC1mThDY8JklxkPV3czGcbSq4GLslAb`
+> - App Secret: 见 `~/.openclaw/feishu/` 配置
 
 ---
 
@@ -449,11 +510,12 @@ WIKI 目录结构:
 | 18789 | OpenClaw Gateway | ✅ | 无认证，建议内网使用 |
 | 18791 | OpenClaw API Server | ✅ | API Key: `67748299` |
 | 3334 | Hermes Internal RPC | ❌ 本地 | - |
-| 8642 | Hermes API Server | ⚠️ 当前未监听 | 官方默认端口 |
+| 8642 | Hermes API Server | ⚠️ 本机监听，未对 LAN 开放 | 官方默认端口 |
 | 8787 | hermes-webui | ✅ | ⚠️ 无认证，建议内网使用 |
-| 7777 | SearXNG | ✅ | 搜索服务 |
+| 7777 | SearXNG | ✅ | 运行中 / 200 |
 | 631 | CUPS 打印 | ✅ | 可关闭 |
-| 5678 | n8n | ✅ | 工作流自动化 |
+| 5678 | n8n | 🟡 已安装未运行 | 工作流自动化 |
+| 5244 | OpenList | 🟢 运行中 | 网盘聚合器 v4.2.2（已挂载 /quark 夸克 + /baidu 百度 + /alipan 阿里云盘 Open） |
 
 ### Tailscale CLI 节点（Mac）
 
@@ -528,6 +590,17 @@ WIKI 目录结构:
 | 2026-05-22 | 新增 LiteLLM 统一模型网关记录；ChatGPT health probe 通过 runtime patch 纠正为真实 responses 探测，模型配置未改 |
 | 2026-05-10 | 重构 AI-Center 目录结构：按 services/tools/platforms/infrastructure/docs/credentials/config 分类，新增 WIKI-索引.md |
 | 2026-05-10 | 上线个人知识沉淀系统：inbox-watcher + process-inbox.py + daily-briefing.py + SensNova AI增强 + Hermes cron简报 |
+| 2026-06-04 | 调研 AList 网盘聚合器，输出调研报告 + 服务 README；建立《服务档案管理方法论》明确归档标准；后续实际部署见下一条 |
+| 2026-06-04 | AList 实际部署：镜像 xhofe/alist:latest (amd64 53MB，alist666/alist 只有 arm64)；20 位强密码写入 .env；3 项访客权限全关；端口 5244 LAN 200 OK；数据落盘 /home/shin/workspace/services/alist/data |
+| 2026-06-17 | OpenList 调研完成：v4.2.2 为最新稳定版；v4.1+ Docker 部署变更（PUID/PGID 废弃，改用 --user）；驱动代码与 AList 主体共用，夸克一样烂；调研报告 `services/openlist/调研报告-OpenList.md` |
+| 2026-06-18 | AList 完全卸载（容器/镜像/data/.env/档案）；OpenList v4.2.2 部署：openlistteam/openlist:latest (amd64 52MB)；--user 0:0；端口 5244 LAN 200 OK；3 项访客权限全关；20 位强密码写入 .env；档案库迁移 services/alist/ → services/openlist/ |
+| 2026-06-18 | 夸克网盘挂载成功：用户 Chrome F12 提供 Cookie 1942 字符/21 段，OpenList 创建 storage id=1（mount_path=/quark），验证列出 7 个真实文件夹（含"我的备份 / 夸克精选壁纸 / 来自：分享"）；Cookie 备份到 `~/workspace/services/openlist/data/quark.cookie.bak` (chmod 600) |
+| 2026-06-18 | ⚠️ 用户将 OpenList admin 密码改为 `67748299`，与 SSH/OpenClaw API Key/PVE 密码完全相同，**密码重用风险已记录在 credentials/系统凭证备忘录.md**，建议 30 天内轮转 |
+| 2026-06-18 | Homepage 真相：实际跑在 192.168.2.254:3000（不在 AI Center）；AI Center 档案库的 yaml 是副本；254 live panel 仍显示 "AList"（旧名）；同步清单 `homepage/254同步操作清单.md` |
+| 2026-06-18 | 254 上的 Homepage 同步完成：用 sshpass 远程改 services.yaml + bookmarks.yaml（AList → OpenList + 描述加 v4.2.2），修复一处正则多吃的冒号，YAML 校验通过，docker restart homepage，live API 验证已返回 OpenList（无 AList 残留）；备份 services.yaml.bak.20260618 + bookmarks.yaml.bak.20260618 |
+| 2026-06-18 | 百度网盘挂载成功：用 OpenList v4 源码查证路线——`api_url_address=https://api.oplist.org/baiduyun/renewapi` 实现免 client_id 中转；首轮 refresh_token 失败 `invalid refresh token, lifetime changed`（api.oplist.org 工具的"防滥用"机制）；换新 token 后 storage id=5 创建成功，列根目录 64 项真实文件（含 apps/ShuangYe's PICs/发票/《数据化智能营销与Martech》资料包 等）；token 备份到 `~/workspace/services/openlist/data/baidu.token.bak` (chmod 600) |
+| 2026-06-18 | Homepage 254 live 面板追加"百度网盘 (via OpenList)"卡片，指向 http://192.168.2.249:5244/baidu；备份 services.yaml.bak.20260618b |
+| 2026-06-18 | 阿里云盘 Open 挂载成功：用户从 api.oplist.org 工具拿到 JWT 风格 refresh_token（iat=2026-06-17, exp=2026-09-08，新格式，OpenList v4.2.2 完美支持）；storage id=6 创建成功，**关键修复 root_folder_id 从 "" 改为 "root"**（阿里云盘 API 必填），列根目录 1 项「来自分享」；token 备份到 `~/workspace/services/openlist/data/alipan.token.bak` (chmod 600) |
 
 ---
 
@@ -541,7 +614,7 @@ WIKI 目录结构:
 | Hindsight bank | `Hermes` |
 | Hindsight runtime | `auto_recall=false`，`auto_retain=false`，`retain_async=true`，`retain_every_n_turns=10` |
 | 召回默认 | workspace-tag 过滤 |
-| 抽取模型 | DeepSeek official API `deepseek-chat`（lite） |
+| 抽取模型 | 已移除（待替换） |
 | worker | `max_slots=1` |
 | 代码修复 | `hindsight_retain` 同步透传 `retain_async` 已修复并通过回归测试 |
 | 当前基线 | `PASS=67 WARN=2 FAIL=0` |

@@ -58,41 +58,44 @@ proxy-providers:
 proxies:
   - name: 直连
     type: direct
+
   - name: 拒绝
     type: reject
 
   # ========================
-  # AI 主落地：同一 Amazon 出口 IP，下挂两种协议
+  # AI 主落地（NovixLink）：同一 NovixLink 出口 IP，下挂两种协议
   # 目标：协议 fallback，但出口身份不漂移
+  # 2026-06-20 重建：原 Amazon (170.9.16.186) + Oracle (146.235.234.135) 已失效
+  # 新节点：NovixLink (149.7.2.186)
   # ========================
-  - name: 🇺🇸 AI-VLESS
+  - name: 🇺🇸 NovixLink-AI-VLESS
     type: vless
-    server: 170.9.16.186
+    server: hhy.wang
     port: 443
-    uuid: 81e00257-cde5-4b56-b57f-c070df37a444
+    uuid: "3374a71e-d31a-46c2-835e-6495d5ba5235"
     network: ws
     tls: true
+    udp: true
     servername: hhy.wang
-    skip-cert-verify: false
+    dialer-proxy: 🇺🇸 美国-故转       # 2026-06-20 链式代理：前链走机场美国节点，解决 NovixLink 跨境带宽差
     ws-opts:
       path: /ray
       headers:
         Host: hhy.wang
 
-  - name: 🇺🇸 AI-SS
+  - name: 🇺🇸 NovixLink-AI-SS
     type: ss
-    server: 170.9.16.186
+    server: hhy.wang
     port: 8388
     cipher: chacha20-ietf-poly1305
-    password: "Wangshin0)"
+    password: "MkhrgzI6WvoQ1brBPiJI"
     udp: false
+    dialer-proxy: 🇺🇸 美国-故转       # 2026-06-20 链式代理：与 VLESS 同身份同前链
 
   # ========================
-  # 特殊身份：住宅链式落地
-  # 前置必须走美国机场节点
-  # 实际链路：设备 → OpenClash → 🇺🇸 美国-故转 → 住宅落地 → 目标站
+  # 特殊身份：住宅链式落地（用户原有 Webshare 节点）
   # ========================
-  - name: 🏠 美国住宅
+  - name: Webshare-美国-落地
     type: socks5
     server: 208.66.74.168
     port: 5483
@@ -101,371 +104,42 @@ proxies:
     udp: true
     dialer-proxy: 🇺🇸 美国-故转
 
-# ========================
-# 端口与基础设置
-# ========================
-port: 7890
-socks-port: 7891
-redir-port: 7892
-mixed-port: 7893
-tproxy-port: 7895
-allow-lan: true
-mode: rule
-log-level: info
-external-controller: 0.0.0.0:9090
-secret: "123456"
-ipv6: true
-
-# ========================
-# DNS
-# ========================
-dns:
-  enable: true
-  listen: 0.0.0.0:7874
-  ipv6: true
-  enhanced-mode: fake-ip
-  fake-ip-range: 198.20.0.1/16
-  nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
-    - https://doh.pub/dns-query
-    - https://dns.alidns.com/dns-query
-  fallback:
-    - 8.8.8.8
-    - 1.1.1.1
-    - https://dns.google/dns-query
-    - https://cloudflare-dns.com/dns-query
-  fake-ip-filter-mode: blacklist
-  fake-ip-filter:
-    - +.lan
-    - +.local
-    - geosite:cn
-    - +.msftconnecttest.com
-    - +.msftncsi.com
-    - +.stun.*.*
-    - +.stun.*.*.*
-    - +.time.windows.com
-    - +.time.apple.com
-    - +.pool.ntp.org
-    - +.ntp.org.cn
-    - +.ynhtbank.com
-    - +.qeayr.cn
-    - +.saojc.xyz
-    - +.sssyun.xyz
-    - +.dler.cloud
-    - +.0tk8a3a1q4t94dler.com
-    - +.aerianas.top
-    - +.gptacg.top
-    - +.wxda.net
-
-# ========================
-# TUN
-# ========================
-tun:
-  enable: true
-  stack: gvisor
-  device: utun
-  endpoint-independent-nat: true
-  auto-route: false
-  auto-detect-interface: false
-  auto-redirect: false
-  strict-route: false
-
-profile:
-  store-selected: true
-  store-fake-ip: true
-
-# ========================
-# 规则集模板
-# ========================
-rule-anchor:
-  domain-mrs: &domain-mrs
-    type: http
-    interval: 86400
-    behavior: domain
-    format: mrs
-
-  ip-mrs: &ip-mrs
-    type: http
-    interval: 86400
-    behavior: ipcidr
-    format: mrs
-
-  classical: &classical
-    type: http
-    interval: 86400
-    behavior: classical
-    format: text
-
-# ========================
-# 规则集提供者
-# ========================
-rule-providers:
-  # ===== 基础 =====
-  Private:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"
-  China-Domain:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs"
-  China-IP:
-    <<: *ip-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cn.mrs"
-  GFW:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs"
-  Ads:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.mrs"
-
-  # ===== AI =====
-  OpenAI:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.list"
-  Anthropic:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Anthropic/Anthropic.list"
-  Claude:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Claude/Claude.list"
-  Gemini:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.list"
-  Copilot:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Copilot/Copilot.list"
-  Perplexity:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/perplexity.mrs"
-  Groq:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/groq.mrs"
-  HuggingFace:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/huggingface.mrs"
-
-  # ===== 支付 / 金融身份 =====
-  PayPal:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PayPal/PayPal.list"
-  Stripe:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Stripe/Stripe.list"
-
-  # ===== 虚拟货币 =====
-  Binance:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/binance.mrs"
-  OKX:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/okx.mrs"
-  Bybit:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bybit.mrs"
-  Crypto:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Crypto/Crypto.list"
-
-  # ===== 流媒体 / 社交 =====
-  TikTok:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.mrs"
-  Netflix:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.mrs"
-  Netflix-IP:
-    <<: *ip-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/netflix.mrs"
-  Disney:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Disney/Disney.list"
-  PrimeVideo:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PrimeVideo/PrimeVideo.list"
-  HBO:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/HBO/HBO.list"
-  Hulu:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/hulu.mrs"
-  YouTube:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.list"
-  Spotify:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Spotify/Spotify.list"
-  AppleMusic:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AppleMusic/AppleMusic.list"
-  Twitter:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.list"
-  Facebook:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Facebook/Facebook.list"
-  Instagram:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Instagram/Instagram.list"
-  Telegram:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs"
-  Telegram-IP:
-    <<: *ip-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/telegram.mrs"
-
-  # ===== 游戏 =====
-  Steam:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Steam/Steam.list"
-  Epic:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Epic/Epic.list"
-  EA:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/EA/EA.list"
-  Blizzard:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Blizzard/Blizzard.list"
-  UBI:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/UBI/UBI.list"
-  PlayStation:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PlayStation/PlayStation.list"
-  Nintendo:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Nintendo/Nintendo.list"
-  Nvidia:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Nvidia/Nvidia.list"
-  Riot:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Riot/Riot.list"
-
-  # ===== 开发 / 云 / 通用国外 =====
-  GitHub:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs"
-  Microsoft:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs"
-  Apple:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs"
-  Apple-CN:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple-cn.mrs"
-  Google:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs"
-  Google-IP:
-    <<: *ip-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.mrs"
-  Cloudflare:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cloudflare.mrs"
-  Discord:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/discord.mrs"
-  Notion:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/notion.mrs"
-  Slack:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/slack.mrs"
-  Reddit:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Reddit/Reddit.list"
-  Wikipedia:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Wikipedia/Wikipedia.list"
-  Proxy:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Proxy/Proxy.list"
-  Direct:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Direct/Direct.list"
-  NetEase:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/NetEase/NetEase.list"
-
-  # ===== 国内身份 / 账号 / 支付 / 电商 / 银行 / 运营商：高优先级直连 =====
-  Tencent:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Tencent/Tencent.list"
-  WeChat:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/WeChat/WeChat.list"
-  Alibaba:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Alibaba/Alibaba.list"
-  Baidu:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Baidu/Baidu.list"
-  XiaoMi:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/XiaoMi/XiaoMi.list"
-  MeiTuan:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/MeiTuan/MeiTuan.list"
-  DouYin-CN:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/DouYin/DouYin.list"
-  ChinaMobile:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaMobile/ChinaMobile.list"
-  ChinaTelecom:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaTelecom/ChinaTelecom.list"
-  ChinaUnicom:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaUnicom/ChinaUnicom.list"
-  ABC:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ABC/ABC.list"
-  ICBC:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ICBC/ICBC.list"
-  CCB:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/CCB/CCB.list"
-  CMB:
-    <<: *classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/CMB/CMB.list"
-  JD-CN:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/jd.mrs"
-  Bilibili-CN:
-    <<: *domain-mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bilibili.mrs"
-
-# ========================
-# 策略组
-# ========================
 proxy-groups:
+
   # ===== ① 日常需要你选择的业务策略组 =====
   - name: 🤖 AI-高敏固定
     type: select
     proxies:
-      - 🇺🇸 AI-主落地
-      - 🏠 美国住宅
+      # Webshare 当前对 chatgpt.com 出现 403；默认先用普通美国固定区，Webshare 作为手动身份出口保留。
+      - 🇺🇸 美国-故转
+      - 🛬 美国-住宅落地
+      - 🇯🇵 日本-故转
+      - 🇸🇬 新加坡-故转
 
   - name: 🧠 AI-普通
     type: select
     proxies:
       - 🇺🇸 AI-主落地
       - 🇺🇸 美国-故转
+      - 🇯🇵 日本-故转
       - 🇸🇬 新加坡-故转
+      - 🇭🇰 香港-故转
+      - ⚡ 所有-自动
 
   - name: 💳 支付-固定身份
     type: select
     proxies:
-      - 🏠 美国住宅
+      - 🛬 美国-住宅落地
+      - 🇺🇸 美国-故转
+      - 🇭🇰 香港-故转
+      - 🇸🇬 新加坡-故转
 
   - name: 🪙 交易所-稳定区
     type: select
     proxies:
       - 🇸🇬 新加坡-故转
+      - 🇭🇰 香港-故转
+      - 🇯🇵 日本-故转
       - 🇹🇼 台湾-故转
       - 🇺🇸 美国-故转
 
@@ -476,7 +150,7 @@ proxy-groups:
       - 🇸🇬 新加坡-故转
       - 🇺🇸 美国-故转
       - 🇰🇷 韩国-故转
-      - 🇹🇼 台湾-故转
+      - 直连
 
   - name: 🎬 视频-解锁
     type: select
@@ -484,17 +158,19 @@ proxy-groups:
       - 🇺🇸 美国-故转
       - 🇯🇵 日本-故转
       - 🇸🇬 新加坡-故转
-      - 🇹🇼 台湾-故转
+      - 🇭🇰 香港-故转
       - 🇬🇧 英国-故转
       - 🇪🇺 欧洲-故转
+      - 🌍 其他-故转
 
   - name: 📺 视频-通用
     type: select
     proxies:
       - 🇯🇵 日本-故转
-      - 🇹🇼 台湾-故转
+      - 🇭🇰 香港-故转
       - 🇸🇬 新加坡-故转
       - 🇺🇸 美国-故转
+      - ⚡ 所有-自动
 
   - name: 🎮 游戏-Steam
     type: select
@@ -502,18 +178,21 @@ proxy-groups:
       - 🇺🇸 美国-故转
       - 🇯🇵 日本-故转
       - 🇸🇬 新加坡-故转
-      - 🇹🇼 台湾-故转
+      - 🇭🇰 香港-故转
 
   - name: 🎮 游戏-UBI
     type: select
     proxies:
       - 🇹🇼 台湾-故转
+      - 🇺🇸 美国-故转
+      - 🇯🇵 日本-故转
       - 🇸🇬 新加坡-故转
 
   - name: 🎮 游戏-美区
     type: select
     proxies:
       - 🇺🇸 美国-故转
+      - 🇯🇵 日本-故转
       - 🇸🇬 新加坡-故转
 
   - name: 🎮 游戏-亚洲
@@ -522,15 +201,17 @@ proxy-groups:
       - 🇯🇵 日本-故转
       - 🇸🇬 新加坡-故转
       - 🇹🇼 台湾-故转
+      - 🇭🇰 香港-故转
       - 🇰🇷 韩国-故转
 
   - name: 💬 社交-通用
     type: select
     proxies:
       - 🇯🇵 日本-故转
-      - 🇹🇼 台湾-故转
       - 🇺🇸 美国-故转
       - 🇸🇬 新加坡-故转
+      - 🇭🇰 香港-故转
+      - ⚡ 所有-自动
 
   - name: 🧑‍💻 开发-通用
     type: select
@@ -538,7 +219,23 @@ proxy-groups:
       - 🇺🇸 美国-故转
       - 🇯🇵 日本-故转
       - 🇸🇬 新加坡-故转
-      - 🇹🇼 台湾-故转
+      - 🇭🇰 香港-故转
+      - ⚡ 所有-自动
+
+  # ========================
+  # AI 主落地身份组（链式代理）
+  # 2026-06-20 重建：NovixLink VLESS + SS 双协议同身份 fallback，前链走机场美国节点
+  # ========================
+  - name: 🇺🇸 AI-主落地
+    type: fallback
+    proxies:
+      - 🇺🇸 NovixLink-AI-VLESS
+      - 🇺🇸 NovixLink-AI-SS
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+    lazy: false
+
+
 
   - name: 🌐 通用兜底
     type: select
@@ -547,13 +244,13 @@ proxy-groups:
       - 🌐 所有-手动
       - 🇯🇵 日本-故转
       - 🇭🇰 香港-故转
-      - 🇹🇼 台湾-故转
       - 🇸🇬 新加坡-故转
       - 🇺🇸 美国-故转
       - 🇬🇧 英国-故转
       - 🇪🇺 欧洲-故转
       - 🌍 其他-故转
       - ⚡ 所有-自动
+      - 直连
 
   # ===== ② 需要你偶尔指定具体节点的地区手动组；自动组不用选 =====
   - name: 🇺🇸 美国-手动
@@ -568,7 +265,7 @@ proxy-groups:
     use:
       - Mitce
       - 花云
-    filter: "(?i)^(?!.*(Traffic|Expire|流量|到期|剩余|套餐|官网|更新|订阅|Subscription|剩餘|過期|有效期|尼日)).*(🇯🇵|日本|日|日区|JP|JPN|Japan|Tokyo|东京|東京|Osaka|大阪|Saitama|埼玉|Nagoya|名古屋|福冈|福岡|Fukuoka)"
+    filter: "(?i)^(?!.*(Traffic|Expire|流量|到期|剩余|套餐|官网|更新|订阅|Subscription|剩餘|過期|有效期)).*(🇯🇵|日本|日|日区|JP|JPN|Japan|Tokyo|东京|東京|Osaka|大阪|Saitama|埼玉|Nagoya|名古屋|福冈|福岡|Fukuoka)"
 
   - name: 🇹🇼 台湾-手动
     type: select
@@ -635,19 +332,29 @@ proxy-groups:
       - 🇯🇵 日本-手动
       - 🇸🇬 新加坡-手动
       - 🇭🇰 香港-手动
+      - ⚡ 所有-自动
+
+  - name: ⚡ 所有-自动
+    type: url-test
+    use:
+      - Mitce
+      - 花云
+    # 全池自动只是备用池；过滤掉订阅说明、套餐、官网、过期等伪节点，避免不可用条目进入测速。
+    filter: "(?i)^(?!.*(Traffic|Expire|流量|到期|剩余|套餐|官网|更新|订阅|Subscription|剩餘|過期|有效期|网址|官网|客服|剩余流量|重置|倍率|公告)).*$"
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+
 
   # ===== ③ 底层组件：故转 / 自动 / 落地 / 广告，一般不用手动设置 =====
-
-  # AI 主落地：同一台 Amazon、同一出口身份，VLESS 主、SS 备
-  - name: 🇺🇸 AI-主落地
+  - name: 🛬 美国-住宅落地
     type: fallback
     proxies:
-      - 🇺🇸 AI-VLESS
-      - 🇺🇸 AI-SS
+      - Webshare-美国-落地
+      - 🇺🇸 美国-故转
     url: https://www.gstatic.com/generate_204
     interval: 300
     lazy: false
-
 
   - name: 🇺🇸 美国-故转
     type: fallback
@@ -747,7 +454,7 @@ proxy-groups:
     use:
       - Mitce
       - 花云
-    filter: "(?i)^(?!.*(Traffic|Expire|流量|到期|剩余|套餐|官网|更新|订阅|Subscription|剩餘|過期|有效期|尼日)).*(🇯🇵|日本|日|日区|JP|JPN|Japan|Tokyo|东京|東京|Osaka|大阪|Saitama|埼玉|Nagoya|名古屋|福冈|福岡|Fukuoka)"
+    filter: "(?i)^(?!.*(Traffic|Expire|流量|到期|剩余|套餐|官网|更新|订阅|Subscription|剩餘|過期|有效期)).*(🇯🇵|日本|日|日区|JP|JPN|Japan|Tokyo|东京|東京|Osaka|大阪|Saitama|埼玉|Nagoya|名古屋|福冈|福岡|Fukuoka)"
     url: https://www.gstatic.com/generate_204
     interval: 300
     tolerance: 50
@@ -822,16 +529,6 @@ proxy-groups:
     interval: 300
     tolerance: 50
 
-  - name: ⚡ 所有-自动
-    type: url-test
-    use:
-      - Mitce
-      - 花云
-    # 全池自动只是备用池；过滤掉订阅说明、套餐、官网、过期等伪节点，避免不可用条目进入测速。
-    filter: "(?i)^(?!.*(Traffic|Expire|流量|到期|剩余|套餐|官网|更新|订阅|Subscription|剩餘|過期|有效期|网址|官网|客服|剩余流量|重置|倍率|公告)).*$"
-    url: https://www.gstatic.com/generate_204
-    interval: 300
-    tolerance: 50
 
 
   - name: 🛑 广告拦截
@@ -1013,13 +710,6 @@ rules:
   - RULE-SET,Cloudflare,🧑‍💻 开发-通用
   - RULE-SET,Notion,🧑‍💻 开发-通用
   - RULE-SET,Slack,🧑‍💻 开发-通用
-  - DOMAIN-SUFFIX,oracle.com,🧑‍💻 开发-通用
-  - DOMAIN-SUFFIX,oraclecloud.com,🧑‍💻 开发-通用
-  - DOMAIN-SUFFIX,oci.oraclecloud.com,🧑‍💻 开发-通用
-  - DOMAIN-SUFFIX,amazonaws.com,🧑‍💻 开发-通用
-  - DOMAIN-SUFFIX,aws.amazon.com,🧑‍💻 开发-通用
-  - DOMAIN-SUFFIX,signin.aws.amazon.com,🧑‍💻 开发-通用
-  - DOMAIN-SUFFIX,console.aws.amazon.com,🧑‍💻 开发-通用
   - RULE-SET,Reddit,🌐 通用兜底
   - RULE-SET,Wikipedia,🌐 通用兜底
 

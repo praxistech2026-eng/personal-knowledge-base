@@ -1,0 +1,10 @@
+source_platform: weixin
+message_id: 77039
+session_id: 20260603_234632_8770f630
+session_title: 抖音PPT AI解析提示词
+captured_at: 2026-06-04T00:16:47
+urls:
+- https://v.douyin.com/rL0bahMXyi4/
+---
+4.38 【抖音精选】点击链接or复制打开app，看看【PPT教练小木的作品】AI做PPT保姆级解析！【附提示词】 # PPT ... https://v.douyin.com/rL0bahMXyi4/ 03/18 :4pm c@N.Ji ULj:/ 
+写入知识库

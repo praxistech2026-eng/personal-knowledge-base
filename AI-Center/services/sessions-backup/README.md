@@ -121,6 +121,42 @@ if len(content) < 1000 and 'terminal' not in content:
 
 ---
 
+## USAGE_MANUAL
+
+### 健康检查
+
+| 字段 | 值 | 说明 |
+|------|----|------|
+| 检查对象 | cron 任务、`/home/shin/sessions/`、`session-backup.py` 日志 | 备份链路本体 |
+| 检查命令 | `crontab -l | grep -E 'session-backup|sessions-git-backup'`；`tail -n 50 /home/shin/logs/session-backup.log` | cron + 日志 |
+| 判据 | cron 条目存在、日志持续更新、manifest 有增量 | 任务正常运行 |
+| 频率 | 每小时任务后 / 每日巡检 / 改脚本后 | 例行 + 变更 |
+| 失败动作 | 补 cron、查日志、手动重跑脚本 | 先恢复链路 |
+
+### 备份
+
+| 字段 | 值 | 说明 |
+|------|----|------|
+| 备份对象 | `~/.hermes/sessions/`、`~/.openclaw/.../sessions/`、`/home/shin/sessions/`、GitHub `sessions-backup` | 原始会话与热/冷备 |
+| 备份方式 | 热备增量复制 + Git 冷备 + Hindsight 入库 | 三层架构 |
+| 频率 | 每小时 | 固定节奏 |
+| 保留策略 | 热备按日期分目录，Git 追踪版本，Hindsight 去重入库 | 分层保留 |
+| 恢复命令 | 从热备 / Git 冷备恢复后，重新跑归档脚本与 Hindsight 入库 | 先恢复再入库 |
+
+### 告警
+
+| 字段 | 值 | 说明 |
+|------|----|------|
+| 告警条件 | cron 缺失、日志报错、manifest/导入记录不更新 | 任一即异常 |
+| 通知渠道 | 当前未接自动告警；先人工巡检 | 现状如实写 |
+| 兜底动作 | 手动触发 `session-backup.py` / `sessions-git-backup.sh` | 先恢复备份链路 |
+| 升级路径 | 先恢复链路，再查 Hindsight 与 Git 同步 | 不跳步 |
+
+### 恢复 / 回滚
+
+- 热备优先恢复，冷备用于兜底
+- 恢复后要重新跑一次入库链路，确保 Hindsight 同步
+
 ## 版本记录
 
 | 版本 | 日期 | 更新内容 |

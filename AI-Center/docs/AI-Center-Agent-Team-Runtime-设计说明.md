@@ -1290,7 +1290,7 @@ next_step: "由 Shin 审阅；如认可，再进入 Stage 0 文档拆分与 Stag
 - 记忆配置：`auto_recall=false`，`auto_retain=false`，`retain_async=true`，`retain_every_n_turns=10`。
 - 记忆止血：turn 级自动 retain 默认关闭；高价值写入改走显式 retain / 备份管线；watchdog 负责 token stop-loss。
 - 召回默认：workspace-tag 过滤。
-- 抽取模型：DeepSeek official API `deepseek-chat`（lite）。
+- 抽取模型：已移除（待替换）。
 - 当前基线：`PASS=67 WARN=2 FAIL=0`。
 - 9C 已完成最终审计，内部阻塞项已收口。
 - `/stats` 仅作 WARN 慢路径，不作为施工阻塞。
