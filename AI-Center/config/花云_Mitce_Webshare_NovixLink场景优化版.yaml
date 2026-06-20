@@ -90,6 +90,32 @@ proxies:
     udp: false
 
   # ========================
+  # AI 主落地：直连对比节点（2026-06-20 新增）
+  # 与链式节点同 IP 同凭据，仅去掉 dialer-proxy，用于手选对比
+  # ========================
+  - name: 🇺🇸 AI-VLESS-直连
+    type: vless
+    server: 149.7.2.186
+    port: 443
+    uuid: "3374a71e-d31a-46c2-835e-6495d5ba5235"
+    network: ws
+    tls: true
+    udp: true
+    servername: hhy.wang
+    ws-opts:
+      path: /ray
+      headers:
+        Host: hhy.wang
+
+  - name: 🇺🇸 AI-SS-直连
+    type: ss
+    server: 149.7.2.186
+    port: 8388
+    cipher: chacha20-ietf-poly1305
+    password: "yOG8GqSszTlxskeBdiiL"
+    udp: false
+
+  # ========================
   # 特殊身份：住宅链式落地
   # 前置必须走美国机场节点
   # 实际链路：设备 → OpenClash → 🇺🇸 美国-故转 → 住宅落地 → 目标站
@@ -455,6 +481,7 @@ proxy-groups:
   - name: 🧠 AI-普通
     type: select
     proxies:
+      - 🇺🇸 AI-主落地对比
       - 🇺🇸 AI-主落地
       - 🇺🇸 美国-故转
       - 🇸🇬 新加坡-故转
@@ -846,6 +873,36 @@ proxy-groups:
 # ========================
 # 规则
 # ========================
+  # AI 主落地链路对比组（2026-06-20 新增）
+  # 让你手选链式 vs 直连，AI 流量全部走这个组的选中项
+  # - name: 🇺🇸 AI-主落地对比
+  - name: 🇺🇸 AI-主落地对比
+    type: select
+    proxies:
+      - 🇺🇸 AI-主落地-链式
+      - 🇺🇸 AI-主落地-直连
+      - 🇺🇸 AI-主落地
+
+  # AI 主落地-链式：链式优先（VLESS 主，SS 备）
+  - name: 🇺🇸 AI-主落地-链式
+    type: fallback
+    proxies:
+      - 🇺🇸 AI-VLESS
+      - 🇺🇸 AI-SS
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+    lazy: false
+
+  # AI 主落地-直连：直连（VLESS 主，SS 备，无 dialer-proxy）
+  - name: 🇺🇸 AI-主落地-直连
+    type: fallback
+    proxies:
+      - 🇺🇸 AI-VLESS-直连
+      - 🇺🇸 AI-SS-直连
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+    lazy: false
+
 rules:
   # ===== 本地与国内直连 =====
   - IP-CIDR,10.0.0.0/8,直连,no-resolve
