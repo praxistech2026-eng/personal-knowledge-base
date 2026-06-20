@@ -85,5 +85,35 @@
 
 ## 备注
 
-- 如果你后续要求“LiteLLM alias 也必须完全避免斜杠”，则 `AtomGit-Qwen/Qwen3.6-35B-A3B` 这类名称需要再做一次最小化转写，但**官方模型 ID**本身仍保留原样。
+- 如果你后续要求"LiteLLM alias 也必须完全避免斜杠"，则 `AtomGit-Qwen/Qwen3.6-35B-A3B` 这类名称需要再做一次最小化转写，但**官方模型 ID**本身仍保留原样。
 - 这个草案暂时只做注册候选，不改正式 `config.yaml`。
+
+---
+
+## N) Agnes AI（Hub：apihub.agnes-ai.com）
+
+- **LiteLLM alias 规则**：`Agnes-<官方模型ID>`（待用户确认 model ID）
+- **套餐**：官网注册（具体套餐未提供）
+- **2026-06-20 注册**：用户提供
+- **API Key**：`sk-ywTxfQifM12QQanVaZKq2vl3pgOzbVGRYTajKFdV7QxvL5ZP`（明码，按用户偏好）
+- **base_url**：`https://apihub.agnes-ai.com/v1`
+- **协议**：OpenAI 兼容（`/v1/chat/completions`）
+
+### 2026-06-20 已知异常：DNS 路由失效
+
+| 探测 | 结果 |
+|------|------|
+| `apihub.agnes-ai.com` DNS 解析 | `198.20.0.53`（Spectrum ISP 内网 IP，不是公网） |
+| TCP 443 | ✅ 通（fake-IP 段，本机可见） |
+| TLS 握手 | ❌ `SSL_ERROR_SYSCALL` |
+| HTTPS `/v1/models` | ❌ 超时空响应 |
+| NS 服务器 | `lady.ns.cloudflare.com` / `felicity.ns.cloudflare.com`（Cloudflare 托管） |
+
+**初步判断**：Agnes AI 使用 Cloudflare Spectrum/Magic Transit 把请求路由到后端 Spectrum 客户的内网服务器；当前路由可能已下线（用户确认之前能浏览器访问，目前不能）。Cloudflare 边缘没动，是 Agnes AI 后端服务异常。
+
+### 待办（用户验证后执行）
+
+1. ⏸️ 用户在浏览器打开 https://apihub.agnes-ai.com/v1/models 验证
+2. ⏸️ 如果浏览器能通但本机不通 —— 需要排查 fake-IP / 路由
+3. ⏸️ 如果浏览器也不能通 —— Agnes AI 当前服务异常，等恢复后再注册
+4. ⏸️ 用户提供具体 model ID 后再正式写入 LiteLLM config
