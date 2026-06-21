@@ -2,7 +2,7 @@
 
 > 目标：只记录**你当前套餐实际支持的模型**、调用地址、特殊端点、工具/MCP 配置方式与验证日期。
 > 统一规则：**厂商前缀 + 官方模型ID**。这里先存“官方原始模型ID”，后续由 LiteLLM 生成器拼装别名。
-> 最后核验日期：2026-06-15
+> 最后核验日期：2026-06-21
 
 ---
 
@@ -136,6 +136,39 @@
 
 ---
 
+## 4) Agnes AI
+
+- **厂商简称**：Agnes
+- **凭证类型**：Agnes API Key
+- **OpenAI Base URL（当前）**：`https://apihub.agnes-ai.com/v1`
+- **官方模型 ID（本次已验证）**：
+  - `agnes-2.0-flash`
+  - `agnes-image-2.1-flash`
+  - `agnes-video-v2.0`
+- **当前 LiteLLM 实际注册**：
+  - `Agnes-2.0-flash`
+  - `Agnes-image-2.1-flash`
+  - `Agnes-video-v2.0`
+- **本次已移除 / 不注册**：
+  - `Agnes-1.5-flash`（旧文本版本，按最小必要集合移除）
+  - `Agnes-image-2.0-flash`（旧图像版本，保留 2.1）
+  - `Agnes-video-v2.1`（上游未提供可用 channel）
+- **多模态 / 特殊端点**：
+  - 文本：`/v1/chat/completions`
+  - 图像：`POST /v1/images/generations`
+  - 视频：`POST /v1/videos`
+- **重要约束**：
+  - 图像 / 视频模型不能按 chat 路由注册，否则会返回 404
+  - `Agnes-image-2.1-flash` 在 LiteLLM 下先用最小 payload，额外传 `response_format` 会触发 unsupported-param 校验
+  - `Agnes-video-v2.0` 的 `seconds` 需要传字符串（如 `"5"`）
+- **官方来源**：
+  - `https://agnes-ai.com/doc`
+  - `https://agnes-ai.com/doc/agnes-20-flash`
+  - `https://agnes-ai.com/doc/agnes-image-21-flash`
+  - `https://agnes-ai.com/doc/agnes-video-v20`
+
+---
+
 ## 5) SenseNova / Free 0元/月
 
 - **厂商简称**：SenseNova
@@ -207,6 +240,7 @@
 | MiniMax | Token Plan 走 Token Plan Key；Pay-as-you-go 走独立 API Key；Coding 工具优先用 Anthropic Base URL；不注册 Highspeed 变体。 |
 | Bailian | 必须使用 `token-plan.cn-beijing.maas.aliyuncs.com`；Token Plan Key 与按量计费 Key / Coding Plan Key 不互通。 |
 | Volcengine | 只能用 `https://ark.cn-beijing.volces.com/api/coding/v3`；`ark-code-latest` 是可切换档位别名。 |
+| Agnes | 多模态必须分流：文本走 chat，图像走 `/v1/images/generations`，视频走 `/v1/videos`；`seconds` 传字符串。 |
 | SenseNova | `sensenova-u1-fast` 的图片生成走 `POST https://token.sensenova.cn/v1/images/generations`，不是通用 chat endpoint。 |
 | AtomGit | 官方社区文档与 AtomCode 自动生成运行时共存：`api-ai.gitcode.com/v1` 与 `llm-api.atomgit.com/v1` 分别用于不同入口；MCP 通过 AtomCode `.mcp.json` 管。 |
 

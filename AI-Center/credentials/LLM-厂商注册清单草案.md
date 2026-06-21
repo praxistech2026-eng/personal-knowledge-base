@@ -90,38 +90,22 @@
 
 ---
 
-## N) Agnes AI（Hub：apihub.agnes-ai.com）
+## N) Agnes AI（候选池说明）
+
+> 这一节只保留候选池语义，不再作为现态注册依据。
+> Agnes 当前正式现态请看：
+> - `platforms/agnes/README.md`
+> - `docs/Agnes-LiteLLM-验证-2026-06-21.md`
+> - `/home/shin/workspace/litellm/config.yaml`
 
 - **LiteLLM alias 规则**：`Agnes-<官方模型ID>`
-- **套餐**：官网注册（具体套餐未提供）
-- **2026-06-20 注册**：用户提供
-- **API Key**：`sk-ywT...L5ZP`（明码，按用户偏好）
 - **base_url**：`https://apihub.agnes-ai.com/v1`
-- **协议**：OpenAI 兼容（`/v1/chat/completions`）
-
-### 2026-06-20 验证情况
-
-- 域名 DNS 解析到 Spectrum ISP 段（198.20.0.x），**依赖后端 Spectrum 客户 IP 路由**——不同时刻可能漂移到不同 IP（198.20.0.53 失败过，198.20.0.70 当前可用）。已通过 `curl --resolve` 强制走 198.20.0.70 验证通过，返回 model 列表。
-- 用户手机 4G 网络能访问（手机走运营商 DNS 可能解析到不同/可用的 IP）
-
-### 注册 model 列表（全部 5 个，含多模态）
-
-| LiteLLM alias | 原始 model_id | 类型 |
-|---|---|---|
-| `Agnes-1.5-flash` | `agnes-1.5-flash` | chat (text) |
-| `Agnes-2.0-flash` | `agnes-2.0-flash` | chat (text) |
-| `Agnes-video-v2.0` | `agnes-video-v2.0` | video (text+image) |
-| `Agnes-image-2.0-flash` | `agnes-image-2.0-flash` | image (text+image) |
-| `Agnes-image-2.1-flash` | `agnes-image-2.1-flash` | image (text+image) |
-
-### 已注册位置
-
-- **LiteLLM**：`~/workspace/litellm/config.yaml`（5 个 model_name 块，env 变量 `AGNES_CODING_API_KEY`）
-- **LiteLLM .env**：`~/workspace/litellm/.env`（`AGNES_CODING_API_KEY=sk-ywTx...L5ZP`）
-- **Hermes**：`~/.hermes/config.yaml` providers 段（`agnes` provider）+ quick_commands.models 5 个 alias + `~/.hermes/.env`（`AGNES_CODING_API_KEY`）
-- **OpenClaw**：`~/.openclaw/agents/main/agent/plugins/agnes/catalog.json`（plugin 形式，5 个 model + apiKey 内嵌）
-
-### 使用注意
-
-- 域名 `apihub.agnes-ai.com` DNS 不稳定，IP 在 198.20.0.x 段漂移。**每次大调用前先 `dig +short apihub.agnes-ai.com` 验证当前 IP 可达**。
-- 已知异常：第一次探测解析到 198.20.0.53 时 TLS 失败（IP 已下线/被回收）；现在 198.20.0.70 工作。
+- **当前已验证并保留**：
+  - `Agnes-2.0-flash`
+  - `Agnes-image-2.1-flash`
+  - `Agnes-video-v2.0`
+- **当前已移除 / 不注册**：
+  - `Agnes-1.5-flash`
+  - `Agnes-image-2.0-flash`
+  - `Agnes-video-v2.1`
+- **关键经验**：Agnes 多模态不能按统一 chat 模型注册；图像 / 视频必须分流到对应 endpoint。

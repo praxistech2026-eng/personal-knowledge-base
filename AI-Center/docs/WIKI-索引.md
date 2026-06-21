@@ -50,6 +50,7 @@ AI-Center/
 | [Feishu](../platforms/feishu/README.md) | 飞书消息集成 | `platforms/feishu/` |
 | [WeChat](../platforms/wechat/README.md) | 微信消息集成 | `platforms/wechat/` |
 | [MiniMax](../platforms/minimax/README.md) | 主模型提供商（M2.7） | `platforms/minimax/` |
+| [Agnes](../platforms/agnes/README.md) | 多模态补位厂商（text/image/video 已实测） | `platforms/agnes/` |
 | [Volcengine](../platforms/volcengine/README.md) | 备选模型（DeepSeek-V3.2 / Doubao-seed-2.0） | `platforms/volcengine/` |
 | [OpenClaw](../platforms/openclaw/README.md) | 执行层 Agent（与 Hermes 共进程） | `platforms/openclaw/` |
 
@@ -85,6 +86,7 @@ AI-Center/
 || [模板索引](./模板索引.md) | 问题 / 经验 / 变更 / 巡检 / 服务 README 模板总入口 |
 || [AI-Center-档案库整理计划](./AI-Center-档案库整理计划.md) | 这次整理的执行方案、分阶段路线、用户配合方式 |
 | [LiteLLM-健康快照-2026-06-15](./LiteLLM-健康快照-2026-06-15.md) | 修复前后 26→16 model 健康状态对比、Token Plan 实测能力 |
+| [Agnes-LiteLLM-验证-2026-06-21](./Agnes-LiteLLM-验证-2026-06-21.md) | Agnes 多模态注册纠偏、真实请求验证与经验沉淀 |
 | [MiniMax-TokenPlan-调研-2026-06-15](./MiniMax-TokenPlan-调研-2026-06-15.md) | MiniMax 2026 plan 变化、Token Plan 实测 8 个 model 列表、接入方案 |
 | [AI-Center-阶段执行提示词](./AI-Center-阶段执行提示词.md) | 7 阶段重构计划、每阶段提示词、验收标准 |
 | [operations/README](../operations/README.md) | 巡检总入口、告警分级、恢复规则 |

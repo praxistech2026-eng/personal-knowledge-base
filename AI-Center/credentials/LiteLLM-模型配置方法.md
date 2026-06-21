@@ -1,6 +1,6 @@
 # LiteLLM 模型配置方法速查
 
-> 最后核验：2026-05-21
+> 最后核验：2026-06-21
 >
 > 目标：把 LiteLLM 的**模型定义方式、动态增删方式、DB/UI 行为、路由/回退方式**一次说清。
 >
@@ -258,6 +258,60 @@ api_base: os.environ/OPENAI_BASE_URL
 ---
 
 ## 10. 这套环境的本地约定
+
+## 11. 多模态模型注册门禁（2026-06-21 补充）
+
+这条是硬规则，不是建议。
+
+### 先判 endpoint，再谈注册
+
+新模型接入 LiteLLM 前，先确认它到底属于哪一类：
+
+- 文本 / 对话：`/v1/chat/completions`
+- 图像生成：`/v1/images/generations`
+- 视频生成：`/v1/videos`
+- 其他专用接口：按厂商文档单独处理
+
+如果这一步没做，最典型的后果就是：**模型明明存在，但你把它错挂进 chat 路由，调用直接 404。**
+
+### `model_info.mode` 不是装饰字段
+
+对多模态模型，`model_info.mode` 直接决定 LiteLLM 把它暴露到哪个能力面：
+
+```yaml
+model_info:
+  mode: image_generation
+```
+
+```yaml
+model_info:
+  mode: video_generation
+```
+
+没有这层显式映射，就别说“正确注册”。
+
+### 正确验收顺序
+
+1. `GET /v1/models`
+2. 用**对应 endpoint**打最小 payload
+3. 成功后再加厂商私有参数
+
+不要犯这两个低级错误：
+- 只看 `/v1/models` 就宣布模型可用
+- 一上来塞复杂参数，最后分不清是请求形状错还是上游坏了
+
+### Agnes 案例（已实测）
+
+- `Agnes-image-2.1-flash`：必须走 `/v1/images/generations`
+- `Agnes-video-v2.0`：必须走 `/v1/videos`
+- `Agnes-video-v2.0` 的 `seconds` 要传字符串，不是 JSON number
+- `Agnes-image-2.1-flash` 先走最小 payload；`response_format` 会触发 unsupported-param 校验
+
+### Bailian 案例（2026-06-21 复核）
+
+- 当前 LiteLLM config 中存在 **19 条 Bailian 配置块**，但运行时只暴露 **12 个唯一模型**
+- 其中 `Bailian-qwen3.7-max`、`Bailian-qwen3.7-plus`、`Bailian-qwen3.6-flash`、`Bailian-kimi-k2.6`、`Bailian-glm-5.1`、`Bailian-deepseek-v3.2`、`Bailian-deepseek-v4-pro` 存在重复注册
+- 这类重复不会提升能力，只会增加配置噪音；后续应单独做一次去重收口
 
 ### 命名规则
 - LiteLLM 注册名统一用：**`厂商前缀-官方模型ID`**
