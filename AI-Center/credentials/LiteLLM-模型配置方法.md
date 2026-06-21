@@ -365,3 +365,35 @@ LiteLLM 的模型配置核心就三句话：
 
 - ChatGPT 的 health status 现在应该被视为**真实探测结果**，不是写死的恒绿。
 - 如果后续 ChatGPT 真坏了，健康页仍然会变红；修复的是误报，不是掩盖故障。
+
+---
+
+## 14. MiniMax CN Token Plan 注意事项
+
+### 14.1 当前落地口径
+
+- 国内版 Token Plan 在本工作区采用 **OpenAI-compatible** 路线。
+- 有效环境变量：
+  - `MINIMAX_CN_API_HOST=https://api.minimaxi.com/v1`
+  - `MINIMAX_CN_API_KEY=***`
+- 当前 LiteLLM 只注册两个 MiniMax 模型：
+  - `MiniMax-M3`
+  - `MiniMax-M2.7`
+
+### 14.2 模型分工
+
+- `MiniMax-M3`：主力模型，适合 agent / coding / multimodal 场景。
+- `MiniMax-M2.7`：稳定兜底模型。
+- 官方 docs 还列出 `M2.7-highspeed` / `M2.5` / `M2.5-highspeed` / `M2.1` / `M2.1-highspeed` / `M2`，但当前工作区不默认注册。
+
+### 14.3 验证顺序
+
+1. `.env` 改完后必须 **重建容器**，`docker restart` 不会重新注入环境变量。
+2. 先验 `GET /health/liveliness`。
+3. 再验 `GET /models`。
+4. 最后做一次 `POST /v1/chat/completions` 的真实调用。
+
+### 14.4 这次排错沉淀
+
+- 之前的故障不是模型能力问题，而是 CN Token Plan 的变量串线和 base URL 误配。
+- 现在可把 MiniMax 的标准接法当成模板使用：`MINIMAX_CN_API_HOST` + `MINIMAX_CN_API_KEY` + OpenAI-compatible `/v1`。

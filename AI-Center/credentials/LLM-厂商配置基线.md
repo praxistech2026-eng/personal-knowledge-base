@@ -6,33 +6,41 @@
 
 ---
 
-## 1) MiniMax / Starter 29元/月
+## 1) MiniMax / Token Plan（国内）
 
 - **厂商简称**：MiniMax
-- **凭证类型**：Token Plan Key / API Key
+- **凭证类型**：Token Plan Subscription Key
 - **OpenAI Base URL（默认中国区）**：`https://api.minimaxi.com/v1`
 - **Anthropic Base URL（默认中国区）**：`https://api.minimaxi.com/anthropic`
 - **国际版备用**：`https://api.minimax.io/v1` / `https://api.minimax.io/anthropic`（仅在明确切换海外区域时使用）
-- **官方模型 ID（文本，已用于 AI Coding 工具/Token Plan）**：
+- **官方模型 ID（文档支持，文本）**：
+  - `MiniMax-M3`
   - `MiniMax-M2.7`
+  - `MiniMax-M2.7-highspeed`
   - `MiniMax-M2.5`
+  - `MiniMax-M2.5-highspeed`
   - `MiniMax-M2.1`
+  - `MiniMax-M2.1-highspeed`
   - `MiniMax-M2`
+- **当前 LiteLLM 实际注册**：
+  - `MiniMax-M3`
+  - `MiniMax-M2.7`
 - **本套餐处理规则**：
-  - **不注册任何 Highspeed 变体**
-  - `M2.7` 是最明确的 AI Coding 主模型
+  - 生产侧默认只保留 `M3` + `M2.7`
+  - `M3` 做主力，`M2.7` 做稳定兜底
 - **多模态 / 工具**：
-  - 官方文档覆盖 Text / Audio / Video / Music 全谱系
+  - `MiniMax-M3` 支持文本 / 图片 / 视频 / tool use / reasoning
+  - `MiniMax-M2.7` 及同族支持文本 + tool-call content blocks
   - Token Plan quickstart 明确支持 AI Coding Tools、MCP Integration
 - **MCP / 工具接入**：
   - 官方支持的工具页包含 Claude Code、Cursor、Trae、OpenCode、Kilo Code、Cline、Grok CLI、Codex CLI、Droid
-  - 典型配置：设置 `ANTHROPIC_BASE_URL`，并把 `ANTHROPIC_MODEL` 指向 `MiniMax-M2.7`
+  - 典型配置：OpenAI-compatible 场景设置 `OPENAI_BASE_URL=https://api.minimaxi.com/v1`，并把 `OPENAI_API_KEY` 指向 Subscription Key
 - **官方来源**：
   - `https://platform.minimaxi.com/docs/guides/models-intro`
-  - `https://platform.minimaxi.com/docs/guides/text-ai-coding-tools`
-  - `https://platform.minimaxi.com/docs/token-plan/intro`
-  - `https://platform.minimaxi.com/docs/guides/pricing-token-plan`
-  - `https://platform.minimaxi.com/docs/token-plan/faq`
+  - `https://platform.minimaxi.com/docs/guides/text-openai-api`
+  - `https://platform.minimaxi.com/docs/api-reference/text-anthropic-api`
+  - `https://platform.minimaxi.com/docs/token-plan/other-tools`
+  - `https://platform.minimaxi.com/docs/guides/quickstart-preparation`
 
 ---
 

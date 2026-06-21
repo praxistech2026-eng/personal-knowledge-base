@@ -84,6 +84,13 @@ Hindsight 向量库 (PostgreSQL)
 2. **Git 冷备**：manifest 变更 → 打包新 tarball → commit → push
 3. **Hindsight**：hindsight_imported.json 记录已导入 session_id，增量去重
 
+### 保留策略（执行版）
+
+- **永久保留 raw**：事故/故障复盘、恢复操作、配置/权限/凭证相关变更（不含明文 secret）、明确纠错/偏好、首次出现的新模式、可反复引用的证据链。
+- **只留摘要/元数据**：例行巡检、cron/heartbeat、重复性工具调用、低信息量聊天、纯状态查看、自动化噪音。至少保留 `session_id`、时间、来源、结论摘要、标签。
+- **可 prune**：已经冷备且有摘要/元数据的低价值旧 raw，重复记录，空转会话，失败产物，明显的自动化噪音。
+- **剪枝前置条件**：先冷备，后摘要，再 prune；没有冷备或摘要的 raw 不删。
+
 ### 心跳识别
 
 自动化任务（cron）会话不进入 Hindsight，写入 `heartbeat.log`：

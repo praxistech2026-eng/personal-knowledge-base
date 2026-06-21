@@ -120,3 +120,21 @@ OpenAI 兼容：`api_base: https://api.minimaxi.com/v1`
 - [ ] 重建容器
 - [ ] 跑 `/health` 拉新快照
 - [ ] 同步档案库：`docs/LiteLLM-健康快照-2026-06-15.md`、`credentials/LLM-厂商配置基线.md`、`docs/AI-Center-档案库整理计划.md`
+
+---
+
+## 6. 2026-06-20 回填：最终落地结论
+
+- 官方文档确认 MiniMax CN Token Plan 支持的模型范围比最终落地更大，但 **当前 LiteLLM 只注册两个模型**：
+  - `MiniMax-M3`
+  - `MiniMax-M2.7`
+- 本工作区最终采用 **OpenAI-compatible** 路线：`https://api.minimaxi.com/v1`
+- `MINIMAX_CN_API_HOST` 必须带完整 `/v1`
+- `MINIMAX_CN_API_KEY` 必须是 Token Plan Subscription Key
+- `.env` 改动后必须用 `docker compose up -d --force-recreate` 让容器真正吃到新环境变量
+- 当前验证通过：
+  - `GET /health/liveliness` → 200
+  - `GET /models` → 暴露 `MiniMax-M3` 和 `MiniMax-M2.7`
+  - `POST /v1/chat/completions` → 两个模型都返回 200
+- 对这套工作区来说，**M3 + M2.7 已经够用**：M3 做主力，M2.7 做稳定兜底
+- 这份调研里早期的“全量 8 模型注册计划”保留为历史方案，不再作为当前落地方案

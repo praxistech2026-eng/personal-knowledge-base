@@ -43,7 +43,7 @@ flowchart TB
 - Hermes API Server：`8642`
 - OpenClaw Gateway：`18789`
 - hermes-webui：`8787`
-- Hindsight：`8888`
+- Hindsight：`8888`（由 `~/.config/systemd/user/hindsight.service` 托管，launcher：`/home/shin/bin/hindsight-run.sh`）
 - n8n：`5678`
 - SearXNG：`7777`
 - OpenList：`5244`

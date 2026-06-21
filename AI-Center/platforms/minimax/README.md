@@ -1,6 +1,6 @@
 # MiniMax
 
-> MiniMax 是本系统的主模型提供商，使用国内 Token Plan（Starter 29元/月）提供 M2.7 高性能大模型 API。
+> MiniMax 是本系统的厂商档案；当前 LiteLLM 只注册 `MiniMax-M3` + `MiniMax-M2.7`。国内 Token Plan 走 OpenAI-compatible 路线，`M3` 做主力，`M2.7` 做稳定兜底。
 
 ## 官方资源
 
@@ -13,25 +13,28 @@
 
 ## 在本生态中的角色
 
-**主模型**。MiniMax-M2.7 是 Hermes Agent 的默认推理模型，提供 204,800 token 上下文窗口和 Agent 能力。
+**主模型体系**。MiniMax-M3 是当前主力推理模型，MiniMax-M2.7 作为稳定兜底；两者一起覆盖当前 LiteLLM 的默认可用面。
 
 ## 接入配置
 
 ```
-API Endpoint: https://api.minimaxi.com/anthropic
-模型: MiniMax-M2.7
-认证: Bearer API Key
+API Endpoint: https://api.minimaxi.com/v1
+模型: MiniMax-M3 / MiniMax-M2.7
+认证: Bearer Subscription Key (Token Plan)
 ```
 
-> 凭证保存在 `~/.hermes/.env` 的 `MINIMAX_CN_API_KEY`
-> 套餐口径：国内 Starter 29元/月；不要再用国际站链接混写。
+> 凭证保存在 `MINIMAX_CN_API_KEY`
+> 入口主机保存在 `MINIMAX_CN_API_HOST=https://api.minimaxi.com/v1`
+> 当前工作区验证的是 OpenAI-compatible；Anthropic 口不作为默认落地口。
 
-## 模型规格
+## 模型规格（当前 LiteLLM 已注册）
 
-| 模型 | 上下文 | 最大输出 | 特性 |
-|------|--------|---------|------|
-| MiniMax-M2.7 | 204,800 tokens | 131,072 tokens | Agent 优化，推理启用 |
-| MiniMax-M2.7-highspeed | 同上 | 同上 | 同模型族，更快推理 |
+| 模型 | 上下文 | 特性 |
+|------|--------|------|
+| MiniMax-M3 | 1,000,000 tokens | 文本 / 图像 / 视频 / tool use / reasoning，主力模型 |
+| MiniMax-M2.7 | 204,800 tokens | 文本 + tool-call，稳定兜底 |
+
+> 官方 docs 还列出 `MiniMax-M2.7-highspeed` / `MiniMax-M2.5` / `MiniMax-M2.5-highspeed` / `MiniMax-M2.1` / `MiniMax-M2.1-highspeed` / `MiniMax-M2`，但当前 LiteLLM 不默认注册。
 
 ## 成本
 
@@ -69,7 +72,7 @@ API Endpoint: https://api.minimaxi.com/anthropic
 | 字段 | 值 | 说明 |
 |------|----|------|
 | 告警条件 | 调用失败、鉴权失败、限流 / 套餐不可用 | 任一即异常 |
-| 通知渠道 | 当前无自动告警 | 先人工发现 |
+| 通知渠道 | 暂未接入独立自动告警 | 现由巡检/人工发现补位 |
 | 兜底动作 | 切到备选模型，再排查 MiniMax key | 先保可用 |
 | 升级路径 | 先恢复调用，再决定是否换套餐 | 不硬扛 |
 
@@ -82,4 +85,5 @@ API Endpoint: https://api.minimaxi.com/anthropic
 
 | 日期 | 操作 |
 |------|------|
+| 2026-06-20 | 复核 MiniMax CN Token Plan 官方文档，LiteLLM 只保留 `MiniMax-M3` + `MiniMax-M2.7`，并用 `/v1/chat/completions` 验证通过 |
 | 2026-04 | 接入作为主模型 |
