@@ -309,9 +309,26 @@ model_info:
 
 ### Bailian 案例（2026-06-21 复核）
 
-- 当前 LiteLLM config 中存在 **19 条 Bailian 配置块**，但运行时只暴露 **12 个唯一模型**
-- 其中 `Bailian-qwen3.7-max`、`Bailian-qwen3.7-plus`、`Bailian-qwen3.6-flash`、`Bailian-kimi-k2.6`、`Bailian-glm-5.1`、`Bailian-deepseek-v3.2`、`Bailian-deepseek-v4-pro` 存在重复注册
-- 这类重复不会提升能力，只会增加配置噪音；后续应单独做一次去重收口
+- 当前 LiteLLM config 中存在 **16 条 Bailian 配置块**，运行时暴露 **10 个唯一模型**
+- `Bailian-kimi-k2.5` 与 `Bailian-deepseek-v3.2` 已按保留规则移除
+- 当前仍存在重复注册：`Bailian-qwen3.7-max`、`Bailian-qwen3.7-plus`、`Bailian-qwen3.6-flash`、`Bailian-kimi-k2.6`、`Bailian-glm-5.1`、`Bailian-deepseek-v4-pro`
+- 这类重复不会提升能力，只会增加配置噪音；后续应继续做一次去重收口
+
+### 同厂商模型保留规则（2026-06-21 收口）
+
+按这个顺序判断，别反过来：
+
+1. 先按**子厂商**分组（例如 Bailian 下的 Qwen / GLM / Kimi / DeepSeek / MiniMax）
+2. 再看同一子厂商里是否**模态一致**
+3. 模态一致时，优先保留**高版本 / 高能力**模型
+4. 最后看**调用成本**
+
+落地规则：
+
+- 如果同子厂商、同模态、**成本一致**，删除低能力 / 低版本模型
+- 如果同子厂商、同模态，但**低成本模型明显更有保留价值**，则保留低成本档位
+- 跨子厂商不要只按能力比，要看它**占用的是哪家的额度池**
+- 例如 `Bailian-MiniMax-M2.5` 的保留价值，不取决于“外部还有没有 MiniMax 2.5”，而取决于它消耗的是**百炼额度**还是其他厂商额度
 
 ### 命名规则
 - LiteLLM 注册名统一用：**`厂商前缀-官方模型ID`**

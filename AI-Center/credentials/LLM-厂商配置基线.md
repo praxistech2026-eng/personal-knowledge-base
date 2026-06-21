@@ -61,23 +61,20 @@
   - `glm-5`
   - `glm-5.1`
   - `MiniMax-M2.5`
-  - `deepseek-v3.2`
   - `deepseek-v4-flash`
   - `deepseek-v4-pro`
 - **图像生成（独立接口，需通过 Skill / 扩展接入）**：
   - `qwen-image-2.0` / `qwen-image-2.0-pro`
   - `wan2.7-image` / `wan2.7-image-pro`
-- **LiteLLM config 当前挂载的 Bailian model（2026-06-15 三轮后，12 个全绿）**：
+- **LiteLLM config 当前挂载的 Bailian model（2026-06-21 收口后，10 个全绿）**：
   - `Bailian-qwen3.7-max` ✅
   - `Bailian-qwen3.7-plus` ✅
   - `Bailian-qwen3.6-plus` ✅
   - `Bailian-qwen3.6-flash` ✅
-  - `Bailian-kimi-k2.5` ✅
   - `Bailian-kimi-k2.6` ✅
   - `Bailian-glm-5` ✅
   - `Bailian-glm-5.1` ✅
   - `Bailian-MiniMax-M2.5` ✅
-  - `Bailian-deepseek-v3.2` ✅
   - `Bailian-deepseek-v4-flash` ✅
   - `Bailian-deepseek-v4-pro` ✅
 - **已临时下架（不在 Token Plan 列表 / 原 Coding Plan 失效）**：
@@ -87,7 +84,8 @@
   - `Bailian-qwen3-coder-plus`
   - `Bailian-glm-4.7`
 - **多模态 / 图片理解**：
-  - 明确支持图片理解的：`qwen3.6-plus`、`kimi-k2.5`
+  - 当前保留的百炼多模态入口：`qwen3.6-plus`
+  - `kimi-k2.5` 已按“同子厂商 / 同模态 / 成本一致时删低版本”移除
 - **MCP / 工具接入**：
   - Token Plan 团队版**仅限 AI 编程工具和 OpenClaw 类型 Agent** 使用
   - 支持 Claude Code、Kilo Code、Qwen Code 插件接入 IDE

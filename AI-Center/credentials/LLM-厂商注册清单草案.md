@@ -33,7 +33,6 @@
 - **套餐**：阿里云百炼 Pro 200元/月
 - **建议注册**：
   - `Bailian-qwen3.6-plus`
-  - `Bailian-kimi-k2.5`
   - `Bailian-glm-5`
   - `Bailian-MiniMax-M2.5`
   - `Bailian-qwen3.5-plus`
