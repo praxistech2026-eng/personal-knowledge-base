@@ -247,7 +247,7 @@ AI-Center/
 4. Homepage / watchdog 相关
 5. n8n
 6. SearXNG
-7. AList
+7. OpenList
 
 ### 5.3 低复杂度服务的处理
 简单服务可以先把 `USAGE_MANUAL` 写进 README，后续再拆独立文件，但最终目标仍是统一成归档标准。
