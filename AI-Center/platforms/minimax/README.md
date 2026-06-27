@@ -1,6 +1,6 @@
 # MiniMax
 
-> MiniMax 是本系统的厂商档案；当前 LiteLLM 只注册 `MiniMax-M3` + `MiniMax-M2.7`。国内 Token Plan 走 OpenAI-compatible 路线，`M3` 做主力，`M2.7` 做稳定兜底。
+> MiniMax 是本系统的厂商档案；当前 LiteLLM 只注册 `MiniMax-M3`、`MiniMax-M2.7`、`MiniMax-speech-2.8-hd`、`MiniMax-speech-2.8-turbo`。国内 Token Plan 走 OpenAI-compatible 路线，`M3` 做主力，`M2.7` 做稳定兜底，speech 两个模型保留为语音能力面。
 
 ## 官方资源
 
@@ -29,12 +29,21 @@ API Endpoint: https://api.minimaxi.com/v1
 
 ## 模型规格（当前 LiteLLM 已注册）
 
-| 模型 | 上下文 | 特性 |
-|------|--------|------|
-| MiniMax-M3 | 1,000,000 tokens | 文本 / 图像 / 视频 / tool use / reasoning，主力模型 |
-| MiniMax-M2.7 | 204,800 tokens | 文本 + tool-call，稳定兜底 |
+| 模型 | 角色 | 特性 |
+|------|------|------|
+| MiniMax-M3 | 主力文本模型 | 当前主力推理 / 对话面 |
+| MiniMax-M2.7 | 稳定兜底 | 作为主力降级与回退面 |
+| MiniMax-speech-2.8-hd | 语音 / TTS | 高质量语音输出；验收以真实 `/v1/audio/speech` 为准 |
+| MiniMax-speech-2.8-turbo | 语音 / TTS | 低延迟语音输出；验收以真实 `/v1/audio/speech` 为准 |
 
 > 官方 docs 还列出 `MiniMax-M2.7-highspeed` / `MiniMax-M2.5` / `MiniMax-M2.5-highspeed` / `MiniMax-M2.1` / `MiniMax-M2.1-highspeed` / `MiniMax-M2`，但当前 LiteLLM 不默认注册。
+
+## 最终接入结论
+
+- **文本 / 对话**：直接注册到 `model_list`。
+- **语音 / TTS**：直接注册到 `model_list`，但验收必须打语音接口，不拿 chat-style health 代替。
+- **图像 / 视频 / 音乐**：当前工作区按桥接优先 / 待定处理，不强塞进 LiteLLM 主模型表。
+- **地区 / Key / 套餐**：以中国区 Token Plan 证据为准，不混用国际区口径。
 
 ## 成本
 
@@ -85,5 +94,6 @@ API Endpoint: https://api.minimaxi.com/v1
 
 | 日期 | 操作 |
 |------|------|
+| 2026-06-22 | 当前结果复盘：LiteLLM 只保留 `MiniMax-M3`、`MiniMax-M2.7`、`MiniMax-speech-2.8-hd`、`MiniMax-speech-2.8-turbo`；文本 / 语音直连，图像 / 视频 / 音乐走桥接优先 / 待定 |
 | 2026-06-20 | 复核 MiniMax CN Token Plan 官方文档，LiteLLM 只保留 `MiniMax-M3` + `MiniMax-M2.7`，并用 `/v1/chat/completions` 验证通过 |
 | 2026-04 | 接入作为主模型 |

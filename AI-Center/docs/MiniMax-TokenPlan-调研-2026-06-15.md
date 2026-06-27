@@ -125,16 +125,20 @@ OpenAI 兼容：`api_base: https://api.minimaxi.com/v1`
 
 ## 6. 2026-06-20 回填：最终落地结论
 
-- 官方文档确认 MiniMax CN Token Plan 支持的模型范围比最终落地更大，但 **当前 LiteLLM 只注册两个模型**：
+- 官方文档确认 MiniMax CN Token Plan 支持的模型范围比最终落地更大，但 **当前 LiteLLM 注册的是 4 个模型**：
   - `MiniMax-M3`
   - `MiniMax-M2.7`
+  - `MiniMax-speech-2.8-hd`
+  - `MiniMax-speech-2.8-turbo`
 - 本工作区最终采用 **OpenAI-compatible** 路线：`https://api.minimaxi.com/v1`
-- `MINIMAX_CN_API_HOST` 必须带完整 `/v1`
 - `MINIMAX_CN_API_KEY` 必须是 Token Plan Subscription Key
+- `MINIMAX_CN_API_HOST` 必须指向中国区兼容口
 - `.env` 改动后必须用 `docker compose up -d --force-recreate` 让容器真正吃到新环境变量
 - 当前验证通过：
   - `GET /health/liveliness` → 200
-  - `GET /models` → 暴露 `MiniMax-M3` 和 `MiniMax-M2.7`
-  - `POST /v1/chat/completions` → 两个模型都返回 200
-- 对这套工作区来说，**M3 + M2.7 已经够用**：M3 做主力，M2.7 做稳定兜底
+  - `GET /models` → 暴露 `MiniMax-M3`、`MiniMax-M2.7`、`MiniMax-speech-2.8-hd`、`MiniMax-speech-2.8-turbo`
+  - `POST /v1/chat/completions` → 文本模型可通
+  - `POST /v1/audio/speech` → 语音模型按真实音频接口验收
+- 对这套工作区来说，**M3 + M2.7 作为文本面，speech 两个模型作为语音面** 就够用了；图像 / 视频 / 音乐保留为桥接优先或待定
 - 这份调研里早期的“全量 8 模型注册计划”保留为历史方案，不再作为当前落地方案
+

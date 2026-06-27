@@ -184,7 +184,7 @@
 - 新增 8 个 Bailian Token Plan model：
   - `Bailian-qwen3.7-max` / `qwen3.7-plus` / `qwen3.6-flash`
   - `Bailian-kimi-k2.6`
-  - `Bailian-glm-5.1`
+  - `Bailian-glm-5.2`
   - `Bailian-deepseek-v3.2` / `v4-flash` / `v4-pro`
 - 健康率：7/16 → **15/24（44% → 62.5%）**
 

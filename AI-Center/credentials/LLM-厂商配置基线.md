@@ -2,7 +2,7 @@
 
 > 目标：只记录**你当前套餐实际支持的模型**、调用地址、特殊端点、工具/MCP 配置方式与验证日期。
 > 统一规则：**厂商前缀 + 官方模型ID**。这里先存“官方原始模型ID”，后续由 LiteLLM 生成器拼装别名。
-> 最后核验日期：2026-06-21
+> 最后核验日期：2026-06-22
 
 ---
 
@@ -44,50 +44,45 @@
 
 ---
 
-## 2) 阿里云百炼 / Pro 200元/月
+## 2) 阿里云百炼 / Token Plan 团队版
 
 - **厂商简称**：Bailian
-- **凭证类型（当前）**：**Token Plan 团队版** 专属 API Key（2026-06-15 起；之前是 Coding Plan，已弃用）
+- **凭证类型（当前）**：**Token Plan 团队版** 专属 API Key
 - **API Key 格式**：`sk-sp-D.xxxxx`（带分隔点）+ `==` 结尾
 - **OpenAI Base URL（当前）**：`https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1`
-- **Anthropic Base URL（当前）**：`https://token-plan.cn-beijing.maas.aliyuncs.com/apps/anthropic`（**仅用于 Claude Code 等编程工具**；Token Plan 不支持 Claude 模型走这条）
-- **官方模型 ID（Token Plan 实测可用，文本生成）**：
+- **Anthropic Base URL（当前）**：`https://token-plan.cn-beijing.maas.aliyuncs.com/apps/anthropic`（仅用于 Claude Code 等编程工具）
+- **官方支持白名单（当前保留）**：
   - `qwen3.7-max`
   - `qwen3.7-plus`
-  - `qwen3.6-plus`（支持图片理解）
   - `qwen3.6-flash`
-  - `kimi-k2.5`（支持图片理解）
   - `kimi-k2.6`
-  - `glm-5`
-  - `glm-5.1`
+  - `glm-5.2`
   - `MiniMax-M2.5`
   - `deepseek-v4-flash`
   - `deepseek-v4-pro`
+- **当前已确认不进主池**：
+  - `qwen3.6-plus`：已删，理由是同池同能力面下被 `qwen3.7-plus` 压制
+  - `kimi-k2.7-code`：Kimi 官方存在，但**不在 Token Plan 白名单**，因此 pending / unsupported
+  - `qwen3.5-plus`
+  - `qwen3-max-2026-01-23`
+  - `qwen3-coder-next`
+  - `qwen3-coder-plus`
+  - `glm-4.7`
 - **图像生成（独立接口，需通过 Skill / 扩展接入）**：
   - `qwen-image-2.0` / `qwen-image-2.0-pro`
   - `wan2.7-image` / `wan2.7-image-pro`
-- **LiteLLM config 当前挂载的 Bailian model（2026-06-21 收口后，10 个全绿）**：
-  - `Bailian-qwen3.7-max` ✅
-  - `Bailian-qwen3.7-plus` ✅
-  - `Bailian-qwen3.6-plus` ✅
-  - `Bailian-qwen3.6-flash` ✅
-  - `Bailian-kimi-k2.6` ✅
-  - `Bailian-glm-5` ✅
-  - `Bailian-glm-5.1` ✅
-  - `Bailian-MiniMax-M2.5` ✅
-  - `Bailian-deepseek-v4-flash` ✅
-  - `Bailian-deepseek-v4-pro` ✅
-- **已临时下架（不在 Token Plan 列表 / 原 Coding Plan 失效）**：
-  - `Bailian-qwen3.5-plus`
-  - `Bailian-qwen3-max-2026-01-23`
-  - `Bailian-qwen3-coder-next`
-  - `Bailian-qwen3-coder-plus`
-  - `Bailian-glm-4.7`
-- **多模态 / 图片理解**：
-  - 当前保留的百炼多模态入口：`qwen3.6-plus`
-  - `kimi-k2.5` 已按“同子厂商 / 同模态 / 成本一致时删低版本”移除
+- **LiteLLM config 当前挂载的 Bailian model（2026-06-22 复核后，8 个 active）**：
+  - `Bailian-qwen3.7-max`
+  - `Bailian-qwen3.7-plus`
+  - `Bailian-qwen3.6-flash`
+  - `Bailian-kimi-k2.6`
+  - `Bailian-glm-5.2`
+  - `Bailian-MiniMax-M2.5`
+  - `Bailian-deepseek-v4-flash`
+  - `Bailian-deepseek-v4-pro`
+- **复核结果**：`config.yaml` 已去除重复 active block，当前代理模型表收口为 8 个 active 条目。
 - **MCP / 工具接入**：
-  - Token Plan 团队版**仅限 AI 编程工具和 OpenClaw 类型 Agent** 使用
+  - Token Plan 团队版仅限 AI 编程工具和 OpenClaw 类型 Agent 使用
   - 支持 Claude Code、Kilo Code、Qwen Code 插件接入 IDE
   - **不支持** Dify / n8n / Postman / 自定义后端脚本这类场景
 - **重要约束**：
@@ -96,6 +91,7 @@
   - 必须使用 `token-plan.cn-beijing.maas.aliyuncs.com`
   - 用错 Base URL 报 `401 Incorrect API key provided`
 - **官方来源**：
+  - `https://help.aliyun.com/zh/model-studio/token-plan-overview`
   - `https://help.aliyun.com/zh/model-studio/token-plan-quickstart`
   - `https://help.aliyun.com/zh/model-studio/token-plan-faq`
   - `https://help.aliyun.com/zh/model-studio/more-tools`

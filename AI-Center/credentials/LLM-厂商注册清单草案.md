@@ -30,16 +30,16 @@
 ## 2) Bailian
 
 - **LiteLLM alias 规则**：`Bailian-<官方模型ID>`
-- **套餐**：阿里云百炼 Pro 200元/月
+- **套餐**：阿里云百炼 Token Plan 团队版
 - **建议注册**：
-  - `Bailian-qwen3.6-plus`
-  - `Bailian-glm-5`
+  - `Bailian-qwen3.7-max`
+  - `Bailian-qwen3.7-plus`
+  - `Bailian-qwen3.6-flash`
+  - `Bailian-kimi-k2.6`
+  - `Bailian-glm-5.2`
   - `Bailian-MiniMax-M2.5`
-  - `Bailian-qwen3.5-plus`
-  - `Bailian-qwen3-max-2026-01-23`
-  - `Bailian-qwen3-coder-next`
-  - `Bailian-qwen3-coder-plus`
-  - `Bailian-glm-4.7`
+  - `Bailian-deepseek-v4-flash`
+  - `Bailian-deepseek-v4-pro`
 
 ---
 

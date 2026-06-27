@@ -27,7 +27,7 @@
     - Bailian:
         - abbr: BL
           href: https://bailian.console.alibabacloud.com/
-          description: 阿里云百炼 / Pro 200元/月 / 国内
+          description: 阿里云百炼 / Token Plan 团队版 / 国内
           status: external
           probe: external
     - Volcengine ARK:
