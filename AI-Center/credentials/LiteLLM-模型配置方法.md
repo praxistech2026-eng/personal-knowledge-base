@@ -311,7 +311,7 @@ model_info:
 
 - 当前 LiteLLM config 中存在 **16 条 Bailian 配置块**，运行时暴露 **10 个唯一模型**
 - `Bailian-kimi-k2.5` 与 `Bailian-deepseek-v3.2` 已按保留规则移除
-- 当前仍存在重复注册：`Bailian-qwen3.7-max`、`Bailian-qwen3.7-plus`、`Bailian-qwen3.6-flash`、`Bailian-kimi-k2.6`、`Bailian-glm-5.1`、`Bailian-deepseek-v4-pro`
+- 当前仍存在重复注册：`Bailian-qwen3.7-max`、`Bailian-qwen3.7-plus`、`Bailian-qwen3.6-flash`、`Bailian-kimi-k2.6`、`Bailian-glm-5.2`、`Bailian-deepseek-v4-pro`
 - 这类重复不会提升能力，只会增加配置噪音；后续应继续做一次去重收口
 
 ### 同厂商模型保留 / 清理规则（2026-06-21 修订）
@@ -518,45 +518,78 @@ LiteLLM 的模型配置核心就三句话：
 2. 再按厂商基线把官方模型 ID 变成 `厂商前缀-官方模型ID`
 3. 最后做 `/v1/models`、`/model/info`、UI 三重验证
 
+## 13. LiteLLM 在 Agent 里的复用边界
+
+这次的结论要直接钉死：**LiteLLM 可以复用到 Agent 生态里，但复用的是“模型目录 + 路由策略 + 统一入口”，不是各个 Agent 的原生配置文件。**
+
+### 能复用的东西
+- `model_name` 别名：继续用 `厂商前缀-官方模型ID`
+- `litellm_params.model`：作为统一能力标识
+- `order / fallback / rpm / tpm`：作为共享路由策略
+- `model_info.mode`：作为能力面标记（chat / responses / image / video 等）
+- `config.yaml` 里的模型目录：作为“单一事实来源”
+- 统一的 OpenAI-compatible 入口：能接的 Agent 直接指向 LiteLLM
+
+### 不能直接复用的东西
+- 各厂商的 OAuth / refresh_token / CLI 登录态
+- Agent 自己的 system prompt / tool schema / memory schema
+- 只属于某个 Agent 的 native provider 配置
+- 不能说 OpenAI-compatible 的原生私有协议配置
+- 订阅型 CLI wrapper 的灰色接法（适合试验，不适合当主链路）
+
+### 未来怎么用
+- **Hermes**：最适合，直接把 LiteLLM 当统一 upstream
+- **OpenClaw**：如果走 OpenAI-compatible / HTTP provider，就能复用 LiteLLM；如果是它自己的 native CLI provider，就按它自己的协议走，别硬拧
+- **Codex / Claude Code / 未来的新 Agent**：只要它支持 OpenAI-compatible base_url 或自定义 provider，就复用 LiteLLM；不支持就保留原生接法，等桥接器
+
+### 复用原则
+1. **LiteLLM 是模型中台，Agent 是决策层**
+2. Agent 负责任务分类、工具使用、执行策略
+3. LiteLLM 负责模型目录、鉴权、路由、fallback、限流
+4. Agent 里只保存“怎么连 LiteLLM”，不要复制一份 provider 目录
+5. 任何新 Agent 如果不能说 OpenAI-compatible API，先别纳入复用，直到有桥接器
+
+### 一句话结论
+**复用语义，不复用语法。** 也就是：同一套模型能力和路由规则可以给多个 Agent 用，但每个 Agent 的原生配置格式、认证方式和工具栈都要各自处理。
 ---
 
-## 13. ChatGPT 健康检查注意事项
+## 14. ChatGPT 健康检查注意事项
 
-### 13.1 现象
+### 14.1 现象
 
 - ChatGPT 四模型（`ChatGPT-gpt-5.5` / `ChatGPT-gpt-5.4` / `ChatGPT-gpt-5.4-mini` / `ChatGPT-gpt-5.3-codex`）已经挂在 `/v1/models`。
 - 业务调用可通，但健康页可能先前显示 `unhealthy`，误导成“模型挂了”。
 
-### 13.2 根因
+### 14.2 根因
 
 - LiteLLM 对 ChatGPT provider 的 health probe 走的是 `responses` 路径。
 - 默认 probe 曾把 `input` 传成字符串 `"test"`。
 - ChatGPT `responses` 端点要求 `input` 是 list，字符串会直接触发 `BadRequestError: Input must be a list`。
 - 所以这不是模型配置问题，而是**健康探测 payload 形状不匹配**。
 
-### 13.3 本环境修复
+### 14.3 本环境修复
 
 - 在 `/home/shin/workspace/litellm/patches/sitecustomize.py` 里加了启动时补丁。
 - 只对 `custom_llm_provider == "chatgpt"` 的 health probe 修正 `input` 形状。
 - `docker-compose.yml` 通过挂载 `/app/patches` 并设置 `PYTHONPATH=/app/patches` 让补丁在启动时生效。
 - **没有修改 `config.yaml` 的模型定义**。
 
-### 13.4 验证口径
+### 14.4 验证口径
 
 - `GET /v1/models` 看模型是否被注册暴露。
 - `GET /health?model_id=<internal_id>` 看真实健康探测结果。
 - `chat/completions` 继续作为业务可用性验证。
 
-### 13.5 结论
+### 14.5 结论
 
 - ChatGPT 的 health status 现在应该被视为**真实探测结果**，不是写死的恒绿。
 - 如果后续 ChatGPT 真坏了，健康页仍然会变红；修复的是误报，不是掩盖故障。
 
 ---
 
-## 14. MiniMax CN Token Plan 注意事项
+## 15. MiniMax CN Token Plan 注意事项
 
-### 14.1 当前落地口径
+### 15.1 当前落地口径
 
 - 国内版 Token Plan 在本工作区采用 **OpenAI-compatible** 路线。
 - 有效环境变量：
@@ -566,20 +599,20 @@ LiteLLM 的模型配置核心就三句话：
   - `MiniMax-M3`
   - `MiniMax-M2.7`
 
-### 14.2 模型分工
+### 15.2 模型分工
 
 - `MiniMax-M3`：主力模型，适合 agent / coding / multimodal 场景。
 - `MiniMax-M2.7`：稳定兜底模型。
 - 官方 docs 还列出 `M2.7-highspeed` / `M2.5` / `M2.5-highspeed` / `M2.1` / `M2.1-highspeed` / `M2`，但当前工作区不默认注册。
 
-### 14.3 验证顺序
+### 15.3 验证顺序
 
 1. `.env` 改完后必须 **重建容器**，`docker restart` 不会重新注入环境变量。
 2. 先验 `GET /health/liveliness`。
 3. 再验 `GET /models`。
 4. 最后做一次 `POST /v1/chat/completions` 的真实调用。
 
-### 14.4 这次排错沉淀
+### 15.4 这次排错沉淀
 
 - 之前的故障不是模型能力问题，而是 CN Token Plan 的变量串线和 base URL 误配。
 - 现在可把 MiniMax 的标准接法当成模板使用：`MINIMAX_CN_API_HOST` + `MINIMAX_CN_API_KEY` + OpenAI-compatible `/v1`。
