@@ -97,6 +97,9 @@ AI-Center/
 | [AI-Center-项目组合表模板](./AI-Center-项目组合表模板.md) | 项目优先级判断与组合管理模板 |
 | [AI-Center-依赖矩阵模板](./AI-Center-依赖矩阵模板.md) | 耦合关系显式化模板 |
 | [AI-Center-项目状态卡模板](./AI-Center-项目状态卡模板.md) | 项目续跑快照模板与 Restart Summary |
+| [Harness-工程规范](./Harness-工程规范.md) | Agent = Model + Harness；8 构件定义、合规度评分、横切 6 层架构的治理协议 |
+| [Harness-8构件清单](./Harness-8构件清单.md) | 8 构件逐项展开：是什么 / 关键问题 / AI Center 载体 / 缺失风险 / 最小落地成本 |
+| [Harness-项目合规检查表](./Harness-项目合规检查表.md) | 合规度评分规则、上线决策表、Agent 卡 / 场景卡模板、harness-check.sh、自动巡检 cron |
 
 | [operations/变更流程](../operations/变更流程.md) | 新增、升级、换 key、下线、归档的最小闭环 |
 | [homepage/README](../homepage/README.md) | Homepage 门户配置、services.yaml / bookmarks.yaml |

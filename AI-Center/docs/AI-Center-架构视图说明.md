@@ -74,6 +74,40 @@ L5 项目层 → L4 能力层 → L3 运行层 → L2 连通层 → L1 物理层
 
 ---
 
+## 4. Harness 治理层（横切维度）
+
+Harness 不是第 7 层，而是横切进 6 层架构的治理协议。
+
+**Agent = Model + Harness。** Model 是大脑，Harness 是围绕大脑的身体+工具+记忆+护栏+反馈。
+
+### 8 构件
+
+| # | 构件 | 解决的问题 |
+|---|---|---|
+| 1 | System Prompt | 行为边界定义 |
+| 2 | Tools | 让模型能动手 |
+| 3 | Sandbox | 隔离、可重置 |
+| 4 | Filesystem | 跨会话不丢 |
+| 5 | Memory | 短期压缩 + 长期检索 |
+| 6 | Feedback | 自动验证任务完成 |
+| 7 | Guardrails | 危险动作人审 |
+| 8 | Observability | 日志可回放 |
+
+### 合规度红线
+- < 4/8：禁止上线
+- 4-5/8：小范围试点
+- 6/8：灰度上线
+- 7-8/8：正式上线
+
+### 文档位置
+- 工程规范：[Harness-工程规范](./Harness-工程规范.md)
+- 8 构件清单：[Harness-8构件清单](./Harness-8构件清单.md)
+- 合规检查表：[Harness-项目合规检查表](./Harness-项目合规检查表.md)
+- Hermes Agent 卡：[agents/hermes-harness-card.md](../agents/hermes-harness-card.md)
+- 场景卡：归 OPC 仓库（业务项目级应用）
+
+---
+
 ## 5. 主归类规则
 
 一个对象可以出现在多个视图中，但只能有一个主归类。
