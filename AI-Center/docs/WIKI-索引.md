@@ -92,6 +92,11 @@ AI-Center/
 || [LLM-模型资源底表](./LLM-模型资源底表.md) | 厂商 → 模型/能力/MCP/插件 的可查询底表，含当前接入状态与未接入原因 |
 || [Bailian-LiteLLM-接入复盘](./Bailian-LiteLLM-接入复盘-2026-06-22.md) | Bailian 当前结果复盘：Token Plan 团队版已接入，文本主链路可用，生成类能力桥接优先 |
 || [AI-Center-阶段执行提示词](./AI-Center-阶段执行提示词.md) | 7 阶段重构计划、每阶段提示词、验收标准 |
+| [AI-Center-架构视图说明](./AI-Center-架构视图说明.md) | 多视图架构说明：6 层架构 / 5 个视图 / 中台与项目边界 / 主归类规则 |
+| [AI-Center-能力地图模板](./AI-Center-能力地图模板.md) | 能力地图字段定义与更新规则 |
+| [AI-Center-项目组合表模板](./AI-Center-项目组合表模板.md) | 项目优先级判断与组合管理模板 |
+| [AI-Center-依赖矩阵模板](./AI-Center-依赖矩阵模板.md) | 耦合关系显式化模板 |
+| [AI-Center-项目状态卡模板](./AI-Center-项目状态卡模板.md) | 项目续跑快照模板与 Restart Summary |
 
 | [operations/变更流程](../operations/变更流程.md) | 新增、升级、换 key、下线、归档的最小闭环 |
 | [homepage/README](../homepage/README.md) | Homepage 门户配置、services.yaml / bookmarks.yaml |
